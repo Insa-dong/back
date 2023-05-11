@@ -3,10 +3,7 @@ package com.insadong.application.common.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
@@ -18,11 +15,13 @@ public class Employee {
 	@Column(name = "EMP_CODE")
 	private Long empCode;
 
-	@Column(name = "DEPT_CODE")
-	private String deptCode;
+	@ManyToOne
+	@JoinColumn(name = "DEPT_CODE")
+	private Dept deptCode;
 
-	@Column(name = "JOB_CODE")
-	private String jobCode;
+	@ManyToOne
+	@JoinColumn(name = "JOB_CODE")
+	private Job jobCode;
 
 	@Column(name = "EMP_NAME")
 	private String empName;
