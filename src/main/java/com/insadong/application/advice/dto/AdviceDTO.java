@@ -13,9 +13,10 @@ public class AdviceDTO {
 	
 	private Long adviceLogCode;
 	private StudentDTO student;
-	private EmployeeDTO Writer;
+	private EmployeeDTO writer;
 	private String adviceLogContent;
 	private Date adviceLogDate;
+	private String adviceLogUpdate;
 	private String adviceLogDelete;
 
 }
