@@ -26,7 +26,7 @@ public class Eva {
 
 	@ManyToOne
 	@JoinColumn(name = "STU_CODE")
-	private Student Student;
+	private Student student;
 
 	@Column(name = "EVA_WRITE_CONTENT")
 	private String evaWriteContent;

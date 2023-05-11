@@ -19,7 +19,7 @@ public class ClassTime {
 
 	@ManyToOne
 	@JoinColumn(name = "CLASS_CODE")
-	private Class classCode;
+	private Class Class;
 
 	@Column(name = "CLASS_DATE")
 	private String classDate;

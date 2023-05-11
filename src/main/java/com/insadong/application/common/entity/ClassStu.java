@@ -18,8 +18,8 @@ public class ClassStu {
 	private Long classCode;
 
 	@ManyToOne
-	@JoinColumn(name = "STU_CODe")
-	private Student stuCode;
+	@JoinColumn(name = "STU_CODE")
+	private Student student;
 
 	@Column(name = "CLASS_ENROLL_DATE")
 	private String classEnrollDate;
