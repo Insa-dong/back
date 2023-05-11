@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -27,13 +29,13 @@ public class Eva {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EVA_SEQ_GENERATOR")
 	private Long evaCode;
 	
-/*
- * 	@Column()
-
-	private 
+	@ManyToOne
+	@JoinColumn(name="CLASS_INFO_CODE")
+	private ClassInfo ClassInfo;
 	
-	@Column()
-	private   */
+	@ManyToOne
+	@JoinColumn(name="STU_CODE")
+	private Student stuCode;
 	
 	@Column(name="EVA_WRITE_CONTENT")
 	private String evaWriteContent;
