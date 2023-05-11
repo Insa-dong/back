@@ -1,4 +1,4 @@
-package com.insadong.application.employee.entity;
+package com.insadong.application.common.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

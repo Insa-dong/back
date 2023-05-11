@@ -1,8 +1,8 @@
 package com.insadong.application.training.service;
 
+import com.insadong.application.common.entity.Training;
 import com.insadong.application.employee.EmployeeRepository;
 import com.insadong.application.training.dto.TrainingDTO;
-import com.insadong.application.training.entity.Training;
 import com.insadong.application.training.repository.TrainingRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

@@ -16,6 +16,8 @@ public class TrainingDTO {
 
 	private String trainingTime;
 
+	private String trainingCount;
+
 	private EmployeeDTO trainingWriter;
 
 	private String trainingDate;

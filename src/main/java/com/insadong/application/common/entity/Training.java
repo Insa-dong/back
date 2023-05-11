@@ -1,6 +1,5 @@
-package com.insadong.application.training.entity;
+package com.insadong.application.common.entity;
 
-import com.insadong.application.employee.entity.Employee;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
@@ -32,6 +31,9 @@ public class Training {
 
 	@Column(name = "TRAINING_TIME")
 	private String trainingTime;
+
+	@Column(name = "TRAINING_COUNT")
+	private String trainingCount;
 
 	@ManyToOne
 	@JoinColumn(name = "TRAINING_WRITER")
