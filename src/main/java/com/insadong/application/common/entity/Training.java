@@ -49,4 +49,15 @@ public class Training {
 	@JoinColumn(name = "TRAINING_MODIFIER")
 	private Employee trainingModifier;
 
+	public void update(String trainingTitle, String trainingQual, String trainingKnow, String trainingTime, String trainingCount, Employee trainingWriter, String trainingDate, String trainingUpdate, Employee trainingModifier) {
+		this.trainingTitle = trainingTitle;
+		this.trainingQual = trainingQual;
+		this.trainingKnow = trainingKnow;
+		this.trainingTime = trainingTime;
+		this.trainingCount = trainingCount;
+		this.trainingWriter = trainingWriter;
+		this.trainingDate = trainingDate;
+		this.trainingUpdate = trainingUpdate;
+		this.trainingModifier = trainingModifier;
+	}
 }
