@@ -21,8 +21,8 @@ public class Eva {
 	private Long evaCode;
 
 	@ManyToOne
-	@JoinColumn(name = "CLASS_INFO_CODE")
-	private ClassInfo ClassInfo;
+	@JoinColumn(name = "STUDY_INFO_CODE")
+	private StudyInfo StudyInfo;
 
 	@ManyToOne
 	@JoinColumn(name = "STU_CODE")
