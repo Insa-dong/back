@@ -1,13 +1,20 @@
 package com.insadong.application.common.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "TB_CLASS")
+@SequenceGenerator(name = "CLASS_SEQ_GEN", sequenceName = "SEQ_CLASS_CODE", allocationSize = 1)
 public class Class {
 
 	@Id
 	@Column(name = "CLASS_CODE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CLASS_CODE")
 	private Long classCode;
 
 	@ManyToOne
