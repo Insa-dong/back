@@ -17,11 +17,11 @@ public class Employee {
 
 	@ManyToOne
 	@JoinColumn(name = "DEPT_CODE")
-	private Dept deptCode;
+	private Dept dept;
 
 	@ManyToOne
 	@JoinColumn(name = "JOB_CODE")
-	private Job jobCode;
+	private Job job;
 
 	@Column(name = "EMP_NAME")
 	private String empName;

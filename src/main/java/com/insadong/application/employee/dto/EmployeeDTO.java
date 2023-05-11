@@ -1,18 +1,15 @@
 package com.insadong.application.employee.dto;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class EmployeeDTO {
 
 	private Long empCode;
-	private String deptCode;
-	private String jobCode;
+	private DeptDTO dept;
+	private JobDTO job;
 	private String empName;
 	private String empGender;
 	private String email;
@@ -23,5 +20,5 @@ public class EmployeeDTO {
 	private Long offCount;
 	private String empState;
 	private Date endDate;
-	
+
 }
