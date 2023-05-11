@@ -1,0 +1,20 @@
+# port config
+server:
+  port: 8001  
+  
+# datasource config
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: C##INSA
+    password: INSA
+
+# jpa config
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database: oracle
+    properties:
+      hibernate:
+        '[format_sql]': true
