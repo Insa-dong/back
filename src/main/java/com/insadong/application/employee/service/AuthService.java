@@ -1,27 +1,25 @@
-package com.insadong.application.member.service;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+package com.insadong.application.employee.service;
 
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.dto.TokenDTO;
+import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.exception.LoginFailedException;
-import com.insadong.application.member.repository.MemberRepository;
-
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class AuthService {
 
-	private final MemberRepository memberRepository;
+	private final EmployeeRepository employeeRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final ModelMapper modelMapper;
 
-	public AuthService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
-		this.memberRepository = memberRepository;
+	public AuthService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+		this.employeeRepository = employeeRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.modelMapper = modelMapper;
 	}
@@ -32,7 +30,7 @@ public class AuthService {
 		log.info("[AuthService] employeeDTO : {}", employeeDTO);
 
 		// 1. 아이디로 DB에서 해당 유저가 있는지 조회
-		Employee employee = memberRepository.findByEmpId(employeeDTO.getEmpId())
+		Employee employee = employeeRepository.findByEmpId(employeeDTO.getEmpId())
 				.orElseThrow(() -> new LoginFailedException("잘못 된 아이디 또는 비밀번호입니다."));
 
 		// 2. 비밀번호 매칭 확인
