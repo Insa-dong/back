@@ -45,8 +45,6 @@ public class StudentService {
 		return studentDtoList;
 	}
 
-	/* 2. 강의별 수강생 조회 */
-
 	/* 3. 수강생 상세 보기 */
 	public StudentDTO selectStudentDetailForAdmin(Long stuCode) {
 
@@ -98,25 +96,6 @@ public class StudentService {
 
 		log.info("[studentService] insertStudent End ==============================");
 	}
-
-
-	/* 6. 수강생 강의 조회 {classCode} */
-
-	/* 7. 수강생 강의 등록 */
-
-	/* 8. 수강생 강의 수정 */
-
-	/* 9. 수강생 강의 삭제 */
-
-	/* 10. 수강생 평가 조회 */
-
-	/* 11. 수강생 평가 삭제 */
-
-	/* 12. 수강생 상담 조회 */
-
-	/* 13. 수강생 상담 삭제 */
-
-	/* 사용자 */
 
 
 }
