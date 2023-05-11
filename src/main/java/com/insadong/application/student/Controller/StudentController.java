@@ -49,11 +49,9 @@ public class StudentController {
 
 	}
 
-	/* 2. 강의별 수강생 조회 */
-
-
-	/* 3. 수강생 상세 보기 */
-	@GetMapping("students-management/{stuCode}")
+	
+	/* 2. 수강생 상세 보기 */
+	@GetMapping("/students-management/{stuCode}")
 	public ResponseEntity<ResponseDTO> selectStudentDetailForAdmin(@PathVariable Long stuCode) {
 
 		return ResponseEntity
@@ -61,7 +59,7 @@ public class StudentController {
 				.body(new ResponseDTO(HttpStatus.OK, "조회 성공", studentService.selectStudentDetailForAdmin(stuCode)));
 	}
 
-	/* 4. 수강생 정보 수정 */
+	/* 3. 수강생 정보 수정 */
 	@PutMapping("/students")
 	public ResponseEntity<ResponseDTO> updateStudent(@ModelAttribute StudentDTO studentDto) {
 
@@ -73,7 +71,7 @@ public class StudentController {
 
 	}
 
-	/* 5. 수강생 등록 */
+	/* 4. 수강생 등록 */
 	@PostMapping("/student")
 	public ResponseEntity<ResponseDTO> insertStudent(@RequestBody StudentDTO studentDto) {
 
@@ -82,8 +80,23 @@ public class StudentController {
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 등록 성공"));
 	}
+	
+	/* 5. 수강생 삭제 */
+	@DeleteMapping("/students/{stuCode}")
+	public ResponseEntity<ResponseDTO> deleteStudent(@PathVariable Long stuCode) {
+	    studentService.deleteStudent(stuCode);
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 삭제 성공"));
+	}
+
+	/* 6. 수강생 검색 */
 
 
+	
+	
+
+	/* 사용자 */
+	
+	/* 수강생 조회 */
 
 
 }
