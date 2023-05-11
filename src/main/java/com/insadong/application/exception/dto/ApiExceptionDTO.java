@@ -4,19 +4,16 @@ import org.springframework.http.HttpStatus;
 
 import lombok.Data;
 
-public class ApiExceptionDTO {
-
 	@Data
-	public class ApiExceptionDto {
+	public class ApiExceptionDTO {
 
 		private int state;
 		private String message;
 
-		public ApiExceptionDto(HttpStatus status, String message) {
+		public ApiExceptionDTO(HttpStatus status, String message) {
 			this.state = status.value();
 			this.message = message;
 		}
 
 	}
 
-}
