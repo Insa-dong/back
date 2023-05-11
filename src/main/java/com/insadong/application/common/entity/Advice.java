@@ -39,10 +39,13 @@ public class Advice {
 	
 	@ManyToOne
 	@JoinColumn(name="EMP_CODE")
-	private Employee Writer;
+	private Employee writer;
 	
 	@Column(name="ADVICE_LOG_CONTENT")
 	private String adviceLogContent;
+	
+	@Column(name="ADVICE_LOG_UPDATE")
+	private String adviceLogUpdate;
 	
 	@Column(name="ADVICE_LOG_DATE")
 	private Date adviceLogDate;
@@ -50,4 +53,16 @@ public class Advice {
 	@Column(name="ADVICE_LOG_DELETE")
 	private String adviceLogDelete;
 
+	/* Advice entity 수정 용도의 메소드를 별도로 정의 */
+	public void update(Employee writer, String adviceLogContent, String adviceLogUpdate,
+            Date adviceLogDate, String adviceLogDelete) {
+			
+			this.writer = writer;
+			this.adviceLogContent = adviceLogContent;
+			this.adviceLogDate = adviceLogDate;
+			this.adviceLogUpdate = adviceLogUpdate;
+			this.adviceLogDelete = adviceLogDelete;
+	}
+		
 }
+
