@@ -26,7 +26,7 @@ public class TrainingController {
 
 	@GetMapping("/trainingList")
 	public ResponseEntity<ResponseDTO> viewTrainingList(@RequestParam(name = "page", defaultValue = "1") int page) {
-		/* @AuthenticationPrincipal 에서 받아와야 함. 했다 치고 */
+		/* @AuthenticationPrincipal 에서 받아와야 함. 했다 치고 gg */
 		long empCode = 1000;
 
 		Page<TrainingDTO> trainingList = trainingService.viewTrainingList(page);
