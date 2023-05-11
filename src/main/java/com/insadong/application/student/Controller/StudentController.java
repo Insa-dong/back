@@ -36,7 +36,7 @@ public class StudentController {
 	
 	/* 관리자 */
 
-	/* 1. 수강생 전체 조회 */
+	/* 1. 수강생 전체 조회0000 */
 	@GetMapping("/students-management")
 	public ResponseEntity<ResponseDTO> selectStudentListForAdmin(@RequestParam(name="page", defaultValue="1") int page) {
 		
