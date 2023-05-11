@@ -10,12 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Entity
+@DynamicInsert
 @Table(name="TB_STU")
 @SequenceGenerator(name="STU_SEQ_GENERATOR",
 sequenceName="SEQ_STU_CODE",
