@@ -18,7 +18,7 @@ import lombok.Setter;
 public class Employee {
 	@Id
 	@Column(name = "EMP_CODE")
-	private Long empCode;
+	publuic Long empCode;
 	
 	@Column(name="DEPT_CODE")
 	private String deptCode;
