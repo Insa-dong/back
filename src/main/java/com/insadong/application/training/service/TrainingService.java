@@ -2,6 +2,7 @@ package com.insadong.application.training.service;
 
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Training;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.training.dto.TrainingDTO;
 import com.insadong.application.training.repository.TrainingRepository;
@@ -62,5 +63,15 @@ public class TrainingService {
 				trainingDTO.getTrainingDate(),
 				foundEmp,
 				trainingDTO.getTrainingDeleteYn());
+	}
+
+	@Transactional
+	public void insertTraining(TrainingDTO trainingDTO, long empCode) {
+
+		Employee employee = employeeRepository.findById(empCode).orElseThrow(() -> new IllegalArgumentException("해당 코드로 사원을 조회할 수 없습니다."));
+		EmployeeDTO empDTO = modelMapper.map(employee, EmployeeDTO.class);
+		trainingDTO.setTrainingWriter(empDTO);
+
+		trainingRepository.save(modelMapper.map(trainingDTO, Training.class));
 	}
 }

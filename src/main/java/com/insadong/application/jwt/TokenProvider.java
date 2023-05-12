@@ -1,9 +1,13 @@
 package com.insadong.application.jwt;
 
-import java.security.Key;
-import java.util.Date;
-import java.util.List;
-
+import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.dto.TokenDTO;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,15 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import com.insadong.application.employee.dto.EmployeeDTO;
-import com.insadong.application.employee.dto.TokenDTO;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
+import java.security.Key;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -46,7 +45,7 @@ public class TokenProvider {
 		Claims claims = Jwts.claims().setSubject(employee.getEmpId());
 
 		List<String> roles = employee.getEmpAuthList().stream().map(empAuth -> empAuth.getAuth().getAuthName())
-				.toList();
+				.collect(Collectors.toList());
 		claims.put(AUTHORITIES_KEY, roles);
 
 		long now = new Date().getTime();

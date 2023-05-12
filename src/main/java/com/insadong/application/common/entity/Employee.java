@@ -1,30 +1,23 @@
 package com.insadong.application.common.entity;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "TB_EMP")
-@SequenceGenerator(name="EMP_SEQ_GENERATOR",
-		sequenceName="SEQ_EMP_CODE",
-		initialValue=1, allocationSize=1)
+@SequenceGenerator(name = "EMP_SEQ_GENERATOR",
+		sequenceName = "SEQ_EMP_CODE",
+		initialValue = 1, allocationSize = 1)
 public class Employee {
 	@Id
 	@Column(name = "EMP_CODE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EMP_SEQ_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EMP_SEQ_GENERATOR")
 	private Long empCode;
 
 	@ManyToOne
@@ -64,11 +57,10 @@ public class Employee {
 
 	@Column(name = "END_DATE")
 	private Date endDate;
-	
+
 	@OneToMany
-	@JoinColumn(name="EMP_CODE")
+	@JoinColumn(name = "EMP_CODE")
 	private List<EmpAuth> empAuthList;
-	
 
 
 }

@@ -53,4 +53,14 @@ public class TrainingController {
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
 	}
+
+	@PostMapping("/training")
+	public ResponseEntity<ResponseDTO> insertTraining(@RequestBody TrainingDTO trainingDTO) {
+
+		log.info("DTO : {} ", trainingDTO);
+		long empCode = 1000;
+		trainingService.insertTraining(trainingDTO, empCode);
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록이 완료되었습니다. 메인 페이지로 이동합니다."));
+	}
 }
