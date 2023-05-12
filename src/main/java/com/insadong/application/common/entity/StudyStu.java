@@ -17,12 +17,12 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "TB_STUDY_STU")
-//@SequenceGenerator(name = "STUDY_STU_SEQ_GEN", sequenceName = "SEQ_STUDY_STU_CODE", allocationSize = 1)
+@SequenceGenerator(name = "STUDY_STU_SEQ_GEN", sequenceName = "SEQ_STUDY_STU_CODE", allocationSize = 1)
 public class StudyStu {
 
 	@Id
 	@Column(name = "STUDY_CODE")
-	//@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STUDY_STU_CODE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STUDY_STU_CODE")
 	private Long studyCode;
 
 	@ManyToOne
