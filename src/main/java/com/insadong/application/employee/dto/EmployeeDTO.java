@@ -19,7 +19,7 @@ public class EmployeeDTO implements UserDetails {
 	private JobDTO job;
 	private String empName;
 	private String empGender;
-	private String email;
+	private String empEmail;
 	private String empId;
 	private String empPwd;
 	private String empPhone;
