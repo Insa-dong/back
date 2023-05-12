@@ -45,9 +45,7 @@ public class StudentService {
 		return studentDtoList;
 	}
 
-	/* 2. 강의별 수강생 조회 */
-
-	/* 3. 수강생 상세 보기 */
+	/* 2. 수강생 상세 보기 */
 	public StudentDTO selectStudentDetailForAdmin(Long stuCode) {
 
 		log.info("[StudentService] selectStudentForAdmin start ============================== ");
@@ -65,7 +63,7 @@ public class StudentService {
 	}
 
 
-	/* 4. 수강생 정보 수정 */
+	/* 3. 수강생 정보 수정 */
 	@Transactional
 	public void updateStudent(StudentDTO studentDto) {
 		log.info("[StudentService] updateStudent start ============================== ");
@@ -87,7 +85,7 @@ public class StudentService {
 		log.info("[StudentService] updateStudent end ============================== ");
 	}
 
-	/* 5. 수강생 등록 */
+	/* 4. 수강생 등록 */
 	@Transactional
 	public void insertStudent(StudentDTO studentDto) {
 
@@ -99,24 +97,16 @@ public class StudentService {
 		log.info("[studentService] insertStudent End ==============================");
 	}
 
+	/* 5. 수강생 삭제 */
+	@Transactional
+	public void deleteStudent(Long stuCode) {
+	    Student student = studentRepository.findById(stuCode)
+	            .orElseThrow(() -> new IllegalArgumentException("해당 수강생이 없습니다. stuCode = " + stuCode));
 
-	/* 6. 수강생 강의 조회 {classCode} */
+	    studentRepository.delete(student);
+	}
 
-	/* 7. 수강생 강의 등록 */
-
-	/* 8. 수강생 강의 수정 */
-
-	/* 9. 수강생 강의 삭제 */
-
-	/* 10. 수강생 평가 조회 */
-
-	/* 11. 수강생 평가 삭제 */
-
-	/* 12. 수강생 상담 조회 */
-
-	/* 13. 수강생 상담 삭제 */
-
-	/* 사용자 */
-
+	/* 6. 수강생 검색 */
+	
 
 }
