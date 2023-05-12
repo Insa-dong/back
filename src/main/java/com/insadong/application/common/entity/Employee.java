@@ -10,9 +10,13 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "TB_EMP")
+@SequenceGenerator(name="EMP_SEQ_GENERATOR",
+		sequenceName="SEQ_EMP_CODE",
+		initialValue=1, allocationSize=1)
 public class Employee {
 	@Id
 	@Column(name = "EMP_CODE")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EMP_SEQ_GENERATOR")
 	private Long empCode;
 
 	@ManyToOne
