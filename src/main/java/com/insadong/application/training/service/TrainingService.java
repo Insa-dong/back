@@ -31,7 +31,7 @@ public class TrainingService {
 
 	public Page<TrainingDTO> viewTrainingList(int page) {
 
-		Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("trainingCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("trainingCode").descending());
 
 		Page<Training> foundList = trainingRepository.findByTrainingDeleteYn(pageable, "N");
 

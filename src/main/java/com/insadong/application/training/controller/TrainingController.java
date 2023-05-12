@@ -1,6 +1,7 @@
 package com.insadong.application.training.controller;
 
 import com.insadong.application.common.ResponseDTO;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -45,11 +47,11 @@ public class TrainingController {
 	}
 
 	@PutMapping("/training")
-	public ResponseEntity<ResponseDTO> modifyTraining(@RequestBody TrainingDTO trainingDTO) {
+	public ResponseEntity<ResponseDTO> modifyTraining(@RequestBody TrainingDTO trainingDTO, @AuthenticationPrincipal EmployeeDTO employeeDTO) {
 
-		log.info("DTO : {} ", trainingDTO);
-		long empCode = 1000;
-		trainingService.updateTraining(trainingDTO, empCode);
+		log.info("trainingDTO : {} ", trainingDTO);
+		log.info("employeeDTO : {} ", employeeDTO);
+		trainingService.updateTraining(trainingDTO, employeeDTO.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
 	}
