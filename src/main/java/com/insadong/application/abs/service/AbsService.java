@@ -1,6 +1,11 @@
 package com.insadong.application.abs.service;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.insadong.application.abs.dto.AbsDTO;
 import com.insadong.application.abs.repository.AbsRepository;
 import com.insadong.application.common.entity.Abs;
+
 
 
 @Service
@@ -38,4 +44,23 @@ public class AbsService {
 		return absDtoList;
 	}
 
-}
+	/* 2. 근태 입력 (test용)*/
+//	@Transactional
+//	public void checkIn(AbsDTO absDTO, String empId) {
+//	    Employee emp = employeeService.findByEmpId(empId);
+//	    Abs abs = new Abs();
+//	    abs.setEmpCode(emp);
+//	    abs.setAbsDate(new Date());
+//	    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+//	    abs.setAbsStart(formatter.format(new Date()));
+//	    absRepository.save(abs);
+//	}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
