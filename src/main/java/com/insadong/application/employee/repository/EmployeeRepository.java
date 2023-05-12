@@ -11,10 +11,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	Optional<Employee> findByEmpId(String empId);
 
-	/* 1. 전체 구성원 조회 - 페이징
-	Page<Employee> findAll(Pageable pageable);*/
 
-	/* 2. 부서별 구성원 조회  - 페이징*/
-
-	/* 3. 부서별 직책별 조회(검색)*/
 }
