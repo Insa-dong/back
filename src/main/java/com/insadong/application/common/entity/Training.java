@@ -2,15 +2,15 @@ package com.insadong.application.common.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @SuppressWarnings("SpellCheckingInspection")
 @Setter
 @Getter
 @Entity
-@DynamicInsert
+//@DynamicInsert
 @Table(name = "TB_TRAINING")
 @SequenceGenerator(name = "TRAINING_SEQ_GEN", sequenceName = "SEQ_TRAINING_CODE", allocationSize = 1)
 public class Training {
@@ -40,16 +40,17 @@ public class Training {
 	private Employee trainingWriter;
 
 	@Column(name = "TRAINING_DATE")
-	private String trainingDate;
+	private Date trainingDate;
 
 	@Column(name = "TRAINING_UPDATE")
-	private String trainingUpdate;
+	private Date trainingUpdate;
 
 	@ManyToOne
 	@JoinColumn(name = "TRAINING_MODIFIER")
 	private Employee trainingModifier;
 
-	public void update(String trainingTitle, String trainingQual, String trainingKnow, String trainingTime, String trainingCount, Employee trainingWriter, String trainingDate, String trainingUpdate, Employee trainingModifier) {
+
+	public void update(String trainingTitle, String trainingQual, String trainingKnow, String trainingTime, String trainingCount, Employee trainingWriter, Date trainingDate, Employee trainingModifier) {
 		this.trainingTitle = trainingTitle;
 		this.trainingQual = trainingQual;
 		this.trainingKnow = trainingKnow;
@@ -57,7 +58,6 @@ public class Training {
 		this.trainingCount = trainingCount;
 		this.trainingWriter = trainingWriter;
 		this.trainingDate = trainingDate;
-		this.trainingUpdate = trainingUpdate;
 		this.trainingModifier = trainingModifier;
 	}
 }

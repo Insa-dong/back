@@ -60,7 +60,6 @@ public class TrainingService {
 				trainingDTO.getTrainingCount(),
 				originWriter,
 				trainingDTO.getTrainingDate(),
-				trainingDTO.getTrainingUpdate(),
 				foundEmp);
 	}
 }

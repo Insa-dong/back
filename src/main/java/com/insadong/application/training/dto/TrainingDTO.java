@@ -1,7 +1,10 @@
 package com.insadong.application.training.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class TrainingDTO {
@@ -20,9 +23,12 @@ public class TrainingDTO {
 
 	private EmployeeDTO trainingWriter;
 
-	private String trainingDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date trainingDate;
 
-	private String trainingUpdate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date trainingUpdate;
 
 	private EmployeeDTO trainingModifier;
+
 }
