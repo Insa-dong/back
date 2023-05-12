@@ -31,4 +31,6 @@ public class TrainingDTO {
 
 	private EmployeeDTO trainingModifier;
 
+	private String trainingDeleteYn;
+
 }

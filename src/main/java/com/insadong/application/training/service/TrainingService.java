@@ -32,7 +32,7 @@ public class TrainingService {
 
 		Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("trainingCode").descending());
 
-		Page<Training> foundList = trainingRepository.findAll(pageable);
+		Page<Training> foundList = trainingRepository.findByTrainingDeleteYn(pageable, "N");
 
 		return foundList.map(training -> modelMapper.map(training, TrainingDTO.class));
 	}
@@ -60,6 +60,7 @@ public class TrainingService {
 				trainingDTO.getTrainingCount(),
 				originWriter,
 				trainingDTO.getTrainingDate(),
-				foundEmp);
+				foundEmp,
+				trainingDTO.getTrainingDeleteYn());
 	}
 }

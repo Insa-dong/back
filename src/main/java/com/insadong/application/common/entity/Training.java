@@ -2,6 +2,8 @@ package com.insadong.application.common.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,7 +12,8 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
-//@DynamicInsert
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "TB_TRAINING")
 @SequenceGenerator(name = "TRAINING_SEQ_GEN", sequenceName = "SEQ_TRAINING_CODE", allocationSize = 1)
 public class Training {
@@ -49,8 +52,11 @@ public class Training {
 	@JoinColumn(name = "TRAINING_MODIFIER")
 	private Employee trainingModifier;
 
+	@Column(name = "TRAINING_DELETE_YN")
+	private String trainingDeleteYn;
 
-	public void update(String trainingTitle, String trainingQual, String trainingKnow, String trainingTime, String trainingCount, Employee trainingWriter, Date trainingDate, Employee trainingModifier) {
+
+	public void update(String trainingTitle, String trainingQual, String trainingKnow, String trainingTime, String trainingCount, Employee trainingWriter, Date trainingDate, Employee trainingModifier, String trainingDeleteYn) {
 		this.trainingTitle = trainingTitle;
 		this.trainingQual = trainingQual;
 		this.trainingKnow = trainingKnow;
@@ -59,5 +65,7 @@ public class Training {
 		this.trainingWriter = trainingWriter;
 		this.trainingDate = trainingDate;
 		this.trainingModifier = trainingModifier;
+		this.trainingDeleteYn = trainingDeleteYn;
+		this.trainingUpdate = new Date();
 	}
 }
