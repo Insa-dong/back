@@ -24,7 +24,7 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<ResponseDTO> login(@RequestBody EmployeeDTO employeeDTO) {
 
-//		갖나다
+
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "로그인 완료", authService.login(employeeDTO)));
 	}
 
