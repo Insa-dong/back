@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 
+import com.insadong.application.employee.dto.EmployeeDTO;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,15 +56,15 @@ public class Advice {
 	private String adviceLogDelete;
 
 	/* Advice entity 수정 용도의 메소드를 별도로 정의 */
-	public void update(Employee writer, String adviceLogContent, String adviceLogUpdate,
-            Date adviceLogDate, String adviceLogDelete) {
-			
-			this.writer = writer;
-			this.adviceLogContent = adviceLogContent;
-			this.adviceLogDate = adviceLogDate;
-			this.adviceLogUpdate = adviceLogUpdate;
-			this.adviceLogDelete = adviceLogDelete;
-	}
-		
+	
+	public void update(Employee writer, String adviceLogContent, Date adviceLogDate, String adviceLogUpdate, String adviceLogDelete) {
+        this.writer = writer;
+        this.adviceLogContent = adviceLogContent;
+        this.adviceLogDate = adviceLogDate;
+        this.adviceLogUpdate = adviceLogUpdate;
+        this.adviceLogDelete = adviceLogDelete;
+    }
+	
 }
+		
 

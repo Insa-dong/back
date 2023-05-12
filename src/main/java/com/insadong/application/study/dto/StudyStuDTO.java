@@ -14,4 +14,10 @@ public class StudyStuDTO {
 
 	private String studyState;
 
+	public void setTrainingTitle(String title) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

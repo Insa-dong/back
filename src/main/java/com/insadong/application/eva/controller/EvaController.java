@@ -95,7 +95,7 @@ public class EvaController {
 	
 	/* 사용자 평가 등록 */
 	@PostMapping("/students/eva")
-	public ResponseEntity<ResponseDTO> insertEva(@RequestBody EvaDTO evaDto) {
+	public ResponseEntity<ResponseDTO> insertEva(@ModelAttribute EvaDTO evaDto) {
 
 		
 		evaService.insertEva(evaDto);

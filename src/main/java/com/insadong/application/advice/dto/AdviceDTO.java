@@ -2,7 +2,7 @@ package com.insadong.application.advice.dto;
 
 import java.util.Date;
 
-import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.common.entity.Employee;
 import com.insadong.application.student.dto.StudentDTO;
 
 import lombok.Data;
@@ -13,7 +13,7 @@ public class AdviceDTO {
 	
 	private Long adviceLogCode;
 	private StudentDTO student;
-	private EmployeeDTO writer;
+	private Employee writer;
 	private String adviceLogContent;
 	private Date adviceLogDate;
 	private String adviceLogUpdate;

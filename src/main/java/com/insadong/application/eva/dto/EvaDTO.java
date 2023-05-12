@@ -2,8 +2,8 @@ package com.insadong.application.eva.dto;
 
 import java.util.Date;
 
-import com.insadong.application.common.entity.Student;
-import com.insadong.application.common.entity.StudyInfo;
+import com.insadong.application.student.dto.StudentDTO;
+import com.insadong.application.study.dto.StudyInfoDTO;
 
 import lombok.Data;
 
@@ -12,8 +12,8 @@ public class EvaDTO {
 
 	
 	private Long evaCode;
-	private StudyInfo StudyInfo;
-	private Student student;
+	private StudyInfoDTO StudyInfo;
+	private StudentDTO student;
 	private String evaWriteContent;
 	private Date evaWriteDate;
 	private String evaUpdateTime;

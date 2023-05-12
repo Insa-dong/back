@@ -20,7 +20,6 @@ import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
-import com.insadong.application.student.dto.StudentDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -97,7 +96,7 @@ public class AdviceController {
 	
 	/* 2. 수강생 상담 등록 */
 	@PostMapping("/students/advice")
-	public ResponseEntity<ResponseDTO> insertAdvice(@RequestBody AdviceDTO adviceDto) {
+	public ResponseEntity<ResponseDTO> insertAdvice(@ModelAttribute AdviceDTO adviceDto) {
 
 		/* 관리자만 등록하는 구문 추가해야 함 */
 		adviceService.insertAdvice(adviceDto);
