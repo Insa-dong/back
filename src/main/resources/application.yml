@@ -1,7 +1,6 @@
 # port config
 server:
-  port: 8001  
-  
+  port: 8001
 # datasource config
 spring:
   datasource:
@@ -9,8 +8,7 @@ spring:
     url: jdbc:oracle:thin:@localhost:1521:xe
     username: C##INSA
     password: INSA
-
-# jpa config
+  # jpa config
   jpa:
     generate-ddl: false
     show-sql: true
