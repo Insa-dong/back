@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.insadong.application.advice.dto.AdviceDTO;
 import com.insadong.application.advice.repository.AdviceRepository;
 import com.insadong.application.common.entity.Advice;
+import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Student;
 import com.insadong.application.student.repository.StudentRepository;
 
@@ -98,25 +99,25 @@ public class AdviceService {
 	public void updateAdvice(AdviceDTO adviceDto) {
 		log.info("[StudentService] updateAdvice start ============================== ");
 		log.info("[StudentService] adviceDto : {}", adviceDto);
-
+		
 		Advice originAdvice = adviceRepository.findById(adviceDto.getAdviceLogCode())
 				.orElseThrow(() -> new IllegalArgumentException("해당 상담일지가 없습니다. adviceLogCode = " + adviceDto.getAdviceLogCode()));
 
 		/* 수강생 정보 수정 */
-//		originAdvice.update(
-//				adviceDto.getwriter(),
-//				adviceDto.getAdviceLogContent(),
-//				adviceDto.getAdviceLogDate(),
-//				adviceDto.getAdviceLogUpdate(),
-//				adviceDto.getAdviceLogDelete()
-//		);
+		originAdvice.update(
+				adviceDto.getWriter(),
+			    adviceDto.getAdviceLogContent(),
+			    adviceDto.getAdviceLogDate(),
+			    adviceDto.getAdviceLogUpdate(),
+			    adviceDto.getAdviceLogDelete()
+		);
 
 		log.info("[StudentService] updateAdvice end ============================== ");
 		
 	}
 
+}
 
-	}
 
 
 

@@ -73,7 +73,7 @@ public class StudentController {
 
 	/* 4. 수강생 등록 */
 	@PostMapping("/student")
-	public ResponseEntity<ResponseDTO> insertStudent(@RequestBody StudentDTO studentDto) {
+	public ResponseEntity<ResponseDTO> insertStudent(@ModelAttribute StudentDTO studentDto) {
 
 		/* 관리자만 등록하는 구문 추가해야 함 */
 		studentService.insertStudent(studentDto);
