@@ -1,11 +1,11 @@
 package com.insadong.application.student.dto;
 
-import java.util.Date;
-
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class StudentDto {
+public class StudentDTO {
 
 	private Long stuCode;
 	private String stuName;
@@ -14,6 +14,6 @@ public class StudentDto {
 	private String stuEmail;
 	private Date stuBirth;
 	private String stuEndSchool;
-	
-	
+
+
 }
