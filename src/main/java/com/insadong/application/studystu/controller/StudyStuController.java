@@ -37,7 +37,7 @@ public class StudyStuController {
 	/* Only 관리자 */
 	/* 1. 수강생 강의 등록 */
 	@PostMapping("/students-management/study")
-	public ResponseEntity<ResponseDTO> insertStudy(@RequestBody StudyStuDTO studyStuDto) {
+	public ResponseEntity<ResponseDTO> insertStudy(@ModelAttribute StudyStuDTO studyStuDto) {
 
 		/* 관리자만 등록하는 구문 추가해야 함 */
 		studyStuService.insertStudy(studyStuDto);
