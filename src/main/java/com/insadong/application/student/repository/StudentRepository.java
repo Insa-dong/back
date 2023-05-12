@@ -18,4 +18,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	/* 3. 수강생 상세 보기 */
 	@Query("SELECT s FROM Student s WHERE s.stuCode = : stuCode")
 	Optional<Student> findByStuCode(@Param("stuCode") Long stuCode);
+
 }
