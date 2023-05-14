@@ -30,7 +30,7 @@ public class EmpService {
 
         log.info("[EmpService] selectEmpList start ============================== ");
 
-        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
+        Pageable pageable = PageRequest.of(page - 1, 10);
 
         Page<Emp> empList = empRepository.findAll(pageable);
         Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
