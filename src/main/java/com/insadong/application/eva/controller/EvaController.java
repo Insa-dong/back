@@ -95,7 +95,7 @@ public class EvaController {
 	
 	/* 사용자 평가 등록 */
 	@PostMapping("/students/eva")
-	public ResponseEntity<ResponseDTO> insertEva(@ModelAttribute EvaDTO evaDto) {
+	public ResponseEntity<ResponseDTO> insertEva(@RequestBody EvaDTO evaDto) {
 
 		
 		evaService.insertEva(evaDto);
@@ -105,7 +105,7 @@ public class EvaController {
 	
 	/* 사용자 평가 수정 */
 	@PutMapping("/students/eva")
-	public ResponseEntity<ResponseDTO> updateEva(@ModelAttribute EvaDTO evaDto) {
+	public ResponseEntity<ResponseDTO> updateEva(@RequestBody EvaDTO evaDto) {
 
 		evaService.updateEva(evaDto);
 

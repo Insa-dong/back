@@ -19,4 +19,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	@Query("SELECT s FROM Student s WHERE s.stuCode = : stuCode")
 	Optional<Student> findByStuCode(@Param("stuCode") Long stuCode);
 
+	Page<Student> findByStuNameContains(Pageable pageable, String stuName);
+
 }

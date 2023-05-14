@@ -10,5 +10,9 @@ import com.insadong.application.common.entity.Student;
 public interface EvaRepository extends JpaRepository <Eva, Long> {
 
 	Page<Eva> findByStudent(Pageable pageable, Student findStudent);
+	
+	//@EntityGraph(attributePaths = "student")
+	//Page<Eva> findByStudent(Pageable pageable, Student student);
+
 
 }

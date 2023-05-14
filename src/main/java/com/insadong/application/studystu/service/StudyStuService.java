@@ -54,6 +54,7 @@ public class StudyStuService {
 		log.info("[StudyStuService] insertStudent End ==============================");
 		
 	}
+	
 
 	/* 2. 수강생 강의 수정 */
 	@Transactional
@@ -67,6 +68,7 @@ public class StudyStuService {
 
 		/* 수강생 정보 수정 */
 		originStudyStu.update(
+				studyStuDto.getStudyCode(),
 				studyStuDto.getStudyEnrollDate(),
 				studyStuDto.getStudyState()
 
@@ -86,6 +88,8 @@ public class StudyStuService {
 		
 	}
 
+
+
 	/* 4. 수강생 강의 조회 */
 	public Page<StudyStuDTO> selectStudyListByStudentForAdmin(int page, Long stuCode) {
 	    log.info("[StudyStuService] selectStudyListByStudentForAdmin start ==============================");
@@ -98,31 +102,34 @@ public class StudyStuService {
 	    Page<StudyStu> studyStuList = studyStuRepository.findByStudent(pageable, findStudent);
 	    Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> {
 	        StudyStuDTO studyStuDTO = modelMapper.map(studyStu, StudyStuDTO.class);
-	        
+
 	        long studyCode = studyStu.getStudyCode();
 
 	        // 강의 정보 가져오기
 	        Study study = studyRepository.findById(studyCode)
 	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
-	       
-	        long trainingCode = study.getTraining().getTrainingCode();
 
+	        long trainingCode = study.getTraining().getTrainingCode();
+	        
 	        // 과정 정보 가져오기
 	        Training training = trainingRepository.findById(trainingCode)
 	            .orElseThrow(() -> new IllegalArgumentException("해당 과정이 없습니다. trainingCode = " + trainingCode));
 	        String title = training.getTrainingTitle();
+	        
+	        String trainingCount = study.getTraining().getTrainingCount(); // trainingCount 가져오기
 
 	        studyStuDTO.setTrainingTitle(title);
-	        
+	        studyStuDTO.setTrainingCount(trainingCount); // studyStuDTO에 trainingCount 설정
+
 	        return studyStuDTO;
 	    });
+
 
 	    log.info("[StudyStuService] studyStuDTOList.getContent() : {}", studyStuDTOList.getContent());
 	    log.info("[StudyStuService] selectStudyListByStudentForAdmin end ================================");
 
 	    return studyStuDTOList;
 	}
-
 
 }
 	
