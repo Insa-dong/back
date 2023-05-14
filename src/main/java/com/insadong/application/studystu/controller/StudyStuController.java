@@ -34,6 +34,7 @@ public class StudyStuController {
 		this.studyStuService = studyStuService;
 	}
 	
+	// 강의 입력 보다 과정 입력
 	/* Only 관리자 */
 	/* 1. 수강생 강의 등록 */
 	@PostMapping("/students-management/study")
@@ -60,7 +61,6 @@ public class StudyStuController {
 	}
 	
 	/* 3. 수강생 강의 삭제 */
-	
 	@DeleteMapping("/students-management/study/{studyCode}")
 	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long studyCode) {
 		
