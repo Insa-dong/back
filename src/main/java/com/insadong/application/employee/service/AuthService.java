@@ -8,6 +8,7 @@ import com.insadong.application.common.entity.Employee;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.dto.TokenDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.exception.IdsearchFailedException;
 import com.insadong.application.exception.LoginFailedException;
 import com.insadong.application.jwt.TokenProvider;
 
@@ -30,6 +31,7 @@ public class AuthService {
 		this.tokenProvider = tokenProvider;
 	}
 
+	/* 로그인 */
 	public TokenDTO login(EmployeeDTO employeeDTO) {
 
 		log.info("[AuthService] login start ======================================");
@@ -52,6 +54,16 @@ public class AuthService {
 		log.info("[AuthService] login end ======================================");
 		
 		return tokenDTO;
+	}
+	
+	/* 아이디 찾기 */
+	public EmployeeDTO IdSearch(EmployeeDTO employeeDTO) {
+		
+		Employee employee = employeeRepository.findByEmpNameAndEmpPhone(employeeDTO.getEmpName(), employeeDTO.getEmpPhone())
+				.orElseThrow(() -> new IdsearchFailedException("입력하신 정보와 일치하는 아이디가 존재하지 않습니다."));
+		
+				
+		return modelMapper.map(employee, EmployeeDTO.class);
 	}
 
 }

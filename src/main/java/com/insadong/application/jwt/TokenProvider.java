@@ -66,6 +66,8 @@ public class TokenProvider {
 	}
 
 	public Authentication getAuthentication(String jwt) {
+		
+		log.info("jwt : {}", jwt);
 
 		Claims claims = parseClaims(jwt);
 		UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
