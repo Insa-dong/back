@@ -4,8 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ private final AbsService absService;
 		this.absService = absService;
 	}
 	
+	/* 1. 모든 근태 조회 (관리자)*/
 	@GetMapping("/abs-admin")
 	public ResponseEntity<ResponseDTO> selectAbsListForAdmin(@RequestParam(name="page", defaultValue="1") int page) {
 		
@@ -44,16 +46,27 @@ private final AbsService absService;
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 	
-//	@PostMapping("/checkIn/{empId} ")
-//	public ResponseEntity<ResponseDTO> insertProduct(@ModelAttribute AbsDTO absDTO) {
-//	
-//		absService.checkIn(absDTO);
-//		
-//		return ResponseEntity
-//				.ok()
-//				.body(new ResponseDTO(HttpStatus.OK, "출근 등록 성공"));
-//	}
-
+	/* 2. 출근 시간 등록*/
+	@PostMapping("/checkIn/{empCode}")
+	public ResponseEntity<ResponseDTO> checkIn (@PathVariable Long empCode) {
+	    try {
+	        absService.checkIn(empCode);
+	        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출근 등록 성공"));
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseDTO(HttpStatus.CONFLICT, e.getMessage()));
+	    }
+	}
+	
+	/* 3. 퇴근 시간 등록*/
+	@PutMapping("/checkOut/{empCode}")
+	public ResponseEntity<ResponseDTO> checkOut (@PathVariable Long empCode) {
+	    try {
+	        absService.checkOut(empCode);
+	        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "퇴근 등록 성공"));
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseDTO(HttpStatus.CONFLICT, e.getMessage()));
+	    }
+	}
 
 
 }
