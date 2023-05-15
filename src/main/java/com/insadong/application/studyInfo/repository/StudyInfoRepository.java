@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface StudyInfoRepository extends JpaRepository<StudyInfo, Long> {
 
 	@Override
-	@EntityGraph(attributePaths = {"studyCode", "studyCode.training", "studyCode.training.trainingWriter", "studyCode.training.trainingModifier", "studyCode.training.trainingWriter.dept", "studyCode.training.trainingWriter.job", "studyCode.training.trainingModifier.dept", "studyCode.training.trainingModifier.job", "studyCode.training.trainingModifier.empAuthList", "studyCode.training.trainingModifier.empAuthList"})
+	@EntityGraph(attributePaths = {"studyCode", "studyCode.training", "studyCode.training.trainingWriter", "studyCode.training.trainingModifier", "studyCode.training.trainingWriter.dept", "studyCode.training.trainingWriter.job", "studyCode.training.trainingModifier.dept", "studyCode.training.trainingModifier.job"})
 	Optional<StudyInfo> findById(Long studyCode);
 }
