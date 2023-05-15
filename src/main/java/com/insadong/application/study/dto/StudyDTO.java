@@ -18,4 +18,6 @@ public class StudyDTO {
 
 	private String studyModifier;
 
+	private String studyDeleteYn;
+
 }

@@ -32,4 +32,7 @@ public class Study {
 
 	@Column(name = "STUDY_MODIFIER")
 	private String studyModifier;
+
+	@Column(name = "STUDY_DELETE_YN")
+	private String studyDeleteYn;
 }
