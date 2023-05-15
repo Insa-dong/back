@@ -10,4 +10,10 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
 	@EntityGraph(attributePaths = "trainingWriter")
 	Page<Training> findByTrainingDeleteYn(Pageable pageable, String trainingDeleteYn);
+
+	@EntityGraph(attributePaths = {"trainingWriter", "trainingModifier"})
+	Page<Training> findByTrainingTitleContainsAndTrainingDeleteYn(Pageable pageable, String trainingTitle, String n);
+
+	@EntityGraph(attributePaths = {"trainingWriter", "trainingModifier"})
+	Page<Training> findByTrainingCountContainsAndTrainingDeleteYn(Pageable pageable, String trainingCount, String n);
 }

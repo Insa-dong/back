@@ -87,4 +87,20 @@ public class TrainingService {
 		foundTraining.setTrainingModifier(foundEmp);
 		foundTraining.setTrainingUpdate(new Date());
 	}
+
+	public Page<TrainingDTO> selectTrainingListByTrainingTitle(String trainingTitle, int page) {
+
+		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("trainingCode").descending());
+		Page<Training> searchList = trainingRepository.findByTrainingTitleContainsAndTrainingDeleteYn(pageable, trainingTitle, "N");
+
+		return searchList.map(training -> modelMapper.map(training, TrainingDTO.class));
+	}
+
+	public Page<TrainingDTO> selectTrainingListByTrainingCount(String trainingCount, int page) {
+
+		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("trainingCode").descending());
+		Page<Training> searchList = trainingRepository.findByTrainingCountContainsAndTrainingDeleteYn(pageable, trainingCount, "N");
+
+		return searchList.map(training -> modelMapper.map(training, TrainingDTO.class));
+	}
 }
