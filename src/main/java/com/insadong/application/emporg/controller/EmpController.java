@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/insa/v1")
@@ -64,4 +66,32 @@ public class EmpController {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
     }
+
+    /*3. 구성원 검색*/
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDTO> searchEmpByNameAndDeptAndJob(
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "searchOption") String searchOption,
+            @RequestParam(name = "searchKeyword") String searchKeyword) {
+
+        log.info("[EmpController] : searchEmpByNameAndDeptAndJob start ==================================== ");
+        log.info("[EmpController] : page : {}", page);
+        log.info("[EmpController] : searchOption : {}", searchOption);
+        log.info("[EmpController] : searchKeyword : {}", searchKeyword);
+
+        Page<EmpDTO> empDTOList = empService.searchEmpByNameAndDeptAndJob(page, searchOption, searchKeyword);
+
+        PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empDTOList);
+
+        log.info("[EmpController] : pageInfo : {}", pageInfo);
+
+        ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+        responseDTOWithPaging.setPageInfo(pageInfo);
+        responseDTOWithPaging.setData(empDTOList.getContent());
+
+        log.info("[EmpController] : searchEmpByNameAndDeptAndJob end ==================================== ");
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+    }
+
 }
