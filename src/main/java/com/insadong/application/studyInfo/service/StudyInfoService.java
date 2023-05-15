@@ -36,16 +36,15 @@ public class StudyInfoService {
 		this.modelMapper = modelMapper;
 	}
 
-	public Page<StudyInfoDTO> viewStudyInfoList(int page) {
+	public List<StudyInfoDTO> viewStudyInfoList(int page) {
 
 		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("studyCode").descending());
 		Page<Study> foundStudyList = studyRepository.findByStudyDeleteYn(pageable, "N");
+
 		List<Long> studyCodeList = new ArrayList<>();
-
 		foundStudyList.stream().map(Study::getStudyCode).forEach(studyCodeList::add);
-		List<StudyInfo> foundStudy = studyCodeList.stream().map(studyCode -> studyInfoRepository.findById(studyCode).orElseThrow(() -> new IllegalArgumentException("해당 코드로 강의를 조회할 수 없습니다."))).collect(Collectors.toList());
+		List<StudyInfo> foundStudyInfo = studyCodeList.stream().map(studyCode -> studyInfoRepository.findById(studyCode).orElseThrow(() -> new IllegalArgumentException("해당 코드로 강의를 조회할 수 없습니다."))).collect(Collectors.toList());
 
-		log.info("foundStudy : {}", foundStudy);
-		return null;
+		return foundStudyInfo.stream().map(studyInfo -> modelMapper.map(studyInfo, StudyInfoDTO.class)).collect(Collectors.toList());
 	}
 }
