@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
-	@EntityGraph(attributePaths = {"training", "training.trainingWriter", "training.trainingModifier", "training.trainingWriter.dept", "training.trainingWriter.job", "training.trainingModifier.dept", "training.trainingModifier.job", "training.trainingWriter.empAuthList", "training.trainingModifier.empAuthList"})
+	@EntityGraph(attributePaths = {"training", "training.trainingWriter", "training.trainingModifier", "training.trainingWriter.dept", "training.trainingWriter.job", "training.trainingModifier.dept", "training.trainingModifier.job"})
 	Page<Study> findByStudyDeleteYn(Pageable pageable, String n);
 
 }

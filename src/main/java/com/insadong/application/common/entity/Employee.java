@@ -58,7 +58,7 @@ public class Employee {
 	@Column(name = "END_DATE")
 	private Date endDate;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany
 	@JoinColumn(name = "EMP_CODE")
 	private List<EmpAuth> empAuthList;
 
