@@ -32,7 +32,7 @@ public class TokenProvider {
 
 	private final UserDetailsService userDetailsService;
 
-	public TokenProvider(@Value("${jwt.secret}") String secretKey, @Lazy UserDetailsService userDetailsService) {
+	public TokenProvider(@Value("${jwt.secret}") String secretKey, UserDetailsService userDetailsService) {
 		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 		this.userDetailsService = userDetailsService;
@@ -66,6 +66,8 @@ public class TokenProvider {
 	}
 
 	public Authentication getAuthentication(String jwt) {
+		
+		log.info("jwt : {}", jwt);
 
 		Claims claims = parseClaims(jwt);
 		UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());

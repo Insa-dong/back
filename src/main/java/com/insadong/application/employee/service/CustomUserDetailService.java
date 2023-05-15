@@ -44,6 +44,7 @@ public class CustomUserDetailService implements UserDetailsService {
 	
 	private EmployeeDTO addAuthorities(Employee employee) {
 		
+		
 		EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.class);
 		
 		  List<GrantedAuthority> authorities = employee.getEmpAuthList().stream()

@@ -16,7 +16,3 @@ spring:
     properties:
       hibernate:
         '[format_sql]': true
-        dialect : org.hibernate.dialect.Oracle10gDialect
-
-jwt:
-  secret: 50ca6e9bf86821e7f32a0a91c04b7c231defbd9e4512cb3eb43bff70c28947635e0fe4887f968d26ced7c51695a07bc034b6d74a2292ffad70ed88b21e67abbb

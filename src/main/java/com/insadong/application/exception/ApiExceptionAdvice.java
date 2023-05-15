@@ -10,7 +10,7 @@ import com.insadong.application.exception.dto.ApiExceptionDTO;
 @RestControllerAdvice
 public class ApiExceptionAdvice {
 
-	@ExceptionHandler({ UserNotFoundException.class, LoginFailedException.class, IllegalArgumentException.class })
+	@ExceptionHandler({ UserNotFoundException.class, LoginFailedException.class, IdsearchFailedException.class, IllegalArgumentException.class })
 	public ResponseEntity<ApiExceptionDTO> exceptionHandler(Exception e) {
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
