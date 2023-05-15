@@ -75,4 +75,36 @@ public class TrainingController {
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록이 완료되었습니다. 메인 페이지로 이동합니다."));
 	}
+
+	@GetMapping("/trainingList/search")
+	public ResponseEntity<ResponseDTO> searchTrainingByTitle(@RequestParam(name = "search") String trainingTitle,
+	                                                         @RequestParam(name = "page", defaultValue = "1") int page) {
+
+		log.info("검색어 : {} ", trainingTitle);
+
+		Page<TrainingDTO> trainingList = trainingService.selectTrainingListByTrainingTitle(trainingTitle, page);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(trainingList);
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(trainingList.getContent());
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
+
+	@GetMapping("/trainingList/searchCount")
+	public ResponseEntity<ResponseDTO> searchTrainingByCount(@RequestParam(name = "searchCount") String trainingCount,
+	                                                         @RequestParam(name = "page", defaultValue = "1") int page) {
+
+		log.info("회차 : {} ", trainingCount);
+
+		Page<TrainingDTO> trainingList = trainingService.selectTrainingListByTrainingCount(trainingCount, page);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(trainingList);
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(trainingList.getContent());
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
 }
