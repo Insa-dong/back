@@ -15,6 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Slf4j
 @Service
 public class TrainingService {
@@ -73,5 +75,32 @@ public class TrainingService {
 		trainingDTO.setTrainingWriter(empDTO);
 
 		trainingRepository.save(modelMapper.map(trainingDTO, Training.class));
+	}
+
+	@Transactional
+	public void updateDeleteYN(Long trainingCode, Long empCode) {
+
+		Training foundTraining = trainingRepository.findById(trainingCode).orElseThrow(() -> new IllegalArgumentException("해당 코드로 과정을 조회할 수 없습니다."));
+		Employee foundEmp = employeeRepository.findById(empCode).orElseThrow(() -> new IllegalArgumentException("해당 코드로 사원을 조회할 수 없습니다."));
+
+		foundTraining.setTrainingDeleteYn("Y");
+		foundTraining.setTrainingModifier(foundEmp);
+		foundTraining.setTrainingUpdate(new Date());
+	}
+
+	public Page<TrainingDTO> selectTrainingListByTrainingTitle(String trainingTitle, int page) {
+
+		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("trainingCode").descending());
+		Page<Training> searchList = trainingRepository.findByTrainingTitleContainsAndTrainingDeleteYn(pageable, trainingTitle, "N");
+
+		return searchList.map(training -> modelMapper.map(training, TrainingDTO.class));
+	}
+
+	public Page<TrainingDTO> selectTrainingListByTrainingCount(String trainingCount, int page) {
+
+		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("trainingCode").descending());
+		Page<Training> searchList = trainingRepository.findByTrainingCountContainsAndTrainingDeleteYn(pageable, trainingCount, "N");
+
+		return searchList.map(training -> modelMapper.map(training, TrainingDTO.class));
 	}
 }

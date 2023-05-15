@@ -96,7 +96,7 @@ public class AdviceController {
 	
 	/* 2. 수강생 상담 등록 */
 	@PostMapping("/students/advice")
-	public ResponseEntity<ResponseDTO> insertAdvice(@ModelAttribute AdviceDTO adviceDto) {
+	public ResponseEntity<ResponseDTO> insertAdvice(@RequestBody AdviceDTO adviceDto) {
 
 		/* 관리자만 등록하는 구문 추가해야 함 */
 		adviceService.insertAdvice(adviceDto);
@@ -107,7 +107,7 @@ public class AdviceController {
 	
 	/* 3. 수강생 상담 수정 */
 	@PutMapping("/students/advice")
-	public ResponseEntity<ResponseDTO> updateAdvice(@ModelAttribute AdviceDTO adviceDto) {
+	public ResponseEntity<ResponseDTO> updateAdvice(@RequestBody AdviceDTO adviceDto) {
 
 		adviceService.updateAdvice(adviceDto);
 

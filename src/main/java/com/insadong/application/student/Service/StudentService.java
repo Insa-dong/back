@@ -106,7 +106,25 @@ public class StudentService {
 	    studentRepository.delete(student);
 	}
 
-	/* 6. 수강생 검색 */
+		/* 6. 수강생 검색 */
+		public Page<StudentDTO> selectStudentListByStudentName(int page, String stuName) {
+		
+		log.info("[StudnetService] selectStudentListByStudentName start ============================== ");
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("stuCode").descending());
+		
+		Page<Student> studentList = studentRepository.findByStuNameContains(pageable, stuName);
+		Page<StudentDTO> studnetDtoList = studentList.map(studnet -> modelMapper.map(studnet, StudentDTO.class));
+		
+		
+		log.info("[StudnetService] studentDtoList.getContent() : {}", studnetDtoList.getContent());
+		
+		log.info("[StudnetService] selectStudentListByStudentName end ============================== ");
+		
+		return studnetDtoList;
+	}
+
+	
 	
 
 }

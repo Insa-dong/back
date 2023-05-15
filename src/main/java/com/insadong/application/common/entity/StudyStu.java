@@ -35,9 +35,11 @@ public class StudyStu {
 	@Column(name = "STUDY_STATE")
 	private String studyState;
 	
+	
 	/* StudyStu entity 수정 용도의 메소드를 별도로 정의 */
-	public void update(String studyEnrollDate, String State) {
+	public void update(Long studyCode, String studyEnrollDate, String State) {
 		
+		this.studyCode = studyCode;
 		this.studyEnrollDate = studyEnrollDate;
 		this.studyState = studyState;
 			
