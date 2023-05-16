@@ -68,7 +68,7 @@ public class EmpController {
     }
 
     /*3. 구성원 검색*/
-    @GetMapping("/search")
+    @GetMapping("/empsearch")
     public ResponseEntity<ResponseDTO> searchEmpByNameAndDeptAndJob(
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "searchOption") String searchOption,
