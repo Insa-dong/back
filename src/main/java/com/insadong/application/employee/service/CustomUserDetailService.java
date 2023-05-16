@@ -43,10 +43,11 @@ public class CustomUserDetailService implements UserDetailsService {
 
 		EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.class);
 
-		List<GrantedAuthority> authorities = employee.getEmpAuthList().stream().map(EmpAuth::getAuth)
-				.map(auth -> new SimpleGrantedAuthority(auth.getAuthName())).collect(Collectors.toList());
-		employeeDTO.setAuthorities(authorities);
-
+		  List<GrantedAuthority> authorities = employee.getEmpAuthList().stream()
+			        .map(EmpAuth::getAuth)
+			        .map(auth -> new SimpleGrantedAuthority(auth.getAuthName()))
+			        .collect(Collectors.toList());
+			    employeeDTO.setAuthorities(authorities);
 		return employeeDTO;
 	}
 }
