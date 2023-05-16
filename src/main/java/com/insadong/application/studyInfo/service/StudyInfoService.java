@@ -35,7 +35,7 @@ public class StudyInfoService {
 
 		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("study.studyCode").descending());
 		Page<StudyInfo> foundStudyInfoList = studyInfoRepository.findByStudyStudyDeleteYn(pageable, "N");
-		
+
 		return foundStudyInfoList.map(studyInfo -> modelMapper.map(studyInfo, StudyInfoDTO.class));
 	}
 }
