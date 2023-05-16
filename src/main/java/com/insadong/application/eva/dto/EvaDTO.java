@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class EvaDTO {
 
-	
+
 	private Long evaCode;
 	private StudyInfoDTO StudyInfo;
 	private StudentDTO student;
@@ -18,5 +18,5 @@ public class EvaDTO {
 	private Date evaWriteDate;
 	private String evaUpdateTime;
 	private String evaDeleteStatus;
-	
+
 }

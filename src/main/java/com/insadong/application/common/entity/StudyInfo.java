@@ -18,8 +18,8 @@ public class StudyInfo {
 	private Long studyInfoCode;
 
 	@ManyToOne
-	@JoinColumn(name = "STUDY_CODE")
-	private Study studyCode;
+	@JoinColumn(name = "STUDY")
+	private Study study;
 
 	@ManyToOne
 	@JoinColumn(name = "TEACHER")

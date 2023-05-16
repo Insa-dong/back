@@ -2,7 +2,6 @@ package com.insadong.application.studyInfo.dto;
 
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.study.dto.StudyDTO;
-
 import lombok.Data;
 
 @Data
@@ -10,7 +9,7 @@ public class StudyInfoDTO {
 
 	private Long studyInfoCode;
 
-	private StudyDTO studyCode;
+	private StudyDTO study;
 
 	private EmployeeDTO teacher;
 
