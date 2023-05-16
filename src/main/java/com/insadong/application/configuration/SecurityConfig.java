@@ -1,9 +1,8 @@
 package com.insadong.application.configuration;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.insadong.application.jwt.JwtAccessDeniedHandler;
+import com.insadong.application.jwt.JwtAuthenticationEntryPoint;
+import com.insadong.application.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,21 +17,20 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.insadong.application.jwt.JwtAccessDeniedHandler;
-import com.insadong.application.jwt.JwtAuthenticationEntryPoint;
-import com.insadong.application.jwt.JwtFilter;
+import java.util.Arrays;
+import java.util.List;
 
 @EnableWebSecurity
 public class SecurityConfig {
-	
+
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	
+
 	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-	
+
 	private final JwtFilter jwtFilter;
-	
-	public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, 
-			JwtAccessDeniedHandler jwtAccessDeniedHandler, JwtFilter jwtFilter) {
+
+	public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+	                      JwtAccessDeniedHandler jwtAccessDeniedHandler, JwtFilter jwtFilter) {
 		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
 		this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
 		this.jwtFilter = jwtFilter;
@@ -54,26 +52,26 @@ public class SecurityConfig {
 
 		return http
 				.csrf()
-					.disable()
+				.disable()
 				.exceptionHandling()
-					.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-					.accessDeniedHandler(jwtAccessDeniedHandler)
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.accessDeniedHandler(jwtAccessDeniedHandler)
 				.and()
 				.sessionManagement()
-					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-					.authorizeRequests()
-					.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-		            .antMatchers("/auth/**").permitAll()
-//		            .antMatchers(HttpMethod.GET, "").permitAll()
-//		            .antMatchers("").hasRole("")
+				.authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/trainingList").hasRole("ADMIN")
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.antMatchers("/auth/**").permitAll()
+//				.antMatchers("").hasRole("")
 //		            .antMatchers("").hasRole("")
 //		            .antMatchers(HttpMethod.GET, "").permitAll()
 //		            .antMatchers("").hasAnyRole("")
 				.and()
-					.cors()
+				.cors()
 				.and()
-					.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
 

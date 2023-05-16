@@ -10,7 +10,7 @@ public class StudyInfoDTO {
 
 	private Long studyInfoCode;
 
-	private StudyDTO studyCode;
+	private StudyDTO study;
 
 	private EmployeeDTO teacher;
 
