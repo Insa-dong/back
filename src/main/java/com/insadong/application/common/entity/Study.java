@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,4 +36,8 @@ public class Study {
 
 	@Column(name = "STUDY_DELETE_YN")
 	private String studyDeleteYn;
+
+	@OneToMany
+	@JoinColumn(name = "STUDY_CODE")
+	private List<StudyTime> studyTimes;
 }
