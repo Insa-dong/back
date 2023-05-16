@@ -14,6 +14,7 @@ import com.insadong.application.abs.dto.AbsDTO;
 import com.insadong.application.abs.repository.AbsRepository;
 import com.insadong.application.common.entity.Abs;
 import com.insadong.application.common.entity.Employee;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
 
 @Service
@@ -43,6 +44,18 @@ public class AbsService {
 		return absDtoList;
 	}
 
+	/*1-1 내 근태 목록 조회*/
+	public Page<AbsDTO> selectAbsServiceListForUser(EmployeeDTO empCode, int page) {
+	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("absDate").descending());
+
+	    Page<Abs> absList = absRepository.findByEmpCode(empCode, pageable);
+
+	    Page<AbsDTO> absDtoList = absList.map(abs -> modelMapper.map(abs, AbsDTO.class));
+
+	    return absDtoList;
+	}
+	
+	/*1-2 팀원 근태 목록 조회*/
 
 
 	/* 2. 출근 입력  */
@@ -90,10 +103,14 @@ public class AbsService {
 		    absRepository.save(abs);
 		
 	}
-	
+
+
 	/* 4. 근태 날짜 조회 */
 
-	
+	public Object selectAbsDateForAdmin(Date absDate) {
+		
+		return null;
+	}
 
 
 }
