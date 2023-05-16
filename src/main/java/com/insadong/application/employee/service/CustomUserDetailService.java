@@ -49,7 +49,7 @@ public class CustomUserDetailService implements UserDetailsService {
 		
 		  List<GrantedAuthority> authorities = employee.getEmpAuthList().stream()
 			        .map(EmpAuth::getAuth)
-			        .map(auth -> new SimpleGrantedAuthority(auth.getAuthCode()))
+			        .map(auth -> new SimpleGrantedAuthority(auth.getAuthName()))
 			        .collect(Collectors.toList());
 			    employeeDTO.setAuthorities(authorities);
 		
