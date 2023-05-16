@@ -1,8 +1,6 @@
-package com.insadong.application.studyInfo.dto;
+package com.insadong.application.study.dto;
 
 import com.insadong.application.employee.dto.EmployeeDTO;
-import com.insadong.application.study.dto.StudyDTO;
-
 import lombok.Data;
 
 @Data

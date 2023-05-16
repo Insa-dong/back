@@ -7,7 +7,7 @@ public class StudyTimeDTO {
 
 	private Long studyTimeCode;
 
-	private StudyDTO Study;
+	private StudyDTO study;
 
 	private String studyDate;
 

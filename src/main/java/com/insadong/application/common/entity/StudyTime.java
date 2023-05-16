@@ -10,17 +10,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "TB_STUDY_TIME")
 @SequenceGenerator(name = "STUDY_TIME_SEQ_GEN", sequenceName = "SEQ_STUDY_TIME_CODE", allocationSize = 1)
-public class studyTime {
+public class StudyTime {
 
 	@Id
 	@Column(name = "STUDY_TIME_CODE")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STUDY_TIME_CODE")
 	private Long studyTimeCode;
-
-	@ManyToOne
-	@JoinColumn(name = "STUDY_CODE")
-	private Study Study;
-
+	
 	@Column(name = "STUDY_DATE")
 	private String studyDate;
 
