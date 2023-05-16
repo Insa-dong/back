@@ -1,6 +1,7 @@
 package com.insadong.application.abs.repository;
 
 import java.time.LocalDate;
+
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +21,11 @@ public interface AbsRepository extends JpaRepository<Abs, Long>{
 	
 	/* 2. 출퇴근 입력  test*/
     Optional<Abs> findByEmpCode_EmpCodeAndAbsDate(Long empCode, LocalDate absDate);
+    
+    
+    /* 근무일 검색 */
+
+    Page<Abs> findByAbsDate(LocalDate absDate, Pageable pageable);
 
 	
 

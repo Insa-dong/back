@@ -107,10 +107,26 @@ public class AbsService {
 
 	/* 4. 근태 날짜 조회 */
 
-	public Object selectAbsDateForAdmin(Date absDate) {
+
+	public Page<AbsDTO> selectAbsDateForAdmin(LocalDate absDate, int page) {
 		
-		return null;
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("absStart").descending()); // 몇번째 페이지, 몇개씩, 정렬
+
+		Page<Abs> absList = absRepository.findByAbsDate(absDate, pageable);
+
+		// modelMapper로 dto로 가공한다. confifuration 밑에 beanconfig 만들어서 modelMapper 등록한다.
+		Page<AbsDTO> absDtoList = absList.map(abs -> modelMapper.map(abs, AbsDTO.class));
+		// page라는 객체를 map을 가지고 있다.
+
+		return absDtoList;
+	
+		
+	
 	}
+
+
+
+
 
 
 }

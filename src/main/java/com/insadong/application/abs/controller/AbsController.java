@@ -1,8 +1,9 @@
 package com.insadong.application.abs.controller;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -92,13 +93,21 @@ private final AbsService absService;
 	
 	
 	/* 4. 근태 날짜 조회 */
-	@GetMapping("/abs-admin/{absDate}")
-	public ResponseEntity<ResponseDTO> selectAbsDateForAdmin(@PathVariable Date absDate) {
-		
-		return ResponseEntity
-				.ok()
-				.body(new ResponseDTO(HttpStatus.OK, "조회 성공", absService.selectAbsDateForAdmin(absDate)));
-	} 
 
+	@GetMapping("/abs-admin/{absDate}")
+	public ResponseEntity<ResponseDTO> selectAbsDateForAdmin(
+			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate absDate,
+	        @RequestParam(name="page", defaultValue="1") int page) {
+
+	    Page<AbsDTO> absDtoList = absService.selectAbsDateForAdmin(absDate, page);
+	    
+	    PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(absDtoList);
+	    
+	    ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+	    responseDTOWithPaging.setPageInfo(pageInfo);
+	    responseDTOWithPaging.setData(absDtoList.getContent()); 
+	    
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
 
 }
