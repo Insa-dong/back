@@ -1,10 +1,9 @@
 package com.insadong.application.studyInfo.service;
 
-import com.insadong.application.common.entity.Study;
 import com.insadong.application.common.entity.StudyInfo;
 import com.insadong.application.employee.repository.EmployeeRepository;
-import com.insadong.application.study.dto.StudyInfoDTO;
 import com.insadong.application.study.repository.StudyRepository;
+import com.insadong.application.studyInfo.dto.StudyInfoDTO;
 import com.insadong.application.studyInfo.repository.StudyInfoRepository;
 import com.insadong.application.training.repository.TrainingRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,15 +31,11 @@ public class StudyInfoService {
 		this.modelMapper = modelMapper;
 	}
 
-	public List<StudyInfoDTO> viewStudyInfoList(int page) {
+	public Page<StudyInfoDTO> viewStudyInfoList(int page) {
 
-		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("studyCode").descending());
-		Page<Study> foundStudyList = studyRepository.findByStudyDeleteYn(pageable, "N");
-
-		List<Long> studyCodeList = new ArrayList<>();
-		foundStudyList.stream().map(Study::getStudyCode).forEach(studyCodeList::add);
-		List<StudyInfo> foundStudyInfo = studyCodeList.stream().map(studyCode -> studyInfoRepository.findById(studyCode).orElseThrow(() -> new IllegalArgumentException("해당 코드로 강의를 조회할 수 없습니다."))).collect(Collectors.toList());
-
-		return foundStudyInfo.stream().map(studyInfo -> modelMapper.map(studyInfo, StudyInfoDTO.class)).collect(Collectors.toList());
+		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("study.studyCode").descending());
+		Page<StudyInfo> foundStudyInfoList = studyInfoRepository.findByStudyStudyDeleteYn(pageable, "N");
+		
+		return foundStudyInfoList.map(studyInfo -> modelMapper.map(studyInfo, StudyInfoDTO.class));
 	}
 }
