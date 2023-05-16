@@ -35,15 +35,14 @@ public class CustomUserDetailService implements UserDetailsService {
 		log.info("[CustomUserDetailService] loadUserByUsername start ======================");
 		log.info("[CustomUserDetailService] empId : {}", empId);
 
-		return employeeRepository.findByEmpId(empId)
-				.map(user -> addAuthorities(user))
+		return employeeRepository.findByEmpId(empId).map(user -> addAuthorities(user))
 				.orElseThrow(() -> new UserNotFoundException(empId + "를 찾을 수 없습니다."));
 	}
 
 	private EmployeeDTO addAuthorities(Employee employee) {
 
-
 		EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.class);
+
 		  List<GrantedAuthority> authorities = employee.getEmpAuthList().stream()
 			        .map(EmpAuth::getAuth)
 			        .map(auth -> new SimpleGrantedAuthority(auth.getAuthName()))
@@ -52,4 +51,3 @@ public class CustomUserDetailService implements UserDetailsService {
 		return employeeDTO;
 	}
 }
-
