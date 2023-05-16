@@ -1,6 +1,7 @@
 package com.insadong.application.study.dto;
 
 import com.insadong.application.training.dto.TrainingDTO;
+
 import lombok.Data;
 
 @Data
