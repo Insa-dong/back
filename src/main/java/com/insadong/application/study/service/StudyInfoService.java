@@ -1,5 +1,6 @@
 package com.insadong.application.study.service;
 
+import com.insadong.application.study.dto.PetiteStudyInfoDTO;
 import com.insadong.application.study.dto.StudyInfoDTO;
 import com.insadong.application.study.entity.studyInfoEntity;
 import com.insadong.application.study.repository.StudyInfoRepository;
@@ -32,5 +33,9 @@ public class StudyInfoService {
 
 	public StudyInfoDTO viewStudyInfo(Long studyInfoCode) {
 		return modelMapper.map(studyInfoRepository.findById(studyInfoCode).orElseThrow(() -> new IllegalArgumentException("조회 실패 ~")), StudyInfoDTO.class);
+	}
+
+	public PetiteStudyInfoDTO viewPetiteStudyInfo(Long studyInfoCode) {
+		return modelMapper.map(studyInfoRepository.findById(studyInfoCode).orElseThrow(() -> new IllegalArgumentException("조회 실패 ~")), PetiteStudyInfoDTO.class);
 	}
 }

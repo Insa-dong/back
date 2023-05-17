@@ -22,43 +22,83 @@ public class StudyStuController {
 	public StudyStuController(StudyStuService studyStuService) {
 		this.studyStuService = studyStuService;
 	}
-
-	// 강의 입력 보다 과정 입력
+	
 	/* Only 관리자 */
+	
 	/* 1. 수강생 강의 등록 */
 	@PostMapping("/students-management/study")
 	public ResponseEntity<ResponseDTO> insertStudy(@ModelAttribute StudyStuDTO studyStuDto) {
 
-		/* 관리자만 등록하는 구문 추가해야 함 */
-		studyStuService.insertStudy(studyStuDto);
+	    /* 관리자만 등록하는 구문 추가해야 함 */
+	    studyStuService.insertStudy(studyStuDto);
 
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 등록 성공"));
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 등록 성공"));
 	}
 
 
 	/* 2. 수강생 강의 수정 */
-
 	@PutMapping("/students-management/study")
 	public ResponseEntity<ResponseDTO> updateStudy(@ModelAttribute StudyStuDTO studyStuDto) {
 
+	    log.info("DTO : {} ", studyStuDto);
+	    studyStuService.updateStudy(studyStuDto);
 
-		log.info("DTO : {} ", studyStuDto);
-		studyStuService.updateStudy(studyStuDto);
-
-		return ResponseEntity
-				.ok()
-				.body(new ResponseDTO(HttpStatus.OK, "수강생 강의 정보 수정 성공"));
+	    return ResponseEntity
+	            .ok()
+	            .body(new ResponseDTO(HttpStatus.OK, "수강생 강의 정보 수정 성공"));
 
 	}
+	
+	
 
+	
+	
 	/* 3. 수강생 강의 삭제 */
-	@DeleteMapping("/students-management/study/{studyCode}")
+	@DeleteMapping("/students-management/study/{studyCode}/{stuCode}")
 	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long studyCode) {
 
-		studyStuService.deleteStudy(studyCode);
+	    studyStuService.deleteStudy(studyCode);
 
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
 	}
+
+
+//	// 강의 입력 보다 과정 입력
+//	/* Only 관리자 */
+//	/* 1. 수강생 강의 등록 */
+//	@PostMapping("/students-management/study")
+//	public ResponseEntity<ResponseDTO> insertStudy(@ModelAttribute StudyStuDTO studyStuDto) {
+//
+//		/* 관리자만 등록하는 구문 추가해야 함 */
+//		studyStuService.insertStudy(studyStuDto);
+//
+//		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 등록 성공"));
+//	}
+//
+//
+//	/* 2. 수강생 강의 수정 */
+//
+//	@PutMapping("/students-management/study")
+//	public ResponseEntity<ResponseDTO> updateStudy(@ModelAttribute StudyStuDTO studyStuDto) {
+//
+//
+//		log.info("DTO : {} ", studyStuDto);
+//		studyStuService.updateStudy(studyStuDto);
+//
+//		return ResponseEntity
+//				.ok()
+//				.body(new ResponseDTO(HttpStatus.OK, "수강생 강의 정보 수정 성공"));
+//
+//	}
+//
+//	/* 3. 수강생 강의 삭제 */
+//	@DeleteMapping("/students-management/study/{studyCode}")
+//	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long studyCode) {
+//
+//		studyStuService.deleteStudy(studyCode);
+//
+//		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
+//	}
 
 	/* 4. 수강생 강의 조회 (수강생 번호) */
 	@GetMapping("/students-management/study/{stuCode}")

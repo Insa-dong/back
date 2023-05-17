@@ -4,6 +4,8 @@ import com.insadong.application.common.entity.Dept;
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Job;
 import com.insadong.application.emporg.dto.EmpDTO;
+import com.insadong.application.emporg.dto.EmpDeptDTO;
+import com.insadong.application.emporg.dto.EmpJobDTO;
 import com.insadong.application.emporg.repository.EmpDeptRepository;
 import com.insadong.application.emporg.repository.EmpJobRepository;
 import com.insadong.application.emporg.repository.EmpRepository;
@@ -74,7 +76,6 @@ public class EmpService {
 		return empDTOList;
 	}
 
-	/*3. 구성원 검색*/
     /*3. 구성원 검색*/
     public Page<EmpDTO> searchEmpByNameAndDeptAndJob(int page, String searchOption, String searchKeyword){
 
@@ -116,6 +117,17 @@ public class EmpService {
 
 	}
 
+	/*4. 부서 조회*/
+	public List<EmpDeptDTO> selectEmpDeptList(){
+		List<Dept> deptList = empDeptRepository.findAll();
+		return deptList.stream().map(dept -> modelMapper.map(dept, EmpDeptDTO.class)).collect(Collectors.toList());
+	}
+
+	/*5. 직책 조회*/
+	public List<EmpJobDTO> selectEmpJobList(){
+		List<Job> jobList = empJobRepository.findAll();
+		return jobList.stream().map(job -> modelMapper.map(job, EmpJobDTO.class)).collect(Collectors.toList());
+	}
 
 	public List<com.insadong.application.study.dto.EmpDTO> viewTeacherList() {
         

@@ -1,10 +1,10 @@
 package com.insadong.application.common.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -18,15 +18,13 @@ import lombok.Setter;
 @Entity
 @Table(name = "TB_STUDY_STU")
 @SequenceGenerator(name = "STUDY_STU_SEQ_GEN", sequenceName = "SEQ_STUDY_STU_CODE", allocationSize = 1)
-public class StudyStu {
+public class StudyStu implements Serializable {
 
-	@Id
-	@Column(name = "STUDY_CODE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STUDY_STU_CODE")
-	private Long studyCode;
+	@EmbeddedId
+	private StudyStuPK studyStuPK;
 
 	@ManyToOne
-	@JoinColumn(name = "STU_CODE")
+	@JoinColumn(name = "STU_CODE", insertable = false, updatable = false)
 	private Student student;
 
 	@Column(name = "STUDY_ENROLL_DATE")
@@ -37,9 +35,9 @@ public class StudyStu {
 	
 	
 	/* StudyStu entity 수정 용도의 메소드를 별도로 정의 */
-	public void update(Long studyCode, String studyEnrollDate, String State) {
+	public void update(Long studyCode,String studyEnrollDate, String State) {
 		
-		this.studyCode = studyCode;
+		this.studyStuPK.setStudyCode(studyCode);
 		this.studyEnrollDate = studyEnrollDate;
 		this.studyState = studyState;
 			
