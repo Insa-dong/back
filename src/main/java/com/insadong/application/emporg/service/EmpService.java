@@ -75,41 +75,43 @@ public class EmpService {
 	}
 
 	/*3. 구성원 검색*/
-	public Page<EmpDTO> searchEmpByNameAndDeptAndJob(int page, String searchOption, String searchKeyword) {
+    /*3. 구성원 검색*/
+    public Page<EmpDTO> searchEmpByNameAndDeptAndJob(int page, String searchOption, String searchKeyword){
 
-		log.info("[EmpService] searchEmpByNameAndDeptAndJob start ==============================");
+        log.info("[EmpService] searchEmpByNameAndDeptAndJob start ==============================");
 
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
 
-		if (searchOption.equals("name")) {
-			Page<Employee> empList = empRepository.findByEmpName(pageable, searchKeyword);
-			Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
+        if (searchOption.equals("name")) {
+            Page<Employee> empList = empRepository.findByEmpNameContains(pageable, searchKeyword);
+            Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
 
-			log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
+            log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
 
-			return empDTOList;
+            return empDTOList;
 
-		} else if (searchOption.equals("dept")) {
-			Dept findDept = empDeptRepository.findByDeptName(searchKeyword);
-			Page<Employee> empList = empRepository.findByDept(pageable, findDept);
-			Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
+        } else if (searchOption.equals("dept")) {
+            List<String> findDeptCodeList = empDeptRepository.findByDeptNameContains(searchKeyword);
 
-			log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
+            Page<Employee> empList = empRepository.findByDeptDeptCodeIn(pageable, findDeptCodeList);
+            Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
 
-			return empDTOList;
+            log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
 
-		} else if (searchOption.equals("job")) {
-			Job findJob = empJobRepository.findByJobName(searchKeyword);
-			Page<Employee> empList = empRepository.findByJob(pageable, findJob);
-			Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
+            return empDTOList;
 
+        } else if (searchOption.equals("job")) {
+            List<String> findJobCodeList = empJobRepository.findByJobNameContains(searchKeyword);
 
-			log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
+            Page<Employee> empList = empRepository.findByJobJobCodeIn(pageable, findJobCodeList);
+            Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
 
-			return empDTOList;
-		} else {
-			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
-		}
+            log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
+
+            return empDTOList;
+        } else {
+            throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
+        }
 
 
 	}
