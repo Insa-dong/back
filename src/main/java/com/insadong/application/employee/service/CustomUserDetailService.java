@@ -1,11 +1,10 @@
 package com.insadong.application.employee.service;
 
-import com.insadong.application.common.entity.EmpAuth;
-import com.insadong.application.common.entity.Employee;
-import com.insadong.application.employee.dto.EmployeeDTO;
-import com.insadong.application.employee.repository.EmployeeRepository;
-import com.insadong.application.exception.UserNotFoundException;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,8 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.insadong.application.common.entity.EmpAuth;
+import com.insadong.application.common.entity.Employee;
+import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.exception.UserNotFoundException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -30,6 +34,7 @@ public class CustomUserDetailService implements UserDetailsService {
 	}
 
 	@Override
+	@Transactional  // 이 어노테이션을 추가합니다.
 	public UserDetails loadUserByUsername(String empId) throws UsernameNotFoundException {
 
 		log.info("[CustomUserDetailService] loadUserByUsername start ======================");
