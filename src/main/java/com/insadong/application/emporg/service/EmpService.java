@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -61,7 +62,6 @@ public class EmpService {
         Dept findDept = empDeptRepository.findById(deptCode)
                 .orElseThrow(()-> new IllegalArgumentException("해당 부서가 없습니다. deptCode ="+ deptCode));
 
-
         Page<Employee> empList = empRepository.findByDept(pageable, findDept);
         Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
 
@@ -80,7 +80,7 @@ public class EmpService {
         Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
 
         if (searchOption.equals("name")) {
-            Page<Employee> empList = empRepository.findByEmpName(pageable, searchKeyword);
+            Page<Employee> empList = empRepository.findByEmpNameContains(pageable, searchKeyword);
             Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
 
             log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
@@ -88,8 +88,9 @@ public class EmpService {
             return empDTOList;
 
         } else if (searchOption.equals("dept")) {
-            Dept findDept = empDeptRepository.findByDeptName(searchKeyword);
-            Page<Employee> empList = empRepository.findByDept(pageable, findDept);
+            List<String> findDeptCodeList = empDeptRepository.findByDeptNameContains(searchKeyword);
+
+            Page<Employee> empList = empRepository.findByDeptDeptCodeIn(pageable, findDeptCodeList);
             Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
 
             log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
@@ -97,8 +98,9 @@ public class EmpService {
             return empDTOList;
 
         } else if (searchOption.equals("job")) {
-            Job findJob = empJobRepository.findByJobName(searchKeyword);
-            Page<Employee> empList = empRepository.findByJob(pageable, findJob);
+            List<String> findJobCodeList = empJobRepository.findByJobNameContains(searchKeyword);
+
+            Page<Employee> empList = empRepository.findByJobJobCodeIn(pageable, findJobCodeList);
             Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
 
             log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
