@@ -3,6 +3,8 @@ package com.insadong.application.study.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class StudyInfoDTO {
 
@@ -12,11 +14,11 @@ public class StudyInfoDTO {
 
 	private EmpDTO teacher;
 
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private String studyStartDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date studyStartDate;
 
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private String studyEndDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date studyEndDate;
 
 	private String studyRoom;
 
