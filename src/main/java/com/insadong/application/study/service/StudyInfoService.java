@@ -1,7 +1,7 @@
 package com.insadong.application.study.service;
 
-import com.insadong.application.common.entity.StudyInfo;
 import com.insadong.application.study.dto.StudyInfoDTO;
+import com.insadong.application.study.entity.studyInfoEntity;
 import com.insadong.application.study.repository.StudyInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,7 +25,7 @@ public class StudyInfoService {
 	public Page<StudyInfoDTO> viewStudyInfoList(int page) {
 
 		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("study.studyCode").descending());
-		Page<StudyInfo> foundStudyInfoList = studyInfoRepository.findByStudyStudyDeleteYn(pageable, "N");
+		Page<studyInfoEntity> foundStudyInfoList = studyInfoRepository.findByStudyStudyDeleteYn(pageable, "N");
 
 		return foundStudyInfoList.map(studyInfo -> modelMapper.map(studyInfo, StudyInfoDTO.class));
 	}

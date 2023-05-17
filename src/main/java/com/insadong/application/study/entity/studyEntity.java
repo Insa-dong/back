@@ -1,5 +1,6 @@
-package com.insadong.application.common.entity;
+package com.insadong.application.study.entity;
 
+import com.insadong.application.common.entity.StudyTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,12 +11,10 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "TB_STUDY")
-@SequenceGenerator(name = "STUDY_SEQ_GEN", sequenceName = "SEQ_STUDY_CODE", allocationSize = 1)
-public class Study {
+public class studyEntity {
 
 	@Id
 	@Column(name = "STUDY_CODE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STUDY_CODE")
 	private Long studyCode;
 
 	@OneToMany
@@ -24,7 +23,7 @@ public class Study {
 
 	@ManyToOne
 	@JoinColumn(name = "TRAINING_CODE")
-	private Training training;
+	private trainingEntity training;
 
 	@Column(name = "STUDY_START_DATE")
 	private String studyStartDate;
@@ -34,9 +33,6 @@ public class Study {
 
 	@Column(name = "STUDY_MAX_PEOPLE")
 	private Long studyMaxPeople;
-
-	@Column(name = "STUDY_MODIFIER")
-	private String studyModifier;
 
 	@Column(name = "STUDY_DELETE_YN")
 	private String studyDeleteYn;
