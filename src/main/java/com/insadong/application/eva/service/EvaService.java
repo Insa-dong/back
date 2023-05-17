@@ -57,9 +57,9 @@ public class EvaService {
 
 	/* 관리자 평가 삭제 */
 	@Transactional
-	public void deleteEva(Long evaCode) {
-		 Eva eva = evaRepository.findById(evaCode)
-		        .orElseThrow(() -> new IllegalArgumentException("해당 평가가 없습니다. evaCode = " + evaCode));
+	public void deleteEva(Long stuCode) {
+		 Eva eva = evaRepository.findById(stuCode)
+		        .orElseThrow(() -> new IllegalArgumentException("해당 학생이 없습니다. stuCode = " + stuCode));
 
 		 evaRepository.delete(eva);
 		

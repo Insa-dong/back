@@ -61,10 +61,10 @@ public class EvaController {
 	
 	
 	/* 관리자 평가 삭제 */
-	@DeleteMapping("/students-management/eva/{evaCode}")
-	public ResponseEntity<ResponseDTO> deleteEva(@PathVariable Long evaCode) {
+	@DeleteMapping("/students-management/eva/{stuCode}")
+	public ResponseEntity<ResponseDTO> deleteEva(@PathVariable Long stuCode) {
 		
-	    evaService.deleteEva(evaCode);
+	    evaService.deleteEva(stuCode);
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "평가 삭제 성공"));
 	}
 	

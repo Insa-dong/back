@@ -24,11 +24,11 @@ public class studyInfoEntity {
 	@JoinColumn(name = "TEACHER")
 	private empEntity teacher;
 
-	@Column(name = "STUDY_START_DATE")
-	private String studyStartDate;
+	@Column(name = "STUDY_INFO_START_DATE")
+	private String studyInfoStartDate;
 
-	@Column(name = "STUDY_END_DATE")
-	private String studyEndDate;
+	@Column(name = "STUDY_INFO_END_DATE")
+	private String studyInfoEndDate;
 
 	@Column(name = "STUDY_ROOM")
 	private String studyRoom;
