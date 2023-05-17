@@ -1,5 +1,6 @@
 package com.insadong.application.common.entity;
 
+import com.insadong.application.study.entity.studyEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,11 @@ public class StudyTime {
 	@Column(name = "STUDY_TIME_CODE")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STUDY_TIME_CODE")
 	private Long studyTimeCode;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "STUDY_CODE")
+	private studyEntity study;
+
 	@Column(name = "STUDY_DATE")
 	private String studyDate;
 

@@ -29,6 +29,8 @@ public class StudyInfoController {
 		Page<StudyInfoDTO> data = studyInfoService.viewStudyInfoList(page);
 		PagingButtonInfo pagingButtonInfo = Pagenation.getPagingButtonInfo(data);
 
+		log.info("DTO : {} ", data);
+
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 		responseDTOWithPaging.setPageInfo(pagingButtonInfo);
 		responseDTOWithPaging.setData(data.getContent());
