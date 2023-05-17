@@ -26,4 +26,5 @@ public class StudyStuPK implements Serializable {
 	        this.studyCode = studyCode;
 	        this.stuCode = stuCode;
 	    }
+
 }
