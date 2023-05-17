@@ -15,10 +15,10 @@ public class StudyInfoDTO {
 	private EmpDTO teacher;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date studyStartDate;
+	private Date studyInfoStartDate;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date studyEndDate;
+	private Date studyInfoEndDate;
 
 	private String studyRoom;
 
