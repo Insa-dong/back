@@ -6,11 +6,11 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class StudyInfoDTO {
+public class PetiteStudyInfoDTO {
 
 	private Long studyInfoCode;
 
-	private StudyDTO study;
+	private PetiteStudyDTO study;
 
 	private EmpDTO teacher;
 
@@ -25,6 +25,5 @@ public class StudyInfoDTO {
 	private String studyTitle;
 
 	private String studyContent;
-
 
 }

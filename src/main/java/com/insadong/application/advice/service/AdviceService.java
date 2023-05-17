@@ -55,9 +55,9 @@ public class AdviceService {
 	
 	/* 2. 상담일지 삭제 */
 	@Transactional
-	public void deleteAdvice(Long adviceLogCode) {
-	    Advice advice = adviceRepository.findById(adviceLogCode)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 상담일지가 없습니다. adviceLogCode = " + adviceLogCode));
+	public void deleteAdvice(Long stuCode) {
+	    Advice advice = adviceRepository.findById(stuCode)
+	            .orElseThrow(() -> new IllegalArgumentException("해당 상담일지가 없습니다. stuCode = " + stuCode));
 
 	    adviceRepository.delete(advice);
 	}
@@ -115,6 +115,7 @@ public class AdviceService {
 		log.info("[StudentService] updateAdvice end ============================== ");
 		
 	}
+
 
 }
 

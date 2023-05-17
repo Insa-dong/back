@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -45,6 +47,11 @@ public class TrainingService {
 		Training training = trainingRepository.findById(trainingCode).orElseThrow(() -> new IllegalArgumentException("해당 코드로 과정을 조회할 수 없습니다."));
 
 		return modelMapper.map(training, TrainingDTO.class);
+	}
+
+	public List<com.insadong.application.study.dto.TrainingDTO> viewTrainingTitleList() {
+
+		return trainingRepository.findAll().stream().map(training -> modelMapper.map(training, com.insadong.application.study.dto.TrainingDTO.class)).collect(Collectors.toList());
 	}
 
 	@Transactional

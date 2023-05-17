@@ -4,6 +4,7 @@ import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
+import com.insadong.application.study.dto.PetiteStudyInfoDTO;
 import com.insadong.application.study.dto.StudyInfoDTO;
 import com.insadong.application.study.service.StudyInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +39,12 @@ public class StudyInfoController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
-	@GetMapping("/studyInfo/{studyInfoCode}")
+	@GetMapping("/PetiteStudyInfo/{studyInfoCode}")
 	public ResponseEntity<ResponseDTO> viewStudyInfo(@PathVariable Long studyInfoCode) {
 
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", studyInfoService.viewStudyInfo(studyInfoCode)));
+		PetiteStudyInfoDTO data = studyInfoService.viewPetiteStudyInfo(studyInfoCode);
+
+		log.info("data : {} ", data);
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
 	}
 }
