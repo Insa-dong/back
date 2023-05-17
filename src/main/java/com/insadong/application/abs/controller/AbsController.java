@@ -20,6 +20,7 @@ import com.insadong.application.abs.dto.AbsDTO;
 import com.insadong.application.abs.service.AbsService;
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.common.entity.Employee;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
@@ -76,8 +77,9 @@ private final AbsService absService;
 	
 	
 	/* 2. 출근 시간 등록*/
-	@PostMapping("/checkIn/{empCode}")
-	public ResponseEntity<ResponseDTO> checkIn (@PathVariable Long empCode) {
+	@PostMapping("/checkIn")
+	public ResponseEntity<ResponseDTO> checkIn (@AuthenticationPrincipal EmployeeDTO loggedInUser) {
+		Long empCode = loggedInUser.getEmpCode();
 	    try {
 	        absService.checkIn(empCode);
 	        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출근 등록 성공"));
@@ -87,8 +89,9 @@ private final AbsService absService;
 	}
 	
 	/* 3. 퇴근 시간 등록*/
-	@PutMapping("/checkOut/{empCode}")
-	public ResponseEntity<ResponseDTO> checkOut (@PathVariable Long empCode) {
+	@PutMapping("/checkOut")
+	public ResponseEntity<ResponseDTO> checkOut (@AuthenticationPrincipal EmployeeDTO loggedInUser) {
+		Long empCode = loggedInUser.getEmpCode();
 	    try {
 	        absService.checkOut(empCode);
 	        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "퇴근 등록 성공"));
@@ -118,7 +121,7 @@ private final AbsService absService;
 	
 	/* 5. 관리자 근태 수정 */
 	@PutMapping("/abs-admin")
-	public ResponseEntity<ResponseDTO> updateProduct(@ModelAttribute AbsDTO absDTO) {
+	public ResponseEntity<ResponseDTO> updateAbs(@ModelAttribute AbsDTO absDTO) {
 		
 		absService.modifyAbs(absDTO);
 		
@@ -127,5 +130,7 @@ private final AbsService absService;
 				.body(new ResponseDTO(HttpStatus.OK, "근태 수정 성공"));
 		
 	}
+	
+	
 
 }

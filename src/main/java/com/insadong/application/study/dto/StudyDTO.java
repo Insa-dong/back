@@ -2,7 +2,6 @@ package com.insadong.application.study.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
 import java.util.Date;
 import java.util.List;
 
