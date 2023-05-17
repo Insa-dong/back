@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -101,6 +102,7 @@ public class EmpService {
 			Job findJob = empJobRepository.findByJobName(searchKeyword);
 			Page<Employee> empList = empRepository.findByJob(pageable, findJob);
 			Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
+
 
 			log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
 
