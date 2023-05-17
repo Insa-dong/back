@@ -11,5 +11,4 @@ public interface StudyStuRepository extends JpaRepository<StudyStu, Long>{
 
 	Page<StudyStu> findByStudent(Pageable pageable, Student findStudent);
 
-
 }
