@@ -1,14 +1,5 @@
 package com.insadong.application.studystu.service;
 
-import javax.transaction.Transactional;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
 import com.insadong.application.common.entity.Student;
 import com.insadong.application.common.entity.Study;
 import com.insadong.application.common.entity.StudyStu;
@@ -18,23 +9,30 @@ import com.insadong.application.study.dto.StudyStuDTO;
 import com.insadong.application.study.repository.StudyRepository;
 import com.insadong.application.studystu.repository.StudyStuRepository;
 import com.insadong.application.training.repository.TrainingRepository;
-
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Slf4j
 @Service
 public class StudyStuService {
-	
+
 	private final StudyStuRepository studyStuRepository;
 	private final ModelMapper modelMapper;
 	private final StudentRepository studentRepository;
-	private final TrainingRepository trainingRepository; 
+	private final TrainingRepository trainingRepository;
 	private final StudyRepository studyRepository;
-	
+
 	public StudyStuService(StudyStuRepository studyStuRepository,
-			ModelMapper modelMapper, StudentRepository studentRepository
-			,TrainingRepository trainingRepository
-			,StudyRepository studyRepository) {
+	                       ModelMapper modelMapper, StudentRepository studentRepository
+			, TrainingRepository trainingRepository
+			, StudyRepository studyRepository) {
 		this.modelMapper = modelMapper;
 		this.studyStuRepository = studyStuRepository;
 		this.studentRepository = studentRepository;
@@ -45,21 +43,21 @@ public class StudyStuService {
 	/* 1. 수강생 강의 등록 */
 	@Transactional
 	public void insertStudy(StudyStuDTO studyStuDto) {
-		
+
 		log.info("[StudyStuService] insertStudy Start ===================================");
 		log.info("[StudyStuService] studyStuDto : {}", studyStuDto);
 
 		studyStuRepository.save(modelMapper.map(studyStuDto, StudyStu.class));
 
 		log.info("[StudyStuService] insertStudent End ==============================");
-		
+
 	}
-	
+
 
 	/* 2. 수강생 강의 수정 */
 	@Transactional
 	public void updateStudy(StudyStuDTO studyStuDto) {
-		
+
 		log.info("[StudyStuService] updateStudy start ============================== ");
 		log.info("[StudyStuService] studyStuDto : {}", studyStuDto);
 
@@ -75,60 +73,59 @@ public class StudyStuService {
 		);
 
 		log.info("[StudyStuService] updateStudy end ============================== ");
-		
+
 	}
 
 	/* 3. 수강생 강의 삭제 */
 	@Transactional
 	public void deleteStudy(Long studyCode) {
-		 StudyStu studyStu = studyStuRepository.findById(studyCode)
-		            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
+		StudyStu studyStu = studyStuRepository.findById(studyCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
 
-		    studyStuRepository.delete(studyStu);
-		
+		studyStuRepository.delete(studyStu);
+
 	}
-
 
 
 	/* 4. 수강생 강의 조회 */
 	public Page<StudyStuDTO> selectStudyListByStudentForAdmin(int page, Long stuCode) {
-	    log.info("[StudyStuService] selectStudyListByStudentForAdmin start ==============================");
+		log.info("[StudyStuService] selectStudyListByStudentForAdmin start ==============================");
 
-	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("student.stuCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("student.stuCode").descending());
 
-	    Student findStudent = studentRepository.findById(stuCode)
-	        .orElseThrow(() -> new IllegalArgumentException("해당 학생이 없습니다. stuCode = " + stuCode));
+		Student findStudent = studentRepository.findById(stuCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당 학생이 없습니다. stuCode = " + stuCode));
 
-	    Page<StudyStu> studyStuList = studyStuRepository.findByStudent(pageable, findStudent);
-	    Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> {
-	        StudyStuDTO studyStuDTO = modelMapper.map(studyStu, StudyStuDTO.class);
+		Page<StudyStu> studyStuList = studyStuRepository.findByStudent(pageable, findStudent);
+		Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> {
+			StudyStuDTO studyStuDTO = modelMapper.map(studyStu, StudyStuDTO.class);
 
-	        long studyCode = studyStu.getStudyCode();
+			long studyCode = studyStu.getStudyCode();
 
-	        // 강의 정보 가져오기
-	        Study study = studyRepository.findById(studyCode)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
+			// 강의 정보 가져오기
+			Study study = studyRepository.findById(studyCode)
+					.orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
 
-	        long trainingCode = study.getTraining().getTrainingCode();
-	        
-	        // 과정 정보 가져오기
-	        Training training = trainingRepository.findById(trainingCode)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 과정이 없습니다. trainingCode = " + trainingCode));
-	        String title = training.getTrainingTitle();
-	        
-	        String trainingCount = study.getTraining().getTrainingCount(); // trainingCount 가져오기
+			long trainingCode = study.getTraining().getTrainingCode();
 
-	        studyStuDTO.setTrainingTitle(title);
-	        studyStuDTO.setTrainingCount(trainingCount); // studyStuDTO에 trainingCount 설정
+			// 과정 정보 가져오기
+			Training training = trainingRepository.findById(trainingCode)
+					.orElseThrow(() -> new IllegalArgumentException("해당 과정이 없습니다. trainingCode = " + trainingCode));
+			String title = training.getTrainingTitle();
 
-	        return studyStuDTO;
-	    });
+			String trainingCount = study.getTraining().getTrainingCount(); // trainingCount 가져오기
+
+			studyStuDTO.setTrainingTitle(title);
+			studyStuDTO.setTrainingCount(trainingCount); // studyStuDTO에 trainingCount 설정
+
+			return studyStuDTO;
+		});
 
 
-	    log.info("[StudyStuService] studyStuDTOList.getContent() : {}", studyStuDTOList.getContent());
-	    log.info("[StudyStuService] selectStudyListByStudentForAdmin end ================================");
+		log.info("[StudyStuService] studyStuDTOList.getContent() : {}", studyStuDTOList.getContent());
+		log.info("[StudyStuService] selectStudyListByStudentForAdmin end ================================");
 
-	    return studyStuDTOList;
+		return studyStuDTOList;
 	}
 
 }

@@ -44,8 +44,12 @@ public class Abs {
 	private Date absEnd;			// 퇴근시간
 	
 	/* 수정 메소드*/
-	public void updateAbs(Date absEnd) {
+	public void updateAbs(Long absCode, Employee empCode, LocalDate absDate, Date absStart, Date absEnd) {
 		
+		this.absCode = absCode;
+		this.empCode = empCode;
+		this.absDate = absDate;
+		this.absStart = absStart;
 		this.absEnd = absEnd;
 
 	}

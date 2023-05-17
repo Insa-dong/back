@@ -1,7 +1,9 @@
 package com.insadong.application.study.dto;
 
-import com.insadong.application.employee.dto.EmployeeDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class StudyInfoDTO {
@@ -10,11 +12,13 @@ public class StudyInfoDTO {
 
 	private StudyDTO study;
 
-	private EmployeeDTO teacher;
+	private EmpDTO teacher;
 
-	private String studyStartDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date studyStartDate;
 
-	private String studyEndDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date studyEndDate;
 
 	private String studyRoom;
 
