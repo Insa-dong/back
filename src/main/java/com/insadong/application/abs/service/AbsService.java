@@ -3,6 +3,8 @@ package com.insadong.application.abs.service;
 import java.time.LocalDate;
 import java.util.Date;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +16,6 @@ import com.insadong.application.abs.dto.AbsDTO;
 import com.insadong.application.abs.repository.AbsRepository;
 import com.insadong.application.common.entity.Abs;
 import com.insadong.application.common.entity.Employee;
-import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
 
 @Service
@@ -45,10 +46,10 @@ public class AbsService {
 	}
 
 	/*1-1 내 근태 목록 조회*/
-	public Page<AbsDTO> selectAbsServiceListForUser(EmployeeDTO empCode, int page) {
+	public Page<AbsDTO> selectAbsListForUser(Employee empCode, int page) {
 	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("absDate").descending());
 
-	    Page<Abs> absList = absRepository.findByEmpCode(empCode, pageable);
+	    Page<Abs> absList = absRepository.findByEmpCode(empCode.getEmpCode(), pageable);
 
 	    Page<AbsDTO> absDtoList = absList.map(abs -> modelMapper.map(abs, AbsDTO.class));
 
@@ -124,12 +125,35 @@ public class AbsService {
 	
 	}
 
+	/* 4. 근태 수정*/
+	@Transactional
+	public void modifyAbs(AbsDTO absDTO) {
+			
+			Abs originAbs = absRepository.findById(absDTO.getAbsCode())
+					.orElseThrow(() -> new IllegalArgumentException("해당 코드의 근태 기록이 없습니다. absCode=" + (absDTO.getAbsCode())));
+						
+				/* 조회했던 기존 엔티티의 내용을 수정 -> 별도의 수정 메소드를 정의해서 사용하면 다른 방식의 수정을 막을 수 있다. */
+					originAbs.updateAbs(
+					    absDTO.getAbsCode(),
+					    modelMapper.map(absDTO.getEmpCode(), Employee.class),  //엔티티로 변경해서 넣는다
+						absDTO.getAbsDate(),
+						absDTO.getAbsStart(),
+						absDTO.getAbsEnd()
+					
+				);
+			
+
+		}
+		
+		
+	}
 
 
 
 
 
-}
+
+
 	
 	
 	
