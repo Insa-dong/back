@@ -25,6 +25,12 @@ public class TrainingController {
 		this.trainingService = trainingService;
 	}
 
+	@GetMapping("/trainingTitleList")
+	public ResponseEntity<ResponseDTO> viewTrainingTitleList() {
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", trainingService.viewTrainingTitleList()));
+	}
+
 	@GetMapping("/trainingList")
 	public ResponseEntity<ResponseDTO> viewTrainingList(@RequestParam(name = "page", defaultValue = "1") int page) {
 

@@ -41,6 +41,9 @@ public class StudyInfoController {
 	@GetMapping("/studyInfo/{studyInfoCode}")
 	public ResponseEntity<ResponseDTO> viewStudyInfo(@PathVariable Long studyInfoCode) {
 
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", studyInfoService.viewStudyInfo(studyInfoCode)));
+		StudyInfoDTO data = studyInfoService.viewStudyInfo(studyInfoCode);
+
+		log.info("data : {} ", data);
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
 	}
 }
