@@ -61,6 +61,7 @@ public class AbsService {
 
 
 	/* 2. 출근 입력  */
+	@Transactional
 	public void checkIn(Long empCode) {
 		
 		LocalDate today = LocalDate.now();
@@ -87,6 +88,7 @@ public class AbsService {
 	}
 
 	/* 3. 퇴근 입력 */
+	@Transactional
 	public void checkOut(Long empCode) {
 	    LocalDate today = LocalDate.now();
 
@@ -128,7 +130,7 @@ public class AbsService {
 
 	/* 4. 근태 수정*/
 
-	/*@Transactional
+	@Transactional
 	public void modifyAbs(AbsDTO absDTO) {
 	    Abs originAbs = absRepository.findById(absDTO.getAbsCode())
 	            .orElseThrow(() -> new IllegalArgumentException("해당 코드의 근태 기록이 없습니다. absCode=" + absDTO.getAbsCode()));
@@ -138,22 +140,11 @@ public class AbsService {
 	    		absDTO.getAbsDate(),
 	    		absDTO.getAbsStart(),
 	    		absDTO.getAbsEnd()
-	   );*/
-	    
-	    @Transactional
-	    public void modifyAbs(AbsDTO absDTO) {
-	        Abs originAbs = absRepository.findById(absDTO.getAbsCode())
-	                .orElseThrow(() -> new IllegalArgumentException("해당 코드의 근태 기록이 없습니다. absCode=" + absDTO.getAbsCode()));
+	   );
+	   
 
-	        // 필요한 필드 값을 가져와서 엔티티의 해당 필드에 직접 할당
-	        originAbs.setAbsDate(absDTO.getAbsDate());
-	        originAbs.setAbsStart(absDTO.getAbsStart());
-	        originAbs.setAbsEnd(absDTO.getAbsEnd());
-
-	  
-	    }
 	    		
-
+	}
 
 	    
 	}
