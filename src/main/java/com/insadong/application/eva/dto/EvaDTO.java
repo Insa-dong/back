@@ -1,11 +1,10 @@
 package com.insadong.application.eva.dto;
 
-import java.util.Date;
-
 import com.insadong.application.student.dto.StudentDTO;
-import com.insadong.application.studyInfo.dto.StudyInfoDTO;
-
+import com.insadong.application.study.dto.StudyInfoDTO;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class EvaDTO {

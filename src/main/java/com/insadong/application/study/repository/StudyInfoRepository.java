@@ -1,4 +1,4 @@
-package com.insadong.application.studyInfo.repository;
+package com.insadong.application.study.repository;
 
 import com.insadong.application.common.entity.StudyInfo;
 import org.springframework.data.domain.Page;
