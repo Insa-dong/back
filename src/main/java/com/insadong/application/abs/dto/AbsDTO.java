@@ -1,7 +1,7 @@
 package com.insadong.application.abs.dto;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.insadong.application.employee.dto.EmployeeDTO;
 
@@ -19,9 +19,9 @@ public class AbsDTO {
 
 	private LocalDate absDate;			// 출근일자
 
-	private Date absStart;		// 출근시간
+	private LocalDateTime absStart;		// 출근시간
 
-	private Date absEnd;			// 퇴근시간
+	private LocalDateTime absEnd;			// 퇴근시간
 
 
 
