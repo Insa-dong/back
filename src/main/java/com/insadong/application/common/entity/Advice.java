@@ -14,8 +14,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 
-import com.insadong.application.employee.dto.EmployeeDTO;
-
 import lombok.Getter;
 import lombok.Setter;
 
