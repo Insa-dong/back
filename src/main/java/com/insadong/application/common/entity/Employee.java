@@ -2,6 +2,7 @@ package com.insadong.application.common.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@DynamicInsert
 @Table(name = "TB_EMP")
 @SequenceGenerator(name = "EMP_SEQ_GENERATOR",
 		sequenceName = "SEQ_EMP_CODE",
