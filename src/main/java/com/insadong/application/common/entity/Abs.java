@@ -1,6 +1,7 @@
 package com.insadong.application.common.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -38,16 +39,14 @@ public class Abs {
 	private LocalDate absDate;			// 출근일자
 	
 	@Column(name="ABS_START")
-	private Date absStart;		// 출근시간
+	private LocalDateTime absStart;		// 출근시간
 	
 	@Column(name="ABS_END")
-	private Date absEnd;			// 퇴근시간
+	private LocalDateTime absEnd;			// 퇴근시간
 	
 	/* 수정 메소드*/
-	public void updateAbs(Long absCode, Employee empCode, LocalDate absDate, Date absStart, Date absEnd) {
+	public void updateAbs(LocalDate absDate, LocalDateTime absStart, LocalDateTime absEnd) {
 		
-		this.absCode = absCode;
-		this.empCode = empCode;
 		this.absDate = absDate;
 		this.absStart = absStart;
 		this.absEnd = absEnd;

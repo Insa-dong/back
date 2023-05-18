@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Notice;
 import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.common.entity.Job;
+import com.insadong.application.common.entity.Notice;
+import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.emporg.dto.EmpDTO;
+import com.insadong.application.exception.UserNotFoundException;
 import com.insadong.application.notice.dto.NoticeDTO;
 import com.insadong.application.notice.repository.NoticeRepository;
 
@@ -31,7 +36,7 @@ public class NoticeService {
 		this.employeeRepository = employeeRepository;
 		this.modelMapper = modelMapper;
 	}
-
+  
 	/* 공지사항 전체목록 조회 */
 	public Page<NoticeDTO> selectNoticeList(int page) {
 
@@ -112,7 +117,7 @@ public class NoticeService {
 
 			return noticeDTOList;
 
-		} else {
+    } else {
 			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
 		}
 

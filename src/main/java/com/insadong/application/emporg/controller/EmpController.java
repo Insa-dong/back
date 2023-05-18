@@ -2,6 +2,7 @@ package com.insadong.application.emporg.controller;
 
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.emporg.dto.EmpDTO;
+import com.insadong.application.emporg.dto.EmpDeptDTO;
 import com.insadong.application.emporg.service.EmpService;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -92,10 +95,21 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
+	/*4. 부서 조회*/
+	@GetMapping("/emp/deptlist")
+	public ResponseEntity<ResponseDTO> selectEmpDeptList(){
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpDeptList()));
+	}
+
+	/*5. 직책 조회*/
+	@GetMapping("/emp/joblist")
+	public ResponseEntity<ResponseDTO> selectJobDeptList(){
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpJobList()));
+	}
 
 	@GetMapping("/emp/teacher")
 	public ResponseEntity<ResponseDTO> viewTeacherList() {
-
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.viewTeacherList()));
 	}
 
