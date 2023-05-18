@@ -1,6 +1,7 @@
 package com.insadong.application.study.controller;
 
 import com.insadong.application.common.ResponseDTO;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -46,5 +48,16 @@ public class StudyInfoController {
 
 		log.info("data : {} ", data);
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
+	}
+
+	@PutMapping("/studyInfo/{studyInfoCode}")
+	public ResponseEntity<ResponseDTO> modifyStudyInfo(@PathVariable Long studyInfoCode, @RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmployeeDTO emp) {
+
+		/* studyStart,EndTime null 이넘들만 갖고오면 댐 */
+		log.info("studyInfo : {} ", studyInfo);
+		log.info("AP : {} ", emp);
+
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 완료"));
 	}
 }
