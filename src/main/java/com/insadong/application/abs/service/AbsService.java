@@ -1,6 +1,7 @@
 package com.insadong.application.abs.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.transaction.Transactional;
@@ -60,7 +61,9 @@ public class AbsService {
 
 
 	/* 2. 출근 입력  */
+	@Transactional
 	public void checkIn(Long empCode) {
+		
 		LocalDate today = LocalDate.now();
 		
 
@@ -77,32 +80,32 @@ public class AbsService {
 	    Abs abs = new Abs();
 	    abs.setEmpCode(employee);
 	    abs.setAbsDate(today);
-	    abs.setAbsStart(new Date());
+	    abs.setAbsStart(LocalDateTime.now());
 	    abs.setAbsEnd(null);
 
 	    // Abs 엔티티 저장
 	    absRepository.save(abs);
 	}
 
-	/* 3. 퇴근 입력*/
+	/* 3. 퇴근 입력 */
+	@Transactional
 	public void checkOut(Long empCode) {
-		   LocalDate today = LocalDate.now();
+	    LocalDate today = LocalDate.now();
 
-		    // 출근 여부 확인
-		    Abs abs = absRepository.findByEmpCode_EmpCodeAndAbsDate(empCode, today)
-		        .orElseThrow(() -> new RuntimeException("출근 기록이 없습니다."));
+	    // 출근 여부 확인
+	    Abs abs = absRepository.findByEmpCode_EmpCodeAndAbsDate(empCode, today)
+	        .orElseThrow(() -> new RuntimeException("출근 기록이 없습니다."));
 
-		    // 이미 퇴근한 경우
-		    if (abs.getAbsEnd() != null) {
-		        throw new RuntimeException("이미 퇴근하셨습니다.");
-		    }
+	    // 이미 퇴근한 경우
+	    if (abs.getAbsEnd() != null) {
+	        throw new RuntimeException("이미 퇴근하셨습니다.");
+	    }
 
-		    // 퇴근 시간 설정
-		    abs.setAbsEnd(new Date());
+	    // 퇴근 시간 설정
+	    abs.setAbsEnd(LocalDateTime.now());
 
-		    // Abs 엔티티 저장
-		    absRepository.save(abs);
-		
+	    // Abs 엔티티 저장
+	    absRepository.save(abs);
 	}
 
 
@@ -126,27 +129,28 @@ public class AbsService {
 	}
 
 	/* 4. 근태 수정*/
+
 	@Transactional
 	public void modifyAbs(AbsDTO absDTO) {
-			
-			Abs originAbs = absRepository.findById(absDTO.getAbsCode())
-					.orElseThrow(() -> new IllegalArgumentException("해당 코드의 근태 기록이 없습니다. absCode=" + (absDTO.getAbsCode())));
-						
-				/* 조회했던 기존 엔티티의 내용을 수정 -> 별도의 수정 메소드를 정의해서 사용하면 다른 방식의 수정을 막을 수 있다. */
-					originAbs.updateAbs(
-					    absDTO.getAbsCode(),
-					    modelMapper.map(absDTO.getEmpCode(), Employee.class),  //엔티티로 변경해서 넣는다
-						absDTO.getAbsDate(),
-						absDTO.getAbsStart(),
-						absDTO.getAbsEnd()
-					
-				);
-			
+	    Abs originAbs = absRepository.findById(absDTO.getAbsCode())
+	            .orElseThrow(() -> new IllegalArgumentException("해당 코드의 근태 기록이 없습니다. absCode=" + absDTO.getAbsCode()));
 
-		}
-		
-		
+	    // 필요한 필드 값을 가져와서 엔티티의 해당 필드에 직접 할당
+	    originAbs.updateAbs(
+	    		absDTO.getAbsDate(),
+	    		absDTO.getAbsStart(),
+	    		absDTO.getAbsEnd()
+	   );
+	   
+
+	    		
 	}
+
+	    
+	}
+		
+		
+	
 
 
 

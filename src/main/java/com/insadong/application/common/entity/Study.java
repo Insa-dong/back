@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -35,8 +36,12 @@ public class Study {
 	@Column(name = "STUDY_MAX_PEOPLE")
 	private Long studyMaxPeople;
 
-	@Column(name = "STUDY_MODIFIER")
-	private String studyModifier;
+	@ManyToOne
+	@JoinColumn(name = "STUDY_MODIFIER")
+	private Employee studyModifier;
+
+	@Column(name = "STUDY_MODIFY_DATE")
+	private Date studyModifyDate;
 
 	@Column(name = "STUDY_DELETE_YN")
 	private String studyDeleteYn;

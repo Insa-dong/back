@@ -61,9 +61,9 @@ public class AdviceController {
 	
 	
 	/* 2. 수강생 상담 삭제 */
-	@DeleteMapping("/students-management/advice/{adviceLogCode}")
-	public ResponseEntity<ResponseDTO> deleteAdvice(@PathVariable Long adviceLogCode) {
-	    adviceService.deleteAdvice(adviceLogCode);
+	@DeleteMapping("/students-management/advice/{stuCode}")
+	public ResponseEntity<ResponseDTO> deleteAdvice(@PathVariable Long stuCode) {
+	    adviceService.deleteAdvice(stuCode);
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상담일지 삭제 성공"));
 	}
 
