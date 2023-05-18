@@ -1,5 +1,8 @@
 package com.insadong.application.studystu.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -43,40 +46,6 @@ public class StudyStuService {
 		this.studyRepository = studyRepository;
 	}
 
-	
-
-
-//	/* 2. 수강생 강의 수정 */
-//	@Transactional
-//	public void updateStudy(StudyStuDTO studyStuDto) {
-//
-//	    log.info("[StudyStuService] updateStudy start ============================== ");
-//	    log.info("[StudyStuService] studyStuDto : {}", studyStuDto);
-//
-//	    StudyStu studyStu = studyStuRepository.findById(new StudyStuPK(studyStuDto.getStudyCode(), studyStuDto.getStuCode()))
-//	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyStuDto.getStudyCode()));
-
-//	    /* 수강생 정보 수정 */
-//	    studyStu.update(
-//	            studyStuDto.getStudyEnrollDate(),
-//	            studyStuDto.getStudyState()
-//	    );
-//
-//	    log.info("[StudyStuService] updateStudy end ============================== ");
-
-//	}
-//
-//	/* 3. 수강생 강의 삭제 */
-//	@Transactional
-//	public void deleteStudy(Long studyCode, Long stuCode) {
-//	    StudyStuPK studyStuPK = new StudyStuPK(studyCode, stuCode);
-//	    StudyStu studyStu = studyStuRepository.findById(studyStuPK)
-//	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
-//
-//	    studyStuRepository.delete(studyStu);
-//	}
-
-	
 	/* 1. 수강생 강의 등록 */
 	@Transactional
 	public void insertStudy(StudyStuDTO studyStuDto) {
@@ -117,16 +86,12 @@ public class StudyStuService {
 
 	}
 	
-
-
+	
 	/* 3. 수강생 강의 삭제 */
 	@Transactional
-	public void deleteStudy(Long studyCode) {
-		StudyStu studyStu = studyStuRepository.findById(studyCode)
-				.orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
-
-		studyStuRepository.delete(studyStu);
-
+	public void deleteStudy(Long stuCode) {
+	    List<StudyStu> studyStus = studyStuRepository.findByStudyStuPKStuCode(stuCode);
+	    studyStuRepository.deleteAll(studyStus);
 	}
 
 

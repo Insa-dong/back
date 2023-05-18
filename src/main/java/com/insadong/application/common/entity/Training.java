@@ -20,7 +20,7 @@ public class Training {
 
 	@Id
 	@Column(name = "TRAINING_CODE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TRAINING_CODE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRAINING_SEQ_CODE")
 	private Long trainingCode;
 
 	@Column(name = "TRAINING_TITLE")
