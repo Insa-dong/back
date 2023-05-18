@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +35,7 @@ public class CustomUserDetailService implements UserDetailsService {
 	}
 
 	@Override
-	@Transactional  // 이 어노테이션을 추가합니다.
+	//@Transactional  // 다시 제외하고 EmployeeRepository에 @EntityGraph empAuthList.auth 추가함
 	public UserDetails loadUserByUsername(String empId) throws UsernameNotFoundException {
 
 		log.info("[CustomUserDetailService] loadUserByUsername start ======================");
