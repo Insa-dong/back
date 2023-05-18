@@ -3,10 +3,13 @@ package com.insadong.application.employee.repository;
 import java.util.Optional;
 
 import com.insadong.application.common.entity.Employee;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.insadong.application.common.entity.Employee;
+
+import javax.transaction.Transactional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
@@ -16,11 +19,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	Optional<Employee> findByEmpNameAndEmpPhone(String empName, String empPhone);
 
 	Employee findByEmpIdAndEmpEmail(String empId, String empEmail);
-
-
-
-	
-
-
 
 }

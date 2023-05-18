@@ -22,7 +22,7 @@ public class StudyStu {
 
 	@Id
 	@Column(name = "STUDY_CODE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STUDY_STU_CODE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDY_STU_SEQ_GEN")
 	private Long studyCode;
 
 	@ManyToOne

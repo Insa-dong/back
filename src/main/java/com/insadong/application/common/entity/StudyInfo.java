@@ -14,7 +14,7 @@ public class StudyInfo {
 
 	@Id
 	@Column(name = "STUDY_INFO_CODE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STUDY_INFO_CODE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDY_INFO_SEQ_GEN")
 	private Long studyInfoCode;
 
 	@ManyToOne
