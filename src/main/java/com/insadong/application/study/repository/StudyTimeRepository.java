@@ -9,5 +9,5 @@ import java.util.List;
 public interface StudyTimeRepository extends JpaRepository<StudyTime, Long> {
 
 	@EntityGraph(attributePaths = "study")
-	List<StudyTime> findByStudyStudyCode(Long studyCode);
+	List<StudyTime> findByStudyCode(Long studyCode);
 }
