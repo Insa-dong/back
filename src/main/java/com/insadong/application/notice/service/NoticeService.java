@@ -42,7 +42,7 @@ public class NoticeService {
 
 		log.info("[NoticeService] selectNoticeList start ============================== ");
 
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("noticeCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("noticeCode").descending());
 
 		Page<Notice> noticeList = noticeRepository.findAll(pageable);
 		Page<NoticeDTO> noticeDTOList = noticeList.map(notice -> modelMapper.map(notice, NoticeDTO.class));
@@ -59,7 +59,7 @@ public class NoticeService {
 
 		log.info("[NoticeService] searchNoticeByOption start ==============================");
 
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("noticeCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("noticeCode").descending());
 
 		if (searchOption.equals("all")) {
 			
