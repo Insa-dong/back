@@ -105,7 +105,7 @@ public class EmpController {
 
 	/*5. 구성원 등록*/
 	@PostMapping("/emp/empregist")
-	public ResponseEntity<ResponseDTO> insertEmp(@ModelAttribute EmployeeDTO employeeDTO){
+	public ResponseEntity<ResponseDTO> insertEmp(@RequestBody EmployeeDTO employeeDTO){
 		empService.insertEmp(employeeDTO);
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "구성원 등록 성공"));
 	}
