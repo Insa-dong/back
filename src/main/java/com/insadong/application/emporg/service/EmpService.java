@@ -3,6 +3,7 @@ package com.insadong.application.emporg.service;
 import com.insadong.application.common.entity.Dept;
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Job;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.emporg.dto.EmpDTO;
 import com.insadong.application.emporg.dto.EmpDeptDTO;
 import com.insadong.application.emporg.dto.EmpJobDTO;
@@ -17,7 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
@@ -117,16 +121,23 @@ public class EmpService {
 
 	}
 
-	/*4. 부서 조회*/
-	public List<EmpDeptDTO> selectEmpDeptList(){
+	/*4. 부서, 직책 조회*/
+	public  Map<String, Object> selectEmpDeptJobList(){
 		List<Dept> deptList = empDeptRepository.findAll();
-		return deptList.stream().map(dept -> modelMapper.map(dept, EmpDeptDTO.class)).collect(Collectors.toList());
+		List<Job> jobList = empJobRepository.findAll();
+
+		Map<String, Object> resultMap = new HashMap<>();
+
+		resultMap.put("deptList", deptList);
+		resultMap.put("jobList", jobList);
+
+		return resultMap;
 	}
 
-	/*5. 직책 조회*/
-	public List<EmpJobDTO> selectEmpJobList(){
-		List<Job> jobList = empJobRepository.findAll();
-		return jobList.stream().map(job -> modelMapper.map(job, EmpJobDTO.class)).collect(Collectors.toList());
+	/* 5. 구성원 등록 */
+	@Transactional
+	public void insertEmp(EmployeeDTO employeeDTO){
+		empRepository.save(modelMapper.map(employeeDTO, Employee.class));
 	}
 
 	public List<com.insadong.application.study.dto.EmpDTO> viewTeacherList() {

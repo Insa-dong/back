@@ -1,6 +1,7 @@
 package com.insadong.application.emporg.controller;
 
 import com.insadong.application.common.ResponseDTO;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.emporg.dto.EmpDTO;
 import com.insadong.application.emporg.dto.EmpDeptDTO;
 import com.insadong.application.emporg.service.EmpService;
@@ -95,18 +96,23 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
-	/*4. 부서 조회*/
-	@GetMapping("/emp/deptlist")
-	public ResponseEntity<ResponseDTO> selectEmpDeptList(){
-
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpDeptList()));
+	/*4. 구성원 부서 직책 조회*/
+	@GetMapping("/emp/deptjoblist")
+	public ResponseEntity<ResponseDTO> selectEmpDeptJobList(){
+		log.info("[EmpController] : selectEmpDeptJobList start ==================================== ");
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpDeptJobList()));
 	}
 
-	/*5. 직책 조회*/
-	@GetMapping("/emp/joblist")
-	public ResponseEntity<ResponseDTO> selectJobDeptList(){
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpJobList()));
+	/*5. 구성원 등록*/
+	@PostMapping("/emp/empregist")
+	public ResponseEntity<ResponseDTO> insertEmp(@ModelAttribute EmployeeDTO employeeDTO){
+		empService.insertEmp(employeeDTO);
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "구성원 등록 성공"));
 	}
+
+
+
+
 
 	@GetMapping("/emp/teacher")
 	public ResponseEntity<ResponseDTO> viewTeacherList() {
