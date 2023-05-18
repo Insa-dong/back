@@ -11,7 +11,7 @@ import com.insadong.application.common.entity.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-	@EntityGraph(attributePaths = {"dept", "job", "empAuthList"})
+	@EntityGraph(attributePaths = {"dept", "job", "empAuthList", "empAuthList.auth"})
 	Optional<Employee> findByEmpId(String empId);
 
 	Optional<Employee> findByEmpNameAndEmpPhone(String empName, String empPhone);
