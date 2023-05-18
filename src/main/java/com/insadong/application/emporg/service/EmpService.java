@@ -137,6 +137,7 @@ public class EmpService {
 	/* 5. 구성원 등록 */
 	@Transactional
 	public void insertEmp(EmployeeDTO employeeDTO){
+		log.info("[EmpService] insertEmp : {}", employeeDTO);
 		empRepository.save(modelMapper.map(employeeDTO, Employee.class));
 	}
 

@@ -1,7 +1,7 @@
 package com.insadong.application.studystu.service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.insadong.application.attend.repository.AttendRepository;
 import com.insadong.application.common.entity.Student;
 import com.insadong.application.common.entity.Study;
 import com.insadong.application.common.entity.StudyStu;
@@ -21,6 +22,7 @@ import com.insadong.application.student.repository.StudentRepository;
 import com.insadong.application.study.dto.StudyStuDTO;
 import com.insadong.application.study.repository.StudyRepository;
 import com.insadong.application.studystu.repository.StudyStuRepository;
+import com.insadong.application.training.dto.TrainingDTO;
 import com.insadong.application.training.repository.TrainingRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,16 +36,19 @@ public class StudyStuService {
 	private final StudentRepository studentRepository;
 	private final TrainingRepository trainingRepository;
 	private final StudyRepository studyRepository;
+	private final AttendRepository attendRepository;
 
 	public StudyStuService(StudyStuRepository studyStuRepository,
 	                       ModelMapper modelMapper, StudentRepository studentRepository
 			, TrainingRepository trainingRepository
-			, StudyRepository studyRepository) {
+			, StudyRepository studyRepository
+			, AttendRepository attendRepository) {
 		this.modelMapper = modelMapper;
 		this.studyStuRepository = studyStuRepository;
 		this.studentRepository = studentRepository;
 		this.trainingRepository = trainingRepository;
 		this.studyRepository = studyRepository;
+		this.attendRepository = attendRepository;
 	}
 
 	/* 1. 수강생 강의 등록 */
@@ -86,13 +91,16 @@ public class StudyStuService {
 
 	}
 	
-	
+
+
 	/* 3. 수강생 강의 삭제 */
 	@Transactional
 	public void deleteStudy(Long stuCode) {
+				
 	    List<StudyStu> studyStus = studyStuRepository.findByStudyStuPKStuCode(stuCode);
 	    studyStuRepository.deleteAll(studyStus);
 	}
+	
 
 
 	/* 4. 수강생 강의 조회 */
@@ -126,6 +134,16 @@ public class StudyStuService {
 	    log.info("[StudyStuService] selectStudyListByStudentForAdmin end ================================");
 
 	    return studyStuDTOList;
+	}
+
+		/* 과정 타이틀명 조회 */
+		public List<String> selectAllTrainingTitles() {
+		log.info("[StudyStuService] selectAllTrainingTitles start ==============================");
+
+	    List<String> trainingTitles = studyStuRepository.findAllTrainingTitles();
+
+	    log.info("[StudyStuService] selectAllTrainingTitles end ================================");
+	    return trainingTitles;
 	}
 
 	

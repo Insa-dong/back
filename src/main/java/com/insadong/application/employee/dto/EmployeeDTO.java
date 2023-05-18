@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,6 +24,7 @@ public class EmployeeDTO implements UserDetails {
 	private String empId;
 	private String empPwd;
 	private String empPhone;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date hireDate;
 	private Long offCount;
 	private String empState;

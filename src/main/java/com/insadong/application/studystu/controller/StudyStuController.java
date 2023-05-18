@@ -1,5 +1,7 @@
 package com.insadong.application.studystu.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.insadong.application.common.ResponseDTO;
+import com.insadong.application.common.entity.Training;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
@@ -49,7 +51,7 @@ public class StudyStuController {
 
 	/* 2. 수강생 강의 수정 */
 	@PutMapping("/students-management/study")
-	public ResponseEntity<ResponseDTO> updateStudy(@RequestBody StudyStuDTO studyStuDto) {
+	public ResponseEntity<ResponseDTO> updateStudy(@ModelAttribute StudyStuDTO studyStuDto) {
 
 	    log.info("DTO : {} ", studyStuDto);
 	    studyStuService.updateStudy(studyStuDto);
@@ -91,5 +93,12 @@ public class StudyStuController {
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
-
+	
+	/* 5. 수강생 과정 목록 조회 */
+	@GetMapping("/students-management/studylist")
+	public ResponseEntity<ResponseDTO> selectTrainingTitleList(){
+		log.info("[StudyStuController] : selectTrainingTitleList start ==================================== ");
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", studyStuService.selectAllTrainingTitles()));
+	}
+	
 }

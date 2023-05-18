@@ -20,7 +20,7 @@ public class StudyStuPK implements Serializable {
 	
 	  public StudyStuPK() {
 		  
-	    }
+	   }
 
 	    public StudyStuPK(Long studyCode, Long stuCode) {
 	        this.studyCode = studyCode;
