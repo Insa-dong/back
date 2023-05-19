@@ -1,13 +1,11 @@
 package com.insadong.application.employee.repository;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.insadong.application.common.entity.Employee;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.insadong.application.common.entity.Employee;
+import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
@@ -19,11 +17,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	Employee findByEmpIdAndEmpEmail(String empId, String empEmail);
 
 	List<Employee> findByEmpNameContains(String searchKeyword);
-
-
-
-	
-
 
 
 }

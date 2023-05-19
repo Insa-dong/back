@@ -4,9 +4,8 @@ import com.insadong.application.common.entity.Dept;
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Job;
 import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.emporg.dto.EmpDTO;
-import com.insadong.application.emporg.dto.EmpDeptDTO;
-import com.insadong.application.emporg.dto.EmpJobDTO;
 import com.insadong.application.emporg.repository.EmpDeptRepository;
 import com.insadong.application.emporg.repository.EmpJobRepository;
 import com.insadong.application.emporg.repository.EmpRepository;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -33,23 +31,25 @@ public class EmpService {
 	private final ModelMapper modelMapper;
 	private final EmpDeptRepository empDeptRepository;
 	private final EmpJobRepository empJobRepository;
+	private final EmployeeRepository employeeRepository;
 
-	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository) {
+	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository) {
 		this.empRepository = empRepository;
 		this.modelMapper = modelMapper;
 		this.empDeptRepository = empDeptRepository;
 		this.empJobRepository = empJobRepository;
+		this.employeeRepository = employeeRepository;
 	}
 
 	/*1. 구성원 전체 조회*/
-	public Page<EmpDTO> selectEmpList(int page) {
+	public Page<EmployeeDTO> selectEmpList(int page) {
 
 		log.info("[EmpService] selectEmpList start ============================== ");
 
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
 
 		Page<Employee> empList = empRepository.findAll(pageable);
-		Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
+		Page<EmployeeDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmployeeDTO.class));
 
 		log.info("[EmpService] selectEmpList.getContent() : {}", empDTOList.getContent());
 
@@ -140,6 +140,20 @@ public class EmpService {
 		log.info("[EmpService] insertEmp : {}", employeeDTO);
 		empRepository.save(modelMapper.map(employeeDTO, Employee.class));
 	}
+
+	/* 6. 구성원 상세 조회 */
+	public EmployeeDTO selectEmpDetail(Long empCode){
+
+		Employee employee = employeeRepository.findById(empCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당 구성원이 없습니다. empCode=" + empCode));
+
+		EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.class);
+
+		return employeeDTO;
+
+	}
+
+
 
 	public List<com.insadong.application.study.dto.EmpDTO> viewTeacherList() {
         

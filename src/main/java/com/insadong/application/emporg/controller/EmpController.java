@@ -3,7 +3,6 @@ package com.insadong.application.emporg.controller;
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.emporg.dto.EmpDTO;
-import com.insadong.application.emporg.dto.EmpDeptDTO;
 import com.insadong.application.emporg.service.EmpService;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
@@ -13,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,7 +30,7 @@ public class EmpController {
 		log.info("[EmpController] : selectEmpList start ==================================== ");
 		log.info("[EmpController] : page : {}", page);
 
-		Page<EmpDTO> empDTOList = empService.selectEmpList(page);
+		Page<EmployeeDTO> empDTOList = empService.selectEmpList(page);
 
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empDTOList);
 
@@ -103,12 +100,21 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpDeptJobList()));
 	}
 
+
 	/*5. 구성원 등록*/
 	@PostMapping("/emp/empregist")
 	public ResponseEntity<ResponseDTO> insertEmp(@RequestBody EmployeeDTO employeeDTO){
 		empService.insertEmp(employeeDTO);
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "구성원 등록 성공"));
+
 	}
+
+	/* 6. 구성원 상세 조회 */
+	@GetMapping("emp/empdetail/{empCode}")
+	public ResponseEntity<ResponseDTO> selectEmpDetail(@PathVariable Long empCode){
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpDetail(empCode)));
+	}
+
 
 
 
