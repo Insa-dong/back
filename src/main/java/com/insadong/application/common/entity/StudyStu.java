@@ -37,8 +37,8 @@ public class StudyStu implements Serializable {
 	
 	
 	  /* StudyStu entity 수정 용도의 메소드를 별도로 정의 */
-    public void update(Long studyCode, String studyEnrollDate, String studyState) {
-        this.studyStuPK.setStudyCode(studyCode);
+    public void update(String studyEnrollDate, String studyState) {
+        
         this.studyEnrollDate = studyEnrollDate;
         this.studyState = studyState;
     }

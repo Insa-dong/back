@@ -18,7 +18,7 @@ public class BeanConfig {
 		modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
 	       modelMapper.typeMap(StudyStu.class, StudyStuDTO.class)
-	                  .addMapping(src -> src.getStudyStuPK().getStudyCode(), StudyStuDTO::setStudyCode);
+	                  .addMapping(src -> src.getStudyStuPK().getStudyCode(), StudyStuDTO::setStudy);
 
 	       return modelMapper;
 	}
