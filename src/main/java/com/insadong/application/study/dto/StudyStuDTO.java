@@ -1,15 +1,15 @@
 package com.insadong.application.study.dto;
 
-import com.insadong.application.common.entity.Student;
+import com.insadong.application.student.dto.StudentDTO;
 
 import lombok.Data;
 
 @Data
 public class StudyStuDTO {
 
-	private Long studyCode;
+	private StudyDTO study;
 
-	private Student student;
+	private StudentDTO student;
 
 	private String studyEnrollDate;
 
