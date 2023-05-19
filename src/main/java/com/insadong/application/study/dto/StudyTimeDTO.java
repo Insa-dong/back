@@ -2,8 +2,6 @@ package com.insadong.application.study.dto;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class StudyTimeDTO {
 
@@ -13,8 +11,8 @@ public class StudyTimeDTO {
 
 	private String studyDate;
 
-	private Date studyStartTime;
+	private String studyStartTime;
 
-	private Date studyEndTime;
+	private String studyEndTime;
 
 }

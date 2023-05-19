@@ -2,6 +2,9 @@ package com.insadong.application.study.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +12,9 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
+@ToString
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "TB_TRAINING")
 public class trainingEntity {
 
@@ -27,10 +33,7 @@ public class trainingEntity {
 
 	@Column(name = "TRAINING_TIME")
 	private String trainingTime;
-
-	@Column(name = "TRAINING_COUNT")
-	private String trainingCount;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "TRAINING_WRITER")
 	private empEntity trainingWriter;

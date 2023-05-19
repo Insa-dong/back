@@ -2,6 +2,8 @@ package com.insadong.application.study.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class PetiteTrainingDTO {
 
@@ -10,5 +12,9 @@ public class PetiteTrainingDTO {
 	private String trainingTitle;
 
 	private String trainingCount;
+
+	private Date trainingDate;
+
+	private Date trainingUpdate;
 
 }

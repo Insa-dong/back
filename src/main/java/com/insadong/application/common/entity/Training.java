@@ -35,9 +35,6 @@ public class Training {
 	@Column(name = "TRAINING_TIME")
 	private String trainingTime;
 
-	@Column(name = "TRAINING_COUNT")
-	private String trainingCount;
-
 	@ManyToOne
 	@JoinColumn(name = "TRAINING_WRITER")
 	private Employee trainingWriter;
@@ -56,12 +53,11 @@ public class Training {
 	private String trainingDeleteYn;
 
 
-	public void update(String trainingTitle, String trainingQual, String trainingKnow, String trainingTime, String trainingCount, Employee trainingWriter, Date trainingDate, Employee trainingModifier, String trainingDeleteYn) {
+	public void update(String trainingTitle, String trainingQual, String trainingKnow, String trainingTime, Employee trainingWriter, Date trainingDate, Employee trainingModifier, String trainingDeleteYn) {
 		this.trainingTitle = trainingTitle;
 		this.trainingQual = trainingQual;
 		this.trainingKnow = trainingKnow;
 		this.trainingTime = trainingTime;
-		this.trainingCount = trainingCount;
 		this.trainingWriter = trainingWriter;
 		this.trainingDate = trainingDate;
 		this.trainingModifier = trainingModifier;

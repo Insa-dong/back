@@ -2,13 +2,14 @@ package com.insadong.application.common.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "TB_STUDY_TIME")
 @SequenceGenerator(name = "STUDY_TIME_SEQ_GEN", sequenceName = "SEQ_STUDY_TIME_CODE", allocationSize = 1)
 public class StudyTime {
@@ -25,9 +26,9 @@ public class StudyTime {
 	private String studyDate;
 
 	@Column(name = "STUDY_START_TIME")
-	private Date studyStartTime;
+	private String studyStartTime;
 
 	@Column(name = "STUDY_END_TIME")
-	private Date studyEndTime;
+	private String studyEndTime;
 
 }

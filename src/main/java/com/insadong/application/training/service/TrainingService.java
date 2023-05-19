@@ -4,6 +4,9 @@ import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Training;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.study.repository.StudyRepository;
+import com.insadong.application.training.dto.StudyCountDTO;
+import com.insadong.application.training.dto.TrainingCountDTO;
 import com.insadong.application.training.dto.TrainingDTO;
 import com.insadong.application.training.repository.TrainingRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +28,13 @@ public class TrainingService {
 
 	private final TrainingRepository trainingRepository;
 	private final EmployeeRepository employeeRepository;
+	private final StudyRepository studyRepository;
 	private final ModelMapper modelMapper;
 
-	public TrainingService(TrainingRepository trainingRepository, EmployeeRepository employeeRepository, ModelMapper modelMapper) {
+	public TrainingService(TrainingRepository trainingRepository, EmployeeRepository employeeRepository, StudyRepository studyRepository, ModelMapper modelMapper) {
 		this.trainingRepository = trainingRepository;
 		this.employeeRepository = employeeRepository;
+		this.studyRepository = studyRepository;
 		this.modelMapper = modelMapper;
 	}
 
@@ -67,7 +72,6 @@ public class TrainingService {
 				trainingDTO.getTrainingQual(),
 				trainingDTO.getTrainingKnow(),
 				trainingDTO.getTrainingTime(),
-				trainingDTO.getTrainingCount(),
 				originWriter,
 				trainingDTO.getTrainingDate(),
 				foundEmp,
@@ -103,11 +107,15 @@ public class TrainingService {
 		return searchList.map(training -> modelMapper.map(training, TrainingDTO.class));
 	}
 
-	public Page<TrainingDTO> selectTrainingListByTrainingCount(String trainingCount, int page) {
+	public Page<TrainingDTO> selectTrainingListByTrainingCount(long trainingCount, int page) {
 
 		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("trainingCode").descending());
-		Page<Training> searchList = trainingRepository.findByTrainingCountContainsAndTrainingDeleteYn(pageable, trainingCount, "N");
+		List<StudyCountDTO> studyCountDTO = studyRepository.countByTraining(trainingCount);
 
-		return searchList.map(training -> modelMapper.map(training, TrainingDTO.class));
+		List<TrainingCountDTO> trainingCountList = studyCountDTO.stream().map(count -> modelMapper.map(count, TrainingCountDTO.class)).collect(Collectors.toList());
+
+		log.info("countList : {} ", trainingCountList);
+
+		return null;
 	}
 }

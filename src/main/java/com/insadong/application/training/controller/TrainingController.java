@@ -97,7 +97,7 @@ public class TrainingController {
 	}
 
 	@GetMapping("/trainingList/searchCount")
-	public ResponseEntity<ResponseDTO> searchTrainingByCount(@RequestParam(name = "searchCount") String trainingCount,
+	public ResponseEntity<ResponseDTO> searchTrainingByCount(@RequestParam(name = "searchCount") long trainingCount,
 	                                                         @RequestParam(name = "page", defaultValue = "1") int page) {
 
 		log.info("회차 : {} ", trainingCount);
