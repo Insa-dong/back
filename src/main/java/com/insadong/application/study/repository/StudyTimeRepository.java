@@ -10,4 +10,6 @@ public interface StudyTimeRepository extends JpaRepository<StudyTime, Long> {
 
 	@EntityGraph(attributePaths = "study")
 	List<StudyTime> findByStudyCode(Long studyCode);
+
+	void deleteByStudyCode(Long studyCode);
 }

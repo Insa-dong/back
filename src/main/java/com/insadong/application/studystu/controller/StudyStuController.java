@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +37,7 @@ public class StudyStuController {
 	
 	/* 1. 수강생 강의 등록 */
 	@PostMapping("/students-management/study")
-	public ResponseEntity<ResponseDTO> insertStudy(@RequestBody StudyStuDTO studyStuDto) {
+	public ResponseEntity<ResponseDTO> insertStudy(@ModelAttribute StudyStuDTO studyStuDto) {
 
 	    /* 관리자만 등록하는 구문 추가해야 함 */
 	    studyStuService.insertStudy(studyStuDto);
@@ -48,11 +47,25 @@ public class StudyStuController {
 
 
 	/* 2. 수강생 강의 수정 */
+//	@PutMapping("/students-management/study")
+//	public ResponseEntity<ResponseDTO> updateStudy(@ModelAttribute StudyStuDTO studyStuDto) {
+//
+//	    log.info("DTO : {} ", studyStuDto);
+//	    studyStuService.updateStudy(studyStuDto);
+//
+//	    return ResponseEntity
+//	            .ok()
+//	            .body(new ResponseDTO(HttpStatus.OK, "수강생 강의 정보 수정 성공"));
+//
+//	}
+//	
+	
+	/* 2. 수강생 강의 수정 */
 	@PutMapping("/students-management/study")
-	public ResponseEntity<ResponseDTO> updateStudy(@ModelAttribute StudyStuDTO studyStuDto) {
+	public ResponseEntity<ResponseDTO> updateStudy(@RequestParam long studyCode , @RequestParam long stuCode, 
+			 @RequestParam String studyEnrollDate, @RequestParam String studyState) {
 
-	    log.info("DTO : {} ", studyStuDto);
-	    studyStuService.updateStudy(studyStuDto);
+	    studyStuService.updateStudy(studyCode,stuCode, studyEnrollDate, studyState);
 
 	    return ResponseEntity
 	            .ok()

@@ -26,6 +26,8 @@ public class PetiteStudyDTO {
 
 	private EmployeeDTO studyModifier;
 
+	private Long studyCount;
+
 	private Date studyModifyDate;
 
 	private String studyDeleteYn;

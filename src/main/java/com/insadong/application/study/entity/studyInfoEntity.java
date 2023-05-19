@@ -27,7 +27,7 @@ public class studyInfoEntity {
 	@JoinColumn(name = "STUDY")
 	private studyEntity study;
 
-	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "TEACHER")
 	private empEntity teacher;
 

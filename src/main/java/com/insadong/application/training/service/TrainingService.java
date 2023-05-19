@@ -5,8 +5,6 @@ import com.insadong.application.common.entity.Training;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.study.repository.StudyRepository;
-import com.insadong.application.training.dto.StudyCountDTO;
-import com.insadong.application.training.dto.TrainingCountDTO;
 import com.insadong.application.training.dto.TrainingDTO;
 import com.insadong.application.training.repository.TrainingRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -107,15 +105,4 @@ public class TrainingService {
 		return searchList.map(training -> modelMapper.map(training, TrainingDTO.class));
 	}
 
-	public Page<TrainingDTO> selectTrainingListByTrainingCount(long trainingCount, int page) {
-
-		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("trainingCode").descending());
-		List<StudyCountDTO> studyCountDTO = studyRepository.countByTraining(trainingCount);
-
-		List<TrainingCountDTO> trainingCountList = studyCountDTO.stream().map(count -> modelMapper.map(count, TrainingCountDTO.class)).collect(Collectors.toList());
-
-		log.info("countList : {} ", trainingCountList);
-
-		return null;
-	}
 }

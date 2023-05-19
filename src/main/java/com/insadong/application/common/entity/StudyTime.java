@@ -3,6 +3,8 @@ package com.insadong.application.common.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -10,6 +12,8 @@ import javax.persistence.*;
 @Setter
 @Entity
 @ToString
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "TB_STUDY_TIME")
 @SequenceGenerator(name = "STUDY_TIME_SEQ_GEN", sequenceName = "SEQ_STUDY_TIME_CODE", allocationSize = 1)
 public class StudyTime {
