@@ -2,13 +2,18 @@ package com.insadong.application.study.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Getter
 @Setter
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "TB_STUDY_INFO")
 public class studyInfoEntity {
 
@@ -16,19 +21,19 @@ public class studyInfoEntity {
 	@Column(name = "STUDY_INFO_CODE")
 	private Long studyInfoCode;
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "STUDY")
 	private studyEntity study;
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "TEACHER")
 	private empEntity teacher;
 
 	@Column(name = "STUDY_INFO_START_DATE")
-	private String studyInfoStartDate;
+	private Date studyInfoStartDate;
 
 	@Column(name = "STUDY_INFO_END_DATE")
-	private String studyInfoEndDate;
+	private Date studyInfoEndDate;
 
 	@Column(name = "STUDY_ROOM")
 	private String studyRoom;

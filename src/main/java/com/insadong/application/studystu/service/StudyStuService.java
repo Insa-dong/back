@@ -136,15 +136,16 @@ public class StudyStuService {
 	    return studyStuDTOList;
 	}
 
-		/* 과정 타이틀명 조회 */
-		public List<String> selectAllTrainingTitles() {
-		log.info("[StudyStuService] selectAllTrainingTitles start ==============================");
 
-	    List<String> trainingTitles = studyStuRepository.findAllTrainingTitles();
-
-	    log.info("[StudyStuService] selectAllTrainingTitles end ================================");
-	    return trainingTitles;
+	/* 전체 과정 조회 */
+	public List<Training> selectAllTrainings() {
+	    log.info("[StudyStuService] selectAllTrainings start ==============================");
+	    List<Training> trainings = studyStuRepository.findAllTrainings();
+	    log.info("[StudyStuService] selectAllTrainings end ================================");
+	    return trainings;
 	}
+	
+
 
 	
 }
