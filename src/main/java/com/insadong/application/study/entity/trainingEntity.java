@@ -6,8 +6,10 @@ import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Setter
 @Getter
@@ -24,27 +26,5 @@ public class trainingEntity {
 
 	@Column(name = "TRAINING_TITLE")
 	private String trainingTitle;
-
-	@Column(name = "TRAINING_QUAL")
-	private String trainingQual;
-
-	@Column(name = "TRAINING_KNOW")
-	private String trainingKnow;
-
-	@Column(name = "TRAINING_TIME")
-	private String trainingTime;
-	
-	@ManyToOne
-	@JoinColumn(name = "TRAINING_WRITER")
-	private empEntity trainingWriter;
-
-	@Column(name = "TRAINING_DATE")
-	private Date trainingDate;
-
-	@Column(name = "TRAINING_UPDATE")
-	private Date trainingUpdate;
-
-	@Column(name = "TRAINING_DELETE_YN")
-	private String trainingDeleteYn;
 
 }
