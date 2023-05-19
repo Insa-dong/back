@@ -36,7 +36,7 @@ public class NoticeService {
 		this.employeeRepository = employeeRepository;
 		this.modelMapper = modelMapper;
 	}
-  
+
 	/* 공지사항 전체목록 조회 */
 	public Page<NoticeDTO> selectNoticeList(int page) {
 
@@ -61,16 +61,7 @@ public class NoticeService {
 
 		Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("noticeCode").descending());
 
-		if (searchOption.equals("all")) {
-			
-			Page<Notice> noticeList = noticeRepository.findAll(pageable);
-			Page<NoticeDTO> noticeDTOList = noticeList.map(notice -> modelMapper.map(notice, NoticeDTO.class));
-
-			log.info("[NoticeService] searchNoticeByOption.getContent() : {}", noticeDTOList.getContent());
-
-			return noticeDTOList;
-			
-		} else if (searchOption.equals("title")) {
+		if (searchOption.equals("title")) {
 			Page<Notice> noticeList = noticeRepository.findByNoticeTitleContains(pageable, searchKeyword);
 			Page<NoticeDTO> noticeDTOList = noticeList.map(notice -> modelMapper.map(notice, NoticeDTO.class));
 
@@ -117,7 +108,7 @@ public class NoticeService {
 
 			return noticeDTOList;
 
-    } else {
+		} else {
 			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
 		}
 
