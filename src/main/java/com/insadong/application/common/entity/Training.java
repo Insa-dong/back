@@ -2,6 +2,7 @@ package com.insadong.application.common.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -12,6 +13,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
+@ToString
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "TB_TRAINING")

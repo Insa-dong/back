@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/insa/v1")
@@ -28,7 +30,9 @@ public class TrainingController {
 	@GetMapping("/trainingTitleList")
 	public ResponseEntity<ResponseDTO> viewTrainingTitleList() {
 
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", trainingService.viewTrainingTitleList()));
+		List<com.insadong.application.study.dto.TrainingDTO> data = trainingService.viewTrainingTitleList();
+		log.info("data : {} ", data);
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
 	}
 
 	@GetMapping("/trainingList")
