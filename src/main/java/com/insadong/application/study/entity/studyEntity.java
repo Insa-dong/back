@@ -24,11 +24,11 @@ public class studyEntity {
 	@Column(name = "STUDY_CODE")
 	private Long studyCode;
 
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name = "STUDY_CODE")
 	private List<StudyTime> studyTimes;
 
-	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "TRAINING_CODE")
 	private trainingEntity training;
 
@@ -48,6 +48,10 @@ public class studyEntity {
 	@JoinColumn(name = "STUDY_MODIFIER")
 	private empEntity studyModifier;
 
+	@Column(name = "STUDY_COUNT")
+	private Long studyCount;
+
 	@Column(name = "STUDY_MODIFY_DATE")
 	private Date studyModifyDate;
+
 }

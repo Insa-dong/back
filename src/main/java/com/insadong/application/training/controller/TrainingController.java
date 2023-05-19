@@ -96,19 +96,4 @@ public class TrainingController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
-	@GetMapping("/trainingList/searchCount")
-	public ResponseEntity<ResponseDTO> searchTrainingByCount(@RequestParam(name = "searchCount") long trainingCount,
-	                                                         @RequestParam(name = "page", defaultValue = "1") int page) {
-
-		log.info("회차 : {} ", trainingCount);
-
-		Page<TrainingDTO> trainingList = trainingService.selectTrainingListByTrainingCount(trainingCount, page);
-		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(trainingList);
-
-		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
-		responseDTOWithPaging.setPageInfo(pageInfo);
-		responseDTOWithPaging.setData(trainingList.getContent());
-
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
-	}
 }

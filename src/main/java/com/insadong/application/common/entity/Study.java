@@ -40,6 +40,9 @@ public class Study {
 	@JoinColumn(name = "STUDY_MODIFIER")
 	private Employee studyModifier;
 
+	@Column(name = "STUDY_COUNT")
+	private Long studyCount;
+
 	@Column(name = "STUDY_MODIFY_DATE")
 	private Date studyModifyDate;
 

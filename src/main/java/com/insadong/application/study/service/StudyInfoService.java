@@ -1,10 +1,10 @@
 package com.insadong.application.study.service;
 
-import com.insadong.application.emporg.repository.EmpRepository;
 import com.insadong.application.study.dto.PetiteStudyInfoDTO;
 import com.insadong.application.study.dto.StudyInfoDTO;
 import com.insadong.application.study.entity.studyInfoEntity;
 import com.insadong.application.study.repository.StudyInfoRepository;
+import com.insadong.application.study.repository.StudyTimeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -18,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StudyInfoService {
 	private final StudyInfoRepository studyInfoRepository;
-	private final EmpRepository empRepository;
+	private final StudyTimeRepository studyTimeRepository;
 	private final ModelMapper modelMapper;
 
-	public StudyInfoService(StudyInfoRepository studyInfoRepository, EmpRepository empRepository, ModelMapper modelMapper) {
+	public StudyInfoService(StudyInfoRepository studyInfoRepository, StudyTimeRepository studyTimeRepository, ModelMapper modelMapper) {
 		this.studyInfoRepository = studyInfoRepository;
-		this.empRepository = empRepository;
+		this.studyTimeRepository = studyTimeRepository;
 		this.modelMapper = modelMapper;
 	}
 
@@ -43,13 +43,11 @@ public class StudyInfoService {
 	public void modifyStudyInfo(PetiteStudyInfoDTO studyInfo, Long studyInfoCode) {
 
 		studyInfoEntity foundStudyInfo = studyInfoRepository.findById(studyInfoCode).orElseThrow(() -> new IllegalArgumentException("조회 실패~"));
+		studyTimeRepository.deleteByStudyCode(foundStudyInfo.getStudy().getStudyCode());
+
 
 		studyInfoEntity map = modelMapper.map(studyInfo, studyInfoEntity.class);
 		log.info("map : {} ", map.toString());
-		try {
-			studyInfoRepository.save(map);
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-		}
+		studyInfoRepository.save(map);
 	}
 }

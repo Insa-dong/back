@@ -11,8 +11,6 @@ public class PetiteTrainingDTO {
 
 	private String trainingTitle;
 
-	private String trainingCount;
-
 	private Date trainingDate;
 
 	private Date trainingUpdate;
