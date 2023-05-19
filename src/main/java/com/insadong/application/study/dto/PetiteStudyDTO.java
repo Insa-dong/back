@@ -1,7 +1,7 @@
 package com.insadong.application.study.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.insadong.application.emporg.dto.EmpDTO;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import lombok.Data;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ public class PetiteStudyDTO {
 
 	private Long studyMaxPeople;
 
-	private EmpDTO studyModifier;
+	private EmployeeDTO studyModifier;
 
 	private Date studyModifyDate;
 

@@ -45,6 +45,7 @@ public class StudyInfoService {
 		studyInfoEntity foundStudyInfo = studyInfoRepository.findById(studyInfoCode).orElseThrow(() -> new IllegalArgumentException("조회 실패~"));
 
 		studyInfoEntity map = modelMapper.map(studyInfo, studyInfoEntity.class);
+		log.info("map : {} ", map.toString());
 		try {
 			studyInfoRepository.save(map);
 		} catch (RuntimeException e) {

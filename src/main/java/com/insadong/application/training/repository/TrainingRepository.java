@@ -14,6 +14,4 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 	@EntityGraph(attributePaths = {"trainingWriter", "trainingWriter.job", "trainingWriter.dept", "trainingModifier", "trainingModifier.job", "trainingModifier.dept", "trainingWriter.empAuthList.auth"})
 	Page<Training> findByTrainingTitleContainsAndTrainingDeleteYn(Pageable pageable, String trainingTitle, String n);
 
-	@EntityGraph(attributePaths = {"trainingWriter", "trainingWriter.job", "trainingWriter.dept", "trainingModifier", "trainingModifier.job", "trainingModifier.dept", "trainingWriter.empAuthList.auth"})
-	Page<Training> findByTrainingCountContainsAndTrainingDeleteYn(Pageable pageable, String trainingCount, String n);
 }
