@@ -15,8 +15,6 @@ public class TrainingDTO {
 
 	private String trainingTime;
 
-	private String trainingCount;
-
 	private EmpDTO trainingWriter;
 
 }

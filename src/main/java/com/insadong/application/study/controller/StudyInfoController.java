@@ -1,12 +1,13 @@
 package com.insadong.application.study.controller;
 
 import com.insadong.application.common.ResponseDTO;
-import com.insadong.application.emporg.dto.EmpDTO;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
 import com.insadong.application.study.dto.PetiteStudyDTO;
 import com.insadong.application.study.dto.PetiteStudyInfoDTO;
+import com.insadong.application.study.dto.PetiteTrainingDTO;
 import com.insadong.application.study.dto.StudyInfoDTO;
 import com.insadong.application.study.service.StudyInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -52,12 +53,15 @@ public class StudyInfoController {
 	}
 
 	@PutMapping("/studyInfo/{studyInfoCode}")
-	public ResponseEntity<ResponseDTO> modifyStudyInfo(@PathVariable Long studyInfoCode, @RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmpDTO emp) {
+	public ResponseEntity<ResponseDTO> modifyStudyInfo(@PathVariable Long studyInfoCode, @RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmployeeDTO emp) {
 
 
 		PetiteStudyDTO study = studyInfo.getStudy();
 		study.setStudyModifier(emp);
 		study.setStudyModifyDate(new Date());
+		PetiteTrainingDTO training = study.getTraining();
+		training.setTrainingUpdate(new Date());
+
 
 		log.info("studyInfo : {} ", studyInfo);
 		log.info("emp : {} ", emp);
