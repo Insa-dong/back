@@ -2,7 +2,6 @@ package com.insadong.application.abs.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -19,6 +18,9 @@ import com.insadong.application.common.entity.Abs;
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.employee.repository.EmployeeRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class AbsService {
 
@@ -47,15 +49,23 @@ public class AbsService {
 	}
 
 	/*1-1 내 근태 목록 조회*/
-	public Page<AbsDTO> selectAbsListForUser(Employee empCode, int page) {
-	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("absDate").descending());
+	public Page<AbsDTO> myAbsInfo(Long empCode, int page) {
+		
+		log.info("[AbsService] myAbsInfo start ============================== ");
+		log.info("[AbsService] absCode : {} start ============================== ");
+		
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("absDate").descending());
 
-	    Page<Abs> absList = absRepository.findByEmpCode(empCode.getEmpCode(), pageable);
+	    Page<Abs> absList = absRepository.findByEmpCode_EmpCode(empCode, pageable);
 
 	    Page<AbsDTO> absDtoList = absList.map(abs -> modelMapper.map(abs, AbsDTO.class));
 
 	    return absDtoList;
 	}
+
+	
+
 	
 	/*1-2 팀원 근태 목록 조회*/
 
@@ -145,6 +155,7 @@ public class AbsService {
 
 	    		
 	}
+
 
 	    
 	}
