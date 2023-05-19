@@ -55,15 +55,11 @@ private final AbsService absService;
 	
 	/*1-1 자신의 근태 조회 */
 	@GetMapping("/abs-myAbs")
-	public ResponseEntity<ResponseDTO> selectAbsListForUser(@AuthenticationPrincipal Employee empCode,
+	public ResponseEntity<ResponseDTO> myAbsInfo(@AuthenticationPrincipal EmployeeDTO emp,
 	                                                        @RequestParam(name = "page", defaultValue = "1") int page) {
-		
-	    if (empCode == null) {
-	        // empCode가 null인 경우에 대한 처리
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO(HttpStatus.BAD_REQUEST, "사용자 정보가 유효하지 않습니다.", null));
-	    }
 
-	    Page<AbsDTO> absDtoList = absService.selectAbsListForUser(empCode, page);
+
+	    Page<AbsDTO> absDtoList = absService.myAbsInfo(emp.getEmpCode(), page);
 	    
 
 	    PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(absDtoList);
@@ -78,8 +74,8 @@ private final AbsService absService;
 	
 	/* 2. 출근 시간 등록*/
 	@PostMapping("/checkIn")
-	public ResponseEntity<ResponseDTO> checkIn (@AuthenticationPrincipal EmployeeDTO loggedInUser) {
-		Long empCode = loggedInUser.getEmpCode();
+	public ResponseEntity<ResponseDTO> checkIn (@AuthenticationPrincipal EmployeeDTO emp) {
+		Long empCode = emp.getEmpCode();
 	    try {
 	        absService.checkIn(empCode);
 	        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출근 등록 성공"));
@@ -90,8 +86,8 @@ private final AbsService absService;
 	
 	/* 3. 퇴근 시간 등록*/
 	@PutMapping("/checkOut")
-	public ResponseEntity<ResponseDTO> checkOut (@AuthenticationPrincipal EmployeeDTO loggedInUser) {
-		Long empCode = loggedInUser.getEmpCode();
+	public ResponseEntity<ResponseDTO> checkOut (@AuthenticationPrincipal EmployeeDTO emp) {
+		Long empCode = emp.getEmpCode();
 	    try {
 	        absService.checkOut(empCode);
 	        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "퇴근 등록 성공"));

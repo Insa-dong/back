@@ -13,13 +13,13 @@ public class AbsDTO {
 				/* 근태 */
 	
 
-	private Long absCode;			// 근태코드
+	private Long absCode;					// 근태코드
 
-	private EmployeeDTO empCode;		// 사번
+	private EmployeeDTO empCode;			// 사번
 
-	private LocalDate absDate;			// 출근일자
+	private LocalDate absDate;				// 출근일자
 
-	private LocalDateTime absStart;		// 출근시간
+	private LocalDateTime absStart;			// 출근시간
 
 	private LocalDateTime absEnd;			// 퇴근시간
 
