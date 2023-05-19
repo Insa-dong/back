@@ -1,5 +1,6 @@
 package com.insadong.application.common.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -30,10 +31,10 @@ public class Off {
 	private Long signCode;					// 신청코드
 	
 	@Column(name="OFF_START")
-	private Date offStart;					// 시작일
+	private LocalDate  offStart;					// 시작일
 	
 	@Column(name="OFF_END")
-	private Date offEnd;					// 종료일
+	private LocalDate  offEnd;					// 종료일
 	
 	@Column(name="OFF_DAY")
 	private Long offDay;					// 일수
@@ -66,18 +67,3 @@ public class Off {
 	
 }
 
-/*
-SIGN_CODE	NUMBER
-OFF_START	DATE
-OFF_END	DATE
-OFF_DAY	NUMBER
-SIGN_REASON	VARCHAR2(1000 BYTE)
-SIGN_STATUS	VARCHAR2(100 BYTE)
-SIGN_REQUESTER	NUMBER
-OFF_DIV	VARCHAR2(100 BYTE)
-SIGN_PAYER	NUMBER
-REQUEST_DATE	DATE
-RETURN_REASON	VARCHAR2(1000 BYTE)
-HANDLE_DATE	DATE  
-
-*/
