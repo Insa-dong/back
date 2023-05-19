@@ -24,7 +24,7 @@ public class StudyTimeService {
 
 
 	public List<StudyTimeDTO> findByStudyStudyCode(Long studyCode) {
-		List<StudyTime> foundList = studyTimeRepository.findByStudyStudyCode(studyCode);
+		List<StudyTime> foundList = studyTimeRepository.findByStudyCode(studyCode);
 
 		return foundList.stream().map(studyTime -> modelMapper.map(studyTime, StudyTimeDTO.class)).collect(Collectors.toList());
 	}
