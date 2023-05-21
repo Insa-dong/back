@@ -64,6 +64,8 @@ public class Employee {
 	@JoinColumn(name = "EMP_CODE")
 	private List<EmpAuth> empAuthList;
 
+	@OneToMany(mappedBy = "signRequester")
+    private List<Off> offs;
 
 }
 
