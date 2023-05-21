@@ -1,5 +1,6 @@
 package com.insadong.application.off.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import com.insadong.application.employee.dto.EmployeeDTO;
@@ -11,9 +12,9 @@ public class OffDTO {
 
 	private Long signCode;					// 신청코드
 
-	private Date offStart;					// 시작일
+	private LocalDate offStart;					// 시작일
 
-	private Date offEnd;					// 종료일
+	private LocalDate offEnd;					// 종료일
 
 	private Long offDay;					// 일수
 
@@ -32,4 +33,6 @@ public class OffDTO {
 	private String returnReason;			// 반려 사유
 
 	private Date handleDate;				// 처리 일자
+	
+
 }

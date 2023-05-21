@@ -26,7 +26,7 @@ public class Off {
   /* 연차 */
 	
 	@Id
-	@Column(name="")
+	@Column(name="SIGN_CODE")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="OFF_SEQ_GENERATOR")
 	private Long signCode;					// 신청코드
 	
@@ -37,7 +37,7 @@ public class Off {
 	private LocalDate  offEnd;					// 종료일
 	
 	@Column(name="OFF_DAY")
-	private Long offDay;					// 일수
+	private Double offDay;					// 일수
 	
 	@Column(name="SIGN_REASON")
 	private String signReason;				// 신청 사유
