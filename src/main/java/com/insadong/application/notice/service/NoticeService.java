@@ -15,10 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.insadong.application.common.entity.Employee;
+import com.insadong.application.common.entity.File;
 import com.insadong.application.common.entity.Notice;
 import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.notice.dto.FileDTO;
 import com.insadong.application.notice.dto.NoticeDTO;
+import com.insadong.application.notice.repository.FileRepository;
 import com.insadong.application.notice.repository.NoticeRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ public class NoticeService {
 
 	private final NoticeRepository noticeRepository;
 	private final EmployeeRepository employeeRepository;
+	private final FileRepository fileRepository;
 	private final ModelMapper modelMapper;
 	
 	@Value("${image.image-url}")
@@ -36,10 +39,11 @@ public class NoticeService {
 	@Value("${image.image-dir}")
 	private String IMAGE_DIR;
 
-	public NoticeService(NoticeRepository noticeRepository, EmployeeRepository employeeRepository,
+	public NoticeService(NoticeRepository noticeRepository, EmployeeRepository employeeRepository, FileRepository fileRepository,
 			ModelMapper modelMapper) {
 		this.noticeRepository = noticeRepository;
 		this.employeeRepository = employeeRepository;
+		this.fileRepository = fileRepository;
 		this.modelMapper = modelMapper;
 	}
 
@@ -134,9 +138,16 @@ public class NoticeService {
 			String fileFath = IMAGE_DIR;
 			Long fileSize = file.getSize();
 			
-		
+			fileDTO.setOriginFileName(originFileName);
+			fileDTO.setSaveFileName(saveFileName);
+			fileDTO.setFileFath(IMAGE_DIR);
+			fileDTO.setFileSize(fileSize);
 			
 			Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
+			
+//			fileDTO.setNoticeCode(notice.getNoticeCode());
+			
+			fileRepository.save(modelMapper.map(fileDTO, File.class));
 		}
 
 	}

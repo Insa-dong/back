@@ -18,7 +18,7 @@ import java.util.List;
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "TB_STUDY")
-public class studyEntity {
+public class StudyEntity {
 
 	@Id
 	@Column(name = "STUDY_CODE")
@@ -30,7 +30,7 @@ public class studyEntity {
 
 	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "TRAINING_CODE")
-	private trainingEntity training;
+	private TrainingEntity training;
 
 	@Column(name = "STUDY_START_DATE")
 	private Date studyStartDate;
@@ -46,7 +46,7 @@ public class studyEntity {
 
 	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "STUDY_MODIFIER")
-	private empEntity studyModifier;
+	private EmpEntity studyModifier;
 
 	@Column(name = "STUDY_COUNT")
 	private Long studyCount;
