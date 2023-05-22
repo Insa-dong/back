@@ -72,6 +72,20 @@ public class StudyInfoController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 완료"));
 	}
 
+	@PostMapping("/studyInsert")
+	public ResponseEntity<ResponseDTO> insertStudyInfo(@RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmployeeDTO emp) {
+
+		PetiteStudyDTO study = studyInfo.getStudy();
+		study.setStudyModifyDate(new Date());
+		study.setStudyModifier(emp);
+		studyInfo.setStudy(study);
+
+		studyInfoService.insertStudy(studyInfo);
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 완료"));
+	}
+
+
 	/* 강사 강의 리스트 조회 */
 	@GetMapping("/emp/teacherStudyList/{empCode}")
 	public ResponseEntity<ResponseDTO> selectTeacherStudyListByEmpCode(@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long empCode) {
