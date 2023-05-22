@@ -16,7 +16,7 @@ public class OffDTO {
 
 	private LocalDate offEnd;					// 종료일
 
-	private Long offDay;					// 일수
+	private Double offDay;					// 일수
 
 	private String signReason;				// 신청 사유
 

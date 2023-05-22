@@ -1,65 +1,62 @@
 package com.insadong.application.off.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.insadong.application.common.entity.Employee;
-import com.insadong.application.common.entity.Off;
-import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.off.dto.EmpOffDTO;
 import com.insadong.application.off.dto.OffDTO;
-import com.insadong.application.off.repository.EmpOffRepository;
 
 @Service
 public class EmpOffService {
 	
-//	private final EmpOffRepository empOffRepository;
-//	private final ModelMapper modelMapper;
-//	
-//	public EmpOffService(EmpOffRepository empOffRepository, ModelMapper modelMapper) {
-//        this.empOffRepository = empOffRepository;
-//        this.modelMapper = modelMapper;
-//    }
-//
-//	public Page<EmpOffDTO> getEmployeeOffStatus(int page) {
-//		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("deptCode"));
-//		Page<Employee> employees = empOffRepository.findAllActiveEmployeesWithOff(pageable);
-//        return employees.map(this::convertToDTO);
-//    }
-//
-//    private EmpOffDTO convertToDTO(Employee employee) {
-//    	EmpOffDTO dto = new EmpOffDTO();
-//
-//        dto.setEmpName(employee.getEmpName());
-//        dto.setDeptName(employee.getDept().getDeptName());
-//        dto.setJobName(employee.getJob().getJobName());
-//
-//        long usedOff = employee.getOffs().stream()
-//            .filter(off -> "승인".equals(off.getSignStatus()))
-//            .mapToLong(Off::getOffDay)
-//            .sum();
-//        dto.setUsedOff(usedOff);
-//        dto.setOffCount(15L - usedOff);  // remaining off
-//
-//        List<OffDTO> offDTOs = employee.getOffs().stream()
-//                .map(this::convertToOffDTO)
-//                .collect(Collectors.toList());
-//        dto.setOffs(offDTOs);
-//            
-//        return dto;
-//    }
-//
-//    private OffDTO convertToOffDTO(Off off) {
-//        OffDTO offDto = modelMapper.map(off, OffDTO.class);
-//        offDto.setSignRequester(modelMapper.map(off.getSignRequester(), EmployeeDTO.class));
-//        offDto.setSignPayer(modelMapper.map(off.getSignPayer(), EmployeeDTO.class));
-//        return offDto;
-//    }
+	private final EmployeeRepository employeeRepository;
+	public static final Long TOTAL_OFF_LEAVE = 15L; // 총 연차 15개로 고정
+	
+    public EmpOffService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
+    /* 2. 내 연차 현황 조회 */
+    public EmpOffDTO getEmpOffInfo(Long empCode) {
+        // 직원 정보 조회
+        Employee employee = employeeRepository.findById(empCode)
+                .orElseThrow(() -> new RuntimeException("직원 조회 실패"));
+
+        
+        EmpOffDTO empOffDTO = new EmpOffDTO();
+        // 필요한 필드 값 설정
+        empOffDTO.setOffCount(employee.getOffCount());
+        empOffDTO.setRemainingOff(calculateRemainingOff(employee, empOffDTO));
+        empOffDTO.setTotalOff(TOTAL_OFF_LEAVE);
+        empOffDTO.setUsedOff(calculateUsedOff(empOffDTO));
+
+        return empOffDTO;
+    }
+    
+    //사용 연차 가져오기
+    private Double calculateUsedOff(EmpOffDTO empOffDTO) {
+        
+        List<OffDTO> offs = empOffDTO.getOffs();
+        Double usedOff = offs.stream()
+                             .filter(off -> off.getSignStatus().equals("승인"))
+                             .mapToDouble(OffDTO::getOffDay)
+                             .sum();
+        return usedOff;
+    }
+    
+    // 남은 연차 계산
+    private Double calculateRemainingOff(Employee employee, EmpOffDTO empOffDTO) {
+        
+        Double offCount = employee.getOffCount();
+        Double usedOff = calculateUsedOff(empOffDTO);
+        Double remainingOff = Math.max(offCount - usedOff, 0L);
+        return remainingOff;
+    }
+
+
+	
+
 }
