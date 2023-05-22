@@ -95,7 +95,7 @@ public class EmpController {
 
 	/*4. 구성원 부서 직책 조회*/
 	@GetMapping("/emp/deptjoblist")
-	public ResponseEntity<ResponseDTO> selectEmpDeptJobList(){
+	public ResponseEntity<ResponseDTO> selectEmpDeptJobList() {
 		log.info("[EmpController] : selectEmpDeptJobList start ==================================== ");
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpDeptJobList()));
 	}
@@ -103,7 +103,7 @@ public class EmpController {
 
 	/*5. 구성원 등록*/
 	@PostMapping("/emp/empregist")
-	public ResponseEntity<ResponseDTO> insertEmp(@RequestBody EmployeeDTO employeeDTO){
+	public ResponseEntity<ResponseDTO> insertEmp(@RequestBody EmployeeDTO employeeDTO) {
 		empService.insertEmp(employeeDTO);
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "구성원 등록 성공"));
 
@@ -111,13 +111,9 @@ public class EmpController {
 
 	/* 6. 구성원 상세 조회 */
 	@GetMapping("emp/empdetail/{empCode}")
-	public ResponseEntity<ResponseDTO> selectEmpDetail(@PathVariable Long empCode){
+	public ResponseEntity<ResponseDTO> selectEmpDetail(@PathVariable Long empCode) {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpDetail(empCode)));
 	}
-
-
-
-
 
 
 	@GetMapping("/emp/teacher")

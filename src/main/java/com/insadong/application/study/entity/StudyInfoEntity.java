@@ -17,7 +17,7 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "TB_STUDY_INFO")
-public class studyInfoEntity {
+public class StudyInfoEntity {
 
 	@Id
 	@Column(name = "STUDY_INFO_CODE")
@@ -25,11 +25,11 @@ public class studyInfoEntity {
 
 	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "STUDY")
-	private studyEntity study;
+	private StudyEntity study;
 
 	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "TEACHER")
-	private empEntity teacher;
+	private EmpEntity teacher;
 
 	@Column(name = "STUDY_INFO_START_DATE")
 	private Date studyInfoStartDate;
