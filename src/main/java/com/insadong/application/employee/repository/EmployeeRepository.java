@@ -18,5 +18,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	List<Employee> findByEmpNameContains(String searchKeyword);
 
-
 }
