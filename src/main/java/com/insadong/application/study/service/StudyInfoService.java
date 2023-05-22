@@ -1,12 +1,8 @@
 package com.insadong.application.study.service;
 
-import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.study.dto.PetiteStudyInfoDTO;
 import com.insadong.application.study.dto.StudyInfoDTO;
-import com.insadong.application.study.entity.EmpEntity;
-import com.insadong.application.study.entity.StudyEntity;
 import com.insadong.application.study.entity.StudyInfoEntity;
-import com.insadong.application.study.entity.TrainingEntity;
 import com.insadong.application.study.repository.PetiteEmpRepository;
 import com.insadong.application.study.repository.PetiteTrainingRepository;
 import com.insadong.application.study.repository.StudyInfoRepository;
@@ -19,8 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 @Slf4j
 @Service
@@ -41,7 +35,7 @@ public class StudyInfoService {
 
 	public Page<StudyInfoDTO> viewStudyInfoList(int page) {
 
-		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("studyInfoCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 7, Sort.by("studyInfoCode").descending());
 		Page<StudyInfoEntity> foundStudyInfoList = studyInfoRepository.findByStudyStudyDeleteYn(pageable, "N");
 
 		return foundStudyInfoList.map(studyInfo -> modelMapper.map(studyInfo, StudyInfoDTO.class));
@@ -77,23 +71,16 @@ public class StudyInfoService {
 	@Transactional
 	public void insertStudy(PetiteStudyInfoDTO studyInfo) {
 
-		EmployeeDTO studyModifier = studyInfo.getStudy().getStudyModifier();
-		Long trainingCode = studyInfo.getStudy().getTraining().getTrainingCode();
-
-
-		EmpEntity employee = empRepository.findById(studyModifier.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("실패~"));
-		log.info("emp : {} ", employee);
-
-		TrainingEntity training = trainingRepository.findById(trainingCode).orElseThrow(() -> new IllegalArgumentException("실패 ~"));
-		log.info("training : {} ", training);
-
+//		Long trainingCode = studyInfo.getStudy().getTraining().getTrainingCode();
+//		TrainingEntity training = trainingRepository.findById(trainingCode).orElseThrow(() -> new IllegalArgumentException("실패 ~"));
+//		log.info("training : {} ", training);
+//
+//
+//		TrainingEntity foundEntity = saveEntity.getStudy().getTraining();
+//
+//		foundEntity.setTrainingCode(training.getTrainingCode());
+//		foundEntity.setTrainingTitle(training.getTrainingTitle());
 		StudyInfoEntity saveEntity = modelMapper.map(studyInfo, StudyInfoEntity.class);
-		StudyEntity study = saveEntity.getStudy();
-
-
-		study.setStudyDate(new Date());
-		study.getTraining().setTrainingCode(trainingCode);
-
 
 		studyInfoRepository.save(saveEntity);
 	}
