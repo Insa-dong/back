@@ -1,6 +1,5 @@
 package com.insadong.application.study.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,12 +14,6 @@ public class StudyDTO {
 
 	private List<StudyTimeDTO> studyTimes;
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date studyStartDate;
-
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date studyEndDate;
-
 	private Long studyMaxPeople;
 
 	private EmpDTO studyModifier;
@@ -31,5 +24,5 @@ public class StudyDTO {
 
 	private String studyDeleteYn;
 
-
+	private Date studyDate;
 }

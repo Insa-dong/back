@@ -27,12 +27,6 @@ public class Study {
 	@JoinColumn(name = "TRAINING_CODE")
 	private Training training;
 
-	@Column(name = "STUDY_START_DATE")
-	private String studyStartDate;
-
-	@Column(name = "STUDY_END_DATE")
-	private String studyEndDate;
-
 	@Column(name = "STUDY_MAX_PEOPLE")
 	private Long studyMaxPeople;
 
@@ -48,5 +42,8 @@ public class Study {
 
 	@Column(name = "STUDY_DELETE_YN")
 	private String studyDeleteYn;
+
+	@Column(name = "STUDY_DATE")
+	private Date studyDate;
 
 }
