@@ -2,7 +2,6 @@ package com.insadong.application.emporg.controller;
 
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmployeeDTO;
-import com.insadong.application.emporg.dto.EmpDTO;
 import com.insadong.application.emporg.service.EmpService;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
@@ -53,7 +52,7 @@ public class EmpController {
 		log.info("[EmpController] : selectEmpListByDept start ==================================== ");
 		log.info("[EmpController] : page : {}", page);
 
-		Page<EmpDTO> empDTOList = empService.selectEmpListByDept(page, deptCode);
+		Page<EmployeeDTO> empDTOList = empService.selectEmpListByDept(page, deptCode);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empDTOList);
 		log.info("[EmpController] : pageInfo : {}", pageInfo);
 
@@ -78,7 +77,7 @@ public class EmpController {
 		log.info("[EmpController] : searchOption : {}", searchOption);
 		log.info("[EmpController] : searchKeyword : {}", searchKeyword);
 
-		Page<EmpDTO> empDTOList = empService.searchEmpByNameAndDeptAndJob(page, searchOption, searchKeyword);
+		Page<EmployeeDTO> empDTOList = empService.searchEmpByNameAndDeptAndJob(page, searchOption, searchKeyword);
 
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empDTOList);
 
