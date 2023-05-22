@@ -22,6 +22,8 @@ public class AbsDTO {
 	private LocalDateTime absStart;			// 출근시간
 
 	private LocalDateTime absEnd;			// 퇴근시간
+	
+	private String offDiv = "";				// 연차 종류. 기본적으로 빈 문자열.
 
 
 
