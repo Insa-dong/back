@@ -4,6 +4,7 @@ import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Training;
 import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.study.dto.EmpDTO;
+import com.insadong.application.study.dto.PetiteTrainingDTO;
 import com.insadong.application.study.repository.StudyRepository;
 import com.insadong.application.training.dto.TrainingDTO;
 import com.insadong.application.training.repository.TrainingRepository;
@@ -35,19 +36,23 @@ public class TrainingService {
 
 	public Page<TrainingDTO> viewTrainingList(int page) {
 
-		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("trainingCode"));
+		Pageable pageable = PageRequest.of(page - 1, 7, Sort.by("trainingCode"));
 
 		Page<Training> foundList = trainingRepository.findByTrainingDeleteYn(pageable, "N");
 		Page<TrainingDTO> foundDTOList = foundList.map(training -> modelMapper.map(training, TrainingDTO.class));
 		List<Long> trainingCodeList = foundList.map(Training::getTrainingCode).toList();
 		List<Long> foundCountList = studyRepository.findByTrainingCodes(trainingCodeList);
+
 		List<TrainingDTO> list = foundDTOList.toList();
-		
-		for (int i = 0; i < list.size(); i++) {
+		log.info("trainingCode : {} ", trainingCodeList);
+		log.info("foundCount : {} ", foundCountList);
+		log.info("normal : {} ", list);
+
+		for (int i = 0; i < foundCountList.size(); i++) {
 			list.get(i).setStudyCount(foundCountList.get(i));
 		}
 
-		return new PageImpl<>(list, pageable, foundDTOList.getSize());
+		return new PageImpl<>(list, pageable, trainingRepository.countByTraining());
 	}
 
 	public TrainingDTO viewTraining(Long trainingCode) {
@@ -58,9 +63,9 @@ public class TrainingService {
 		return trainingDTO;
 	}
 
-	public List<com.insadong.application.study.dto.TrainingDTO> viewTrainingTitleList() {
+	public List<PetiteTrainingDTO> viewTrainingTitleList() {
 
-		return trainingRepository.findAll().stream().map(training -> modelMapper.map(training, com.insadong.application.study.dto.TrainingDTO.class)).collect(Collectors.toList());
+		return trainingRepository.findAll().stream().map(training -> modelMapper.map(training, PetiteTrainingDTO.class)).collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -83,7 +88,7 @@ public class TrainingService {
 	}
 
 	@Transactional
-	public void insertTraining(TrainingDTO trainingDTO, long empCode) {
+	public void insertTraining(com.insadong.application.study.dto.TrainingDTO trainingDTO, long empCode) {
 
 		Employee employee = employeeRepository.findById(empCode).orElseThrow(() -> new IllegalArgumentException("해당 코드로 사원을 조회할 수 없습니다."));
 		EmpDTO empDTO = modelMapper.map(employee, EmpDTO.class);
