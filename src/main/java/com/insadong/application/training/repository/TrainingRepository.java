@@ -5,13 +5,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface TrainingRepository extends JpaRepository<Training, Long> {
 
-	@EntityGraph(attributePaths = {"trainingWriter", "trainingWriter.job", "trainingWriter.dept", "trainingModifier", "trainingModifier.job", "trainingModifier.dept", "trainingWriter.empAuthList.auth"})
+	@EntityGraph(attributePaths = {"trainingWriter", "trainingModifier"})
 	Page<Training> findByTrainingDeleteYn(Pageable pageable, String trainingDeleteYn);
 
-	@EntityGraph(attributePaths = {"trainingWriter", "trainingWriter.job", "trainingWriter.dept", "trainingModifier", "trainingModifier.job", "trainingModifier.dept", "trainingWriter.empAuthList.auth"})
+	@EntityGraph(attributePaths = {"trainingWriter", "trainingModifier"})
 	Page<Training> findByTrainingTitleContainsAndTrainingDeleteYn(Pageable pageable, String trainingTitle, String n);
 
+	@Query(value = "select count(t.trainingCode) from Training t")
+	Long countByTraining();
 }

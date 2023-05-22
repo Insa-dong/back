@@ -52,7 +52,7 @@ public class Employee {
 	private Date hireDate;
 
 	@Column(name = "OFF_COUNT")
-	private Long offCount;
+	private Double offCount;
 
 	@Column(name = "EMP_STATE")
 	private String empState;

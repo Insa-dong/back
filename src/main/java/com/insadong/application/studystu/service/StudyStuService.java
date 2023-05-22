@@ -4,6 +4,7 @@ import com.insadong.application.attend.repository.AttendRepository;
 import com.insadong.application.common.entity.*;
 import com.insadong.application.student.repository.StudentRepository;
 import com.insadong.application.study.dto.StudyStuDTO;
+import com.insadong.application.study.repository.StudyInfoRepository;
 import com.insadong.application.study.repository.StudyRepository;
 import com.insadong.application.studystu.repository.StudyStuRepository;
 import com.insadong.application.training.repository.TrainingRepository;
@@ -28,18 +29,22 @@ public class StudyStuService {
 	private final TrainingRepository trainingRepository;
 	private final StudyRepository studyRepository;
 	private final AttendRepository attendRepository;
+	private final StudyInfoRepository studyInfoRepository;
 
 	public StudyStuService(StudyStuRepository studyStuRepository,
 	                       ModelMapper modelMapper, StudentRepository studentRepository
 			, TrainingRepository trainingRepository
 			, StudyRepository studyRepository
-			, AttendRepository attendRepository) {
+			, AttendRepository attendRepository
+			, StudyInfoRepository studyInfoRepository) {
 		this.modelMapper = modelMapper;
 		this.studyStuRepository = studyStuRepository;
 		this.studentRepository = studentRepository;
 		this.trainingRepository = trainingRepository;
 		this.studyRepository = studyRepository;
 		this.attendRepository = attendRepository;
+		this.studyInfoRepository = studyInfoRepository;
+
 	}
 
 	/* 1. 수강생 강의 등록 */
@@ -50,49 +55,31 @@ public class StudyStuService {
 		log.info("[StudyStuService] studyStuDto : {}", studyStuDto);
 
 		StudyStu studyStu = new StudyStu();
-		studyStu.setStudyStuPK(new StudyStuPK(studyStuDto.getStudy().getStudyCode(), studyStuDto.getStudent().getStuCode()));
+		studyStu.setStudyStuPK(new StudyStuPK(studyStuDto.getStudyCode(), studyStuDto.getStuCode()));
 		studyStu.setStudyEnrollDate(studyStuDto.getStudyEnrollDate());
 		studyStu.setStudyState(studyStuDto.getStudyState());
 
 		studyStuRepository.save(studyStu);
-//		log.info("[StudyStuService] studyStu : {}", studyStuDto.getContent());
 
 		log.info("[StudyStuService] insertStudent End ==============================");
 
 	}
 
-
-	/* 2. 수강생 강의 수정 */
-//	@Transactional
-//	public void updateStudy(StudyStuDTO studyStuDto) {
-//
-//		log.info("[StudyStuService] updateStudy start ============================== ");
-//		log.info("[StudyStuService] studyStuDto : {}", studyStuDto);
-//
-//		StudyStu originStudyStu = studyStuRepository.findById(studyStuDto.getStudy().getStudyCode())
-//				.orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyStuDto.getStudy().getStudyCode()));
-//
-//		/* 수강생 정보 수정 */
-//		originStudyStu.update(
-//				studyStuDto.getStudyEnrollDate(),
-//				studyStuDto.getStudyState()
-//		);
-//
-//		log.info("[StudyStuService] updateStudy end ============================== ");
-//
-//	}
-
 	/* 2. 수강생 강의 수정 */
 	@Transactional
-	public void updateStudy(long studyCode, long stuCode, String StudyEnrollDate, String studyState) {
-	    StudyStuPK studyStuPK = new StudyStuPK(studyCode, stuCode);
-	    StudyStu foundStudyStu = studyStuRepository.findById(studyStuPK)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 수강생 강의 정보가 없습니다. studyCode=" + studyCode + ", stuCode=" + stuCode));
+	public void updateStudy(StudyStuDTO studyStuDto) {
+		log.info("[StudyStuService] updateStudy start ==============================");
+		log.info("[StudyStuService] studyStuDto: {}", studyStuDto);
 
-	    foundStudyStu.setStudyEnrollDate(StudyEnrollDate);
-	    foundStudyStu.setStudyState(studyState);
+		StudyStuPK studyStuPK = new StudyStuPK(studyStuDto.getStudyCode(), studyStuDto.getStuCode());
+		StudyStu foundStudyStu = studyStuRepository.findById(studyStuPK)
+				.orElseThrow(() -> new IllegalArgumentException("해당 수강생 강의 정보가 없습니다. studyCode=" + studyStuDto.getStudyCode() + ", stuCode=" + studyStuDto.getStuCode()));
 
-	    log.info("[StudyStuService] updateStudy end ==============================");
+		foundStudyStu.getStudyStuPK().setStudyCode(studyStuDto.getStudyCode());
+		foundStudyStu.setStudyEnrollDate(studyStuDto.getStudyEnrollDate());
+		foundStudyStu.setStudyState(studyStuDto.getStudyState());
+
+		log.info("[StudyStuService] updateStudy end ==============================");
 	}
 
 
@@ -103,7 +90,6 @@ public class StudyStuService {
 		List<StudyStu> studyStus = studyStuRepository.findByStudyStuPKStuCode(stuCode);
 		studyStuRepository.deleteAll(studyStus);
 	}
-
 
 	/* 4. 수강생 강의 조회 */
 	public Page<StudyStuDTO> selectStudyListByStudentForAdmin(int page, Long stuCode) {
@@ -118,6 +104,7 @@ public class StudyStuService {
 		Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> {
 			StudyStuDTO studyStuDTO = modelMapper.map(studyStu, StudyStuDTO.class);
 
+
 			// 강의 정보 가져오기
 			Study study = studyRepository.findById(studyStu.getStudyStuPK().getStudyCode())
 					.orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyStu.getStudyStuPK().getStudyCode()));
@@ -127,6 +114,10 @@ public class StudyStuService {
 					.orElseThrow(() -> new IllegalArgumentException("해당 과정이 없습니다. trainingCode = " + study.getTraining().getTrainingCode()));
 
 			studyStuDTO.setTrainingTitle(training.getTrainingTitle());
+			studyStuDTO.setTrainingTime(training.getTrainingTime());
+			studyStuDTO.setStudyCode(study.getStudyCode());
+			studyStuDTO.setStudyCount(study.getStudyCount());
+			studyStuDTO.setTrainingCode(training.getTrainingCode());
 
 			return studyStuDTO;
 		});
@@ -134,16 +125,36 @@ public class StudyStuService {
 		log.info("[StudyStuService] studyStuDTOList.getContent() : {}", studyStuDTOList.getContent());
 		log.info("[StudyStuService] selectStudyListByStudentForAdmin end ================================");
 
+
 		return studyStuDTOList;
 	}
 
 
 	/* 전체 과정 조회 */
-	public List<Training> selectAllTrainings() {
-		log.info("[StudyStuService] selectAllTrainings start ==============================");
-		List<Training> trainings = studyStuRepository.findAllTrainings();
-		log.info("[StudyStuService] selectAllTrainings end ================================");
-		return trainings;
+	public List<StudyInfo> selectAllStudyInfo() {
+		log.info("[StudyStuService] selectAllStudyInfo start ==============================");
+		List<StudyInfo> studyInfos = studyStuRepository.findAllStudyInfo();
+		log.info("[StudyStuService] selectAllStudyInfo end ================================");
+		return studyInfos;
+	}
+
+
+	/* 사용자 - 강사 수강생 목록 조회 */
+
+	public Page<StudyStuDTO> selectStudentListByStudy(int page, Long studyCode) {
+
+		log.info("[EmpService] selectStudentListByStudy start ================================");
+
+		Study study = studyRepository.findById(studyCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
+
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("studyStuPK.stuCode").descending());
+		Page<StudyStu> studyStuList = studyStuRepository.findByStudyStuPK_StudyCode(studyCode, pageable);
+		Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> modelMapper.map(studyStu, StudyStuDTO.class));
+
+		log.info("[EmpService] selectStudentListByStudy end ================================");
+
+		return studyStuDTOList;
 	}
 
 

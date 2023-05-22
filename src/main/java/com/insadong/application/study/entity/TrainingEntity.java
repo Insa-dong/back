@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "TB_TRAINING")
-public class trainingEntity {
+public class TrainingEntity {
 
 	@Id
 	@Column(name = "TRAINING_CODE")

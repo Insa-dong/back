@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +37,7 @@ public class StudyStuController {
 	
 	/* 1. 수강생 강의 등록 */
 	@PostMapping("/students-management/study")
-	public ResponseEntity<ResponseDTO> insertStudy(@ModelAttribute StudyStuDTO studyStuDto) {
+	public ResponseEntity<ResponseDTO> insertStudy(@RequestBody StudyStuDTO studyStuDto) {
 
 	    /* 관리자만 등록하는 구문 추가해야 함 */
 	    studyStuService.insertStudy(studyStuDto);
@@ -47,25 +47,11 @@ public class StudyStuController {
 
 
 	/* 2. 수강생 강의 수정 */
-//	@PutMapping("/students-management/study")
-//	public ResponseEntity<ResponseDTO> updateStudy(@ModelAttribute StudyStuDTO studyStuDto) {
-//
-//	    log.info("DTO : {} ", studyStuDto);
-//	    studyStuService.updateStudy(studyStuDto);
-//
-//	    return ResponseEntity
-//	            .ok()
-//	            .body(new ResponseDTO(HttpStatus.OK, "수강생 강의 정보 수정 성공"));
-//
-//	}
-//	
-	
-	/* 2. 수강생 강의 수정 */
 	@PutMapping("/students-management/study")
-	public ResponseEntity<ResponseDTO> updateStudy(@RequestParam long studyCode , @RequestParam long stuCode, 
-			 @RequestParam String studyEnrollDate, @RequestParam String studyState) {
+	public ResponseEntity<ResponseDTO> updateStudy(@RequestBody StudyStuDTO studyStuDto) {
 
-	    studyStuService.updateStudy(studyCode,stuCode, studyEnrollDate, studyState);
+	    log.info("DTO : {} ", studyStuDto);
+	    studyStuService.updateStudy(studyStuDto);
 
 	    return ResponseEntity
 	            .ok()
@@ -107,11 +93,33 @@ public class StudyStuController {
 	
 	/* 5. 수강생 과정 목록 조회 */
 	@GetMapping("/students-management/studylist")
-	public ResponseEntity<ResponseDTO> selectTrainingList() {
-	    log.info("[StudyStuController] : selectTrainingList start ==================================== ");
-	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", studyStuService.selectAllTrainings()));
+	public ResponseEntity<ResponseDTO> selectAllStudyInfo() {
+	    log.info("[StudyStuController] : selectAllStudyInfo start ==================================== ");
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", studyStuService.selectAllStudyInfo()));
 	}
 	
+	/* 사용자 */
+	/* 1. 사용자(강사) 강의 별 수강생 조회 */
+	@GetMapping("/students/study/{studyCode}")
+	public ResponseEntity<ResponseDTO> selectStudentListByStudy(
+			@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long studyCode) {
 
+		log.info("[StudyStuController] : selectStudentListByStudy start ==================================== ");
+		log.info("[StudyStuController] : page : {}", page);
+
+		Page<StudyStuDTO> studyStuDTOList = studyStuService.selectStudentListByStudy(page, studyCode);
+
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(studyStuDTOList);
+
+		log.info("[StudyStuController] : pageInfo : {}", pageInfo);
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(studyStuDTOList.getContent());
+
+		log.info("[StudyStuController] : selectStudentListByStudy end ==================================== ");
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
 	
 }
