@@ -1,10 +1,6 @@
 package com.insadong.application.off.repository;
 
 
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,9 +17,7 @@ public interface EmpOffRepository extends JpaRepository<Employee, Long>{
 	@Query("SELECT e FROM Employee e WHERE e.dept = :dept AND e.job.jobCode = 'JB0002'")
     Employee findTeamLeaderByDept(@Param("dept") Dept dept);
 	
-	@EntityGraph(attributePaths = {"offs"})
-	@Query("SELECT e FROM Employee e WHERE e.empState = '재직중'")
-    Page<Employee> findAllActiveEmployeesWithOff(Pageable pageable);
+
 	
 	
 
