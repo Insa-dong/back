@@ -1,9 +1,15 @@
 package com.insadong.application.notice.service;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -33,14 +39,14 @@ public class NoticeService {
 	private final EmployeeRepository employeeRepository;
 	private final FileRepository fileRepository;
 	private final ModelMapper modelMapper;
-	
+
 	@Value("${image.image-url}")
 	private String IMAGE_URL;
 	@Value("${image.image-dir}")
 	private String IMAGE_DIR;
 
-	public NoticeService(NoticeRepository noticeRepository, EmployeeRepository employeeRepository, FileRepository fileRepository,
-			ModelMapper modelMapper) {
+	public NoticeService(NoticeRepository noticeRepository, EmployeeRepository employeeRepository,
+			FileRepository fileRepository, ModelMapper modelMapper) {
 		this.noticeRepository = noticeRepository;
 		this.employeeRepository = employeeRepository;
 		this.fileRepository = fileRepository;
@@ -127,27 +133,41 @@ public class NoticeService {
 	/* 공지사항 등록 */
 	@Transactional
 	public void registNotice(NoticeDTO noticeDTO) throws IOException {
+		Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
 
-		for(MultipartFile file : noticeDTO.getNoticeFile()) {
+		for (MultipartFile file : noticeDTO.getNoticeFile()) {
 			
+
 			FileDTO fileDTO = new FileDTO();
-			
-			
+
 			String originFileName = file.getOriginalFilename();
 			String saveFileName = UUID.randomUUID().toString().replace("-", "");
 			String fileFath = IMAGE_DIR;
 			Long fileSize = file.getSize();
 			
+			Path uploadPath = Paths.get(IMAGE_DIR);
+			
+			if(!Files.exists(uploadPath)) {
+				Files.createDirectories(uploadPath);
+			}
+			
+			String replaceFileName = saveFileName + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+			
+			try(InputStream inputStream = file.getInputStream()) {
+				Path filePath = uploadPath.resolve(replaceFileName);
+				Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				throw new IOException("파일을 저장하지 못하였습니다. saveFileName : " + saveFileName);
+			}
+			
 			fileDTO.setOriginFileName(originFileName);
 			fileDTO.setSaveFileName(saveFileName);
 			fileDTO.setFileFath(IMAGE_DIR);
 			fileDTO.setFileSize(fileSize);
-			
-			Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
-			
-//			fileDTO.setNoticeCode(notice.getNoticeCode());
-			
+			fileDTO.setNoticeCode(modelMapper.map(notice, NoticeDTO.class));
+
 			fileRepository.save(modelMapper.map(fileDTO, File.class));
+			
 		}
 
 	}
