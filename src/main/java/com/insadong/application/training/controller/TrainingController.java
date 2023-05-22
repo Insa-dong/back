@@ -62,10 +62,10 @@ public class TrainingController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
 	}
 
-	@PutMapping("/training/delete/{trainingCode}")
-	public ResponseEntity<ResponseDTO> updateTrainingDelete(@PathVariable Long trainingCode, @AuthenticationPrincipal EmployeeDTO employeeDTO) {
+	@DeleteMapping("/training/delete/{trainingCode}")
+	public ResponseEntity<ResponseDTO> trainingDelete(@PathVariable Long trainingCode) {
 
-		trainingService.updateDeleteYN(trainingCode, employeeDTO.getEmpCode());
+		trainingService.trainingDelete(trainingCode);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제 성공"));
 	}
