@@ -13,10 +13,10 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
-@DynamicUpdate
-@DynamicInsert
 @ToString
 @Entity
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "TB_EMP")
 public class EmpEntity {
 

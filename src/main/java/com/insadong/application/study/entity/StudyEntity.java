@@ -18,10 +18,12 @@ import java.util.List;
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "TB_STUDY")
+@SequenceGenerator(name = "STUDY_SEQ_GEN", sequenceName = "SEQ_STUDY_CODE", allocationSize = 1)
 public class StudyEntity {
 
 	@Id
 	@Column(name = "STUDY_CODE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDY_SEQ_GEN")
 	private Long studyCode;
 
 	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
@@ -31,12 +33,6 @@ public class StudyEntity {
 	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "TRAINING_CODE")
 	private TrainingEntity training;
-
-	@Column(name = "STUDY_START_DATE")
-	private Date studyStartDate;
-
-	@Column(name = "STUDY_END_DATE")
-	private Date studyEndDate;
 
 	@Column(name = "STUDY_MAX_PEOPLE")
 	private Long studyMaxPeople;
@@ -53,5 +49,8 @@ public class StudyEntity {
 
 	@Column(name = "STUDY_MODIFY_DATE")
 	private Date studyModifyDate;
+
+	@Column(name = "STUDY_DATE")
+	private Date studyDate;
 
 }
