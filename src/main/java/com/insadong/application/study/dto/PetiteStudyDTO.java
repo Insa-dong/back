@@ -19,6 +19,8 @@ public class PetiteStudyDTO {
 
 	private EmployeeDTO studyModifier;
 
+	private EmployeeDTO studyWriter;
+
 	private Long studyCount;
 
 	private Date studyModifyDate;

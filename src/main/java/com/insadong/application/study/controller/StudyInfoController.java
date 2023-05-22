@@ -76,9 +76,11 @@ public class StudyInfoController {
 	public ResponseEntity<ResponseDTO> insertStudyInfo(@RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmployeeDTO emp) {
 
 		PetiteStudyDTO study = studyInfo.getStudy();
-		study.setStudyModifyDate(new Date());
-		study.setStudyModifier(emp);
+		study.setStudyDate(new Date());
+		study.setStudyWriter(emp);
 		studyInfo.setStudy(study);
+
+		log.info("studyInfo : {} ", studyInfo);
 
 		studyInfoService.insertStudy(studyInfo);
 

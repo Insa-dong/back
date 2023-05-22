@@ -30,7 +30,7 @@ public class StudyEntity {
 	@JoinColumn(name = "STUDY_CODE")
 	private List<StudyTime> studyTimes;
 
-	@ManyToOne(cascade = {CascadeType.PERSIST})
+	@ManyToOne
 	@JoinColumn(name = "TRAINING_CODE")
 	private TrainingEntity training;
 
@@ -40,9 +40,13 @@ public class StudyEntity {
 	@Column(name = "STUDY_DELETE_YN")
 	private String studyDeleteYn;
 
-	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@ManyToOne
 	@JoinColumn(name = "STUDY_MODIFIER")
 	private EmpEntity studyModifier;
+
+	@ManyToOne
+	@JoinColumn(name = "STUDY_WRITER")
+	private EmpEntity studyWriter;
 
 	@Column(name = "STUDY_COUNT")
 	private Long studyCount;
