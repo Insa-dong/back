@@ -25,11 +25,11 @@ public class Attend {
 	
 	@ManyToOne
 	@JoinColumn(name="STUDY_CODE")
-	private Study studyCode;
+	private Study study;
 	
 	@ManyToOne
 	@JoinColumn(name="STU_CODE")
-	private Student stuCode;
+	private Student student;
 	
 	
 	@Column(name="ATTEND_STATUS")
