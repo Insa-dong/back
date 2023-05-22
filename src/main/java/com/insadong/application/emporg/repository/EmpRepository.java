@@ -43,6 +43,8 @@ public interface EmpRepository extends JpaRepository<Employee, Long> {
     @EntityGraph(attributePaths = {"dept", "job"})
     Page<Employee> findByJobJobCodeInAndEmpState(Pageable pageable, List<String> findJobCodeList, String empState);
 
+    Employee findByEmpCode(Long empCode);
+
 
     /*4. 강사 전체 조회 */
 	@EntityGraph(attributePaths = {"dept", "job"})
