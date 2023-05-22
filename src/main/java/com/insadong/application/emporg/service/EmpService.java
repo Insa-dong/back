@@ -150,6 +150,8 @@ public class EmpService {
 
 	}
 
+	/*7. 인사이력 조회*/
+
 
 
 	public List<com.insadong.application.study.dto.EmpDTO> viewTeacherList() {
