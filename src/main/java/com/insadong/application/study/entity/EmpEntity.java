@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @ToString
 @Entity
 @Table(name = "TB_EMP")
-public class empEntity {
+public class EmpEntity {
 
 	@Id
 	@Column(name = "EMP_CODE")
