@@ -26,10 +26,7 @@ public class File {
 	@Id
 	@Column(name="FILE_CODE")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FILE_SEQ_GENERATOR")
-	private String fileCode;
-	
-	@Column(name="FILE_DIV")
-	private String fileDiv;
+	private Long fileCode;
 	
 	@ManyToOne
 	@JoinColumn(name="NOTICE_CODE")
@@ -51,8 +48,6 @@ public class File {
 	@Column(name="FILE_SIZE")
 	private Long fileSize;
 	
-	@Column(name="FILE_UPLOAD_TIME")
-	private String fileUploadTime;
 	
 	
 

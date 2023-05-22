@@ -1,7 +1,11 @@
 package com.insadong.application.notice.dto;
 
 import java.util.Date;
+import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.insadong.application.employee.dto.EmployeeDTO;
 
 import lombok.Data;
@@ -20,5 +24,11 @@ public class NoticeDTO {
 	private EmployeeDTO noticeWriter;
 	
 	private Date noticeModifyDate;
+	
+	@JsonIgnore
+	private List<MultipartFile> noticeFile;
+	
+	
+	
 
 }
