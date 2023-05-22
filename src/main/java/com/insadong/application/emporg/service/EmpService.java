@@ -5,7 +5,6 @@ import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Job;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
-import com.insadong.application.emporg.dto.EmpDTO;
 import com.insadong.application.emporg.repository.EmpDeptRepository;
 import com.insadong.application.emporg.repository.EmpJobRepository;
 import com.insadong.application.emporg.repository.EmpRepository;
@@ -52,7 +51,7 @@ public class EmpService {
 
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
 
-		Page<Employee> empList = empRepository.findAll(pageable);
+		Page<Employee> empList = empRepository.findByEmpState(pageable, "재직중");
 		Page<EmployeeDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmployeeDTO.class));
 
 		log.info("[EmpService] selectEmpList.getContent() : {}", empDTOList.getContent());
@@ -63,7 +62,7 @@ public class EmpService {
 	}
 
 	/*2. 구성원 부서별 조회*/
-	public Page<EmpDTO> selectEmpListByDept(int page, String deptCode) {
+	public Page<EmployeeDTO> selectEmpListByDept(int page, String deptCode) {
 
 		log.info("[EmpService] selectEmpListByDept start ============================== ");
 
@@ -74,8 +73,8 @@ public class EmpService {
 				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 없습니다. deptCode =" + deptCode));
 
 
-		Page<Employee> empList = empRepository.findByDept(pageable, findDept);
-		Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
+		Page<Employee> empList = empRepository.findByDeptAndEmpState(pageable, findDept, "재직중");
+		Page<EmployeeDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmployeeDTO.class));
 
 		log.info("[EmpService] selectEmpListByDept.getContent() : {}", empDTOList.getContent());
 
@@ -84,16 +83,15 @@ public class EmpService {
 		return empDTOList;
 	}
 
-	/*3. 구성원 검색*/
-	public Page<EmpDTO> searchEmpByNameAndDeptAndJob(int page, String searchOption, String searchKeyword) {
-
+    /*3. 구성원 검색*/
+	public Page<EmployeeDTO> searchEmpByNameAndDeptAndJob(int page, String searchOption, String searchKeyword) {
 		log.info("[EmpService] searchEmpByNameAndDeptAndJob start ==============================");
 
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
 
 		if (searchOption.equals("name")) {
-			Page<Employee> empList = empRepository.findByEmpNameContains(pageable, searchKeyword);
-			Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
+			Page<Employee> empList = empRepository.findByEmpNameContainsAndEmpState(pageable, searchKeyword, "재직중");
+			Page<EmployeeDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmployeeDTO.class));
 
 			log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
 
@@ -102,8 +100,8 @@ public class EmpService {
 		} else if (searchOption.equals("dept")) {
 			List<String> findDeptCodeList = empDeptRepository.findByDeptNameContains(searchKeyword);
 
-			Page<Employee> empList = empRepository.findByDeptDeptCodeIn(pageable, findDeptCodeList);
-			Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
+			Page<Employee> empList = empRepository.findByDeptDeptCodeInAndEmpState(pageable, findDeptCodeList, "재직중");
+			Page<EmployeeDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmployeeDTO.class));
 
 			log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
 
@@ -112,8 +110,8 @@ public class EmpService {
 		} else if (searchOption.equals("job")) {
 			List<String> findJobCodeList = empJobRepository.findByJobNameContains(searchKeyword);
 
-			Page<Employee> empList = empRepository.findByJobJobCodeIn(pageable, findJobCodeList);
-			Page<EmpDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmpDTO.class));
+			Page<Employee> empList = empRepository.findByJobJobCodeInAndEmpState(pageable, findJobCodeList, "재직중");
+			Page<EmployeeDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmployeeDTO.class));
 
 			log.info("[EmpService] searchEmpByNameAndDeptAndJob.getContent() : {}", empDTOList.getContent());
 
@@ -121,9 +119,8 @@ public class EmpService {
 		} else {
 			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
 		}
-
-
 	}
+
 
 	/*4. 부서, 직책 조회*/
 	public Map<String, Object> selectEmpDeptJobList() {
@@ -156,6 +153,8 @@ public class EmpService {
 		return employeeDTO;
 
 	}
+
+	/*7. 인사이력 조회*/
 
 
 	public List<com.insadong.application.study.dto.EmpDTO> viewTeacherList() {
