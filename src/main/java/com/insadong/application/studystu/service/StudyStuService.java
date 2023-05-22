@@ -114,6 +114,7 @@ public class StudyStuService {
 		Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> {
 			StudyStuDTO studyStuDTO = modelMapper.map(studyStu, StudyStuDTO.class);
 
+			
 			// 강의 정보 가져오기
 			Study study = studyRepository.findById(studyStu.getStudyStuPK().getStudyCode())
 				.orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyStu.getStudyStuPK().getStudyCode()));
@@ -122,14 +123,11 @@ public class StudyStuService {
 			Training training = trainingRepository.findById(study.getTraining().getTrainingCode())
 				.orElseThrow(() -> new IllegalArgumentException("해당 과정이 없습니다. trainingCode = " + study.getTraining().getTrainingCode()));
 
-			// 강의 이름 가져오기
-			//StudyInfo studyInfo = studyInfoRepository.findByStudyTitle(studyInfo.getStudyTitle())
-			 //       .orElseThrow(() -> new IllegalArgumentException("해당 강의 정보가 없습니다. studyTitle = " + studyInfo.getStudyTitle()));	
-				
 			studyStuDTO.setTrainingTitle(training.getTrainingTitle());
 			studyStuDTO.setTrainingTime(training.getTrainingTime());
 			studyStuDTO.setStudyCode(study.getStudyCode());
-			//studyStuDTO.setStudyTitle(studyInfo.getStudyTitle());	
+			studyStuDTO.setStudyCount(study.getStudyCount());
+			studyStuDTO.setTrainingCode(training.getTrainingCode());		
 
 			return studyStuDTO;
 		});
@@ -141,8 +139,6 @@ public class StudyStuService {
 		return studyStuDTOList;
 	}
 	
-	
-
 
 	/* 전체 과정 조회 */
 	public List<StudyInfo> selectAllStudyInfo() {
@@ -150,6 +146,25 @@ public class StudyStuService {
 		List<StudyInfo> studyInfos = studyStuRepository.findAllStudyInfo();
 		log.info("[StudyStuService] selectAllStudyInfo end ================================");
 		return studyInfos;
+	}
+
+	
+	/* 사용자 - 강사 수강생 목록 조회 */
+	
+	public Page<StudyStuDTO> selectStudentListByStudy(int page, Long studyCode) {
+		
+	    log.info("[EmpService] selectStudentListByStudy start ================================");
+	    
+	    Study study = studyRepository.findById(studyCode)
+	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
+
+	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("studyStuPK.stuCode").descending());
+	    Page<StudyStu> studyStuList = studyStuRepository.findByStudyStuPK_StudyCode(studyCode, pageable);
+	    Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> modelMapper.map(studyStu, StudyStuDTO.class));
+
+	    log.info("[EmpService] selectStudentListByStudy end ================================");
+	    
+	    return studyStuDTOList;
 	}
 
 

@@ -1,15 +1,13 @@
 package com.insadong.application.emporg.service;
 
-import com.insadong.application.common.entity.Dept;
-import com.insadong.application.common.entity.Employee;
-import com.insadong.application.common.entity.Job;
-import com.insadong.application.employee.dto.EmployeeDTO;
-import com.insadong.application.employee.repository.EmployeeRepository;
-import com.insadong.application.emporg.dto.EmpDTO;
-import com.insadong.application.emporg.repository.EmpDeptRepository;
-import com.insadong.application.emporg.repository.EmpJobRepository;
-import com.insadong.application.emporg.repository.EmpRepository;
-import lombok.extern.slf4j.Slf4j;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,11 +15,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.insadong.application.common.entity.Dept;
+import com.insadong.application.common.entity.Employee;
+import com.insadong.application.common.entity.Job;
+import com.insadong.application.common.entity.StudyInfo;
+import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.emporg.dto.EmpDTO;
+import com.insadong.application.emporg.repository.EmpDeptRepository;
+import com.insadong.application.emporg.repository.EmpJobRepository;
+import com.insadong.application.emporg.repository.EmpRepository;
+import com.insadong.application.study.dto.StudyInfoDTO;
+import com.insadong.application.study.entity.empEntity;
+import com.insadong.application.study.repository.StudyInfoRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -32,13 +40,16 @@ public class EmpService {
 	private final EmpDeptRepository empDeptRepository;
 	private final EmpJobRepository empJobRepository;
 	private final EmployeeRepository employeeRepository;
+	private final StudyInfoRepository studyInfoRepository;
 
-	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository) {
+	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository
+			, StudyInfoRepository studyInfoRepository) {
 		this.empRepository = empRepository;
 		this.modelMapper = modelMapper;
 		this.empDeptRepository = empDeptRepository;
 		this.empJobRepository = empJobRepository;
 		this.employeeRepository = employeeRepository;
+		this.studyInfoRepository = studyInfoRepository;
 	}
 
 	/*1. 구성원 전체 조회*/
@@ -159,4 +170,22 @@ public class EmpService {
         
 		return empRepository.findByDeptDeptCode("DE0003").stream().map(teacher -> modelMapper.map(teacher, com.insadong.application.study.dto.EmpDTO.class)).collect(Collectors.toList());
 	}
+
+	/* 강사 강의 리스트 조회 */
+	public Page<StudyInfoDTO> selectTeacherStudyListByEmpCode(int page, Long empCode) {
+	    log.info("[EmpService] selectTeacherStudyListByEmpCode start ============================== ");
+
+	    Employee Teacher  = empRepository.findById(empCode)
+	    		.orElseThrow(() -> new IllegalArgumentException("해당 강사가 없습니다. empCode =" + empCode));
+
+	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("studyInfoCode").descending());
+	    Page<StudyInfo> studyInfoList = studyInfoRepository.findByTeacher(Teacher, pageable);
+	    Page<StudyInfoDTO> studyInfoDTOList = studyInfoList.map(studyInfo -> modelMapper.map(studyInfo, StudyInfoDTO.class));
+
+	    log.info("[EmpService] selectTeacherStudyListByEmpCode.getContent() : {}", studyInfoDTOList.getContent());
+	    log.info("[EmpService] selectTeacherStudyListByEmpCode end ============================== ");
+
+	    return studyInfoDTOList;
+	}
+
 }
