@@ -18,6 +18,8 @@ public class StudyDTO {
 
 	private EmpDTO studyModifier;
 
+	private EmpDTO studyWriter;
+
 	private Long studyCount;
 
 	private Date studyModifyDate;
