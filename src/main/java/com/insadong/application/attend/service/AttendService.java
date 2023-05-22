@@ -34,6 +34,7 @@ public class AttendService {
 		this.studentRepository = studentRepository;
 	}
 	
+	
 	/* 수강생 출결 조회 */
 	
 	public Page<AttendDTO> selectAttendListByStudent(int page, Long stuCode) {

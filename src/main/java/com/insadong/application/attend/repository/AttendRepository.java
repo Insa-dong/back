@@ -10,6 +10,8 @@ import com.insadong.application.common.entity.Student;
 public interface AttendRepository extends JpaRepository<Attend, Long> {
 
 	/* 수강생 출결 조회 */
+	
 	Page<Attend> findByStudent(Pageable pageable, Student findStu);
 
+	
 }

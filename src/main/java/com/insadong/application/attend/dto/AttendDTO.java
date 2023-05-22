@@ -10,7 +10,6 @@ import lombok.Data;
 @Data
 public class AttendDTO {
 
-	
 	private Long attendCode;
 	private StudyDTO study;
 	private StudentDTO student;
