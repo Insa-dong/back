@@ -98,4 +98,28 @@ public class StudyStuController {
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", studyStuService.selectAllStudyInfo()));
 	}
 	
+	/* 사용자 */
+	/* 1. 사용자(강사) 강의 별 수강생 조회 */
+	@GetMapping("/students/study/{studyCode}")
+	public ResponseEntity<ResponseDTO> selectStudentListByStudy(
+			@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long studyCode) {
+
+		log.info("[StudyStuController] : selectStudentListByStudy start ==================================== ");
+		log.info("[StudyStuController] : page : {}", page);
+
+		Page<StudyStuDTO> studyStuDTOList = studyStuService.selectStudentListByStudy(page, studyCode);
+
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(studyStuDTOList);
+
+		log.info("[StudyStuController] : pageInfo : {}", pageInfo);
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(studyStuDTOList.getContent());
+
+		log.info("[StudyStuController] : selectStudentListByStudy end ==================================== ");
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
+	
 }

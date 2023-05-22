@@ -63,5 +63,24 @@ public class StudyStuDTO {
     		this.studyTitle = studyTitle;
     }
 
+   private Long studyCount;
     
+    public Long getStudyCount() {
+    	return studyCount;
+    }
+    
+    public void setStudyTitle(Long studyCount) {
+    		this.studyCount = studyCount;
+    }
+    
+  private Long trainingCode;
+    
+    public Long getTrainingCode() {
+    	return trainingCode;
+    }
+    
+    public void setTrainingCode(Long trainingCode) {
+    		this.trainingCode = trainingCode;
+    }
+      
 }
