@@ -11,20 +11,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Getter
 @Setter
-@DynamicUpdate
-@DynamicInsert
-@ToString
+@Getter
 @Entity
-@Table(name = "TB_EMP")
-public class empEntity {
+@ToString
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "TB_TRAINING")
+public class TrainingEntity {
 
 	@Id
-	@Column(name = "EMP_CODE")
-	private Long empCode;
+	@Column(name = "TRAINING_CODE")
+	private Long trainingCode;
 
-	@Column(name = "EMP_NAME")
-	private String empName;
+	@Column(name = "TRAINING_TITLE")
+	private String trainingTitle;
 
 }

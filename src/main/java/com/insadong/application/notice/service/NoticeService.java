@@ -1,22 +1,23 @@
 package com.insadong.application.notice.service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Notice;
 import com.insadong.application.employee.repository.EmployeeRepository;
-import com.insadong.application.common.entity.Job;
-import com.insadong.application.common.entity.Notice;
-import com.insadong.application.employee.repository.EmployeeRepository;
-import com.insadong.application.emporg.dto.EmpDTO;
-import com.insadong.application.exception.UserNotFoundException;
+import com.insadong.application.notice.dto.FileDTO;
 import com.insadong.application.notice.dto.NoticeDTO;
 import com.insadong.application.notice.repository.NoticeRepository;
 
@@ -29,6 +30,11 @@ public class NoticeService {
 	private final NoticeRepository noticeRepository;
 	private final EmployeeRepository employeeRepository;
 	private final ModelMapper modelMapper;
+	
+	@Value("${image.image-url}")
+	private String IMAGE_URL;
+	@Value("${image.image-dir}")
+	private String IMAGE_DIR;
 
 	public NoticeService(NoticeRepository noticeRepository, EmployeeRepository employeeRepository,
 			ModelMapper modelMapper) {
@@ -110,6 +116,27 @@ public class NoticeService {
 
 		} else {
 			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
+		}
+
+	}
+
+	/* 공지사항 등록 */
+	@Transactional
+	public void registNotice(NoticeDTO noticeDTO) throws IOException {
+
+		for(MultipartFile file : noticeDTO.getNoticeFile()) {
+			
+			FileDTO fileDTO = new FileDTO();
+			
+			
+			String originFileName = file.getOriginalFilename();
+			String saveFileName = UUID.randomUUID().toString().replace("-", "");
+			String fileFath = IMAGE_DIR;
+			Long fileSize = file.getSize();
+			
+		
+			
+			Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
 		}
 
 	}

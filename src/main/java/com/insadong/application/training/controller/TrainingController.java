@@ -5,6 +5,7 @@ import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
+import com.insadong.application.study.dto.PetiteTrainingDTO;
 import com.insadong.application.training.dto.TrainingDTO;
 import com.insadong.application.training.service.TrainingService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -28,7 +31,8 @@ public class TrainingController {
 	@GetMapping("/trainingTitleList")
 	public ResponseEntity<ResponseDTO> viewTrainingTitleList() {
 
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", trainingService.viewTrainingTitleList()));
+		List<PetiteTrainingDTO> data = trainingService.viewTrainingTitleList();
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
 	}
 
 	@GetMapping("/trainingList")
@@ -53,29 +57,25 @@ public class TrainingController {
 	@PutMapping("/training")
 	public ResponseEntity<ResponseDTO> modifyTraining(@RequestBody TrainingDTO trainingDTO, @AuthenticationPrincipal EmployeeDTO employeeDTO) {
 
-		log.info("trainingDTO : {} ", trainingDTO);
-		log.info("employeeDTO : {} ", employeeDTO);
 		trainingService.updateTraining(trainingDTO, employeeDTO.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
 	}
 
-	@PutMapping("/training/delete/{trainingCode}")
-	public ResponseEntity<ResponseDTO> updateTrainingDelete(@PathVariable Long trainingCode, @AuthenticationPrincipal EmployeeDTO employeeDTO) {
+	@DeleteMapping("/training/delete/{trainingCode}")
+	public ResponseEntity<ResponseDTO> trainingDelete(@PathVariable Long trainingCode) {
 
-		log.info("trainingCode : {} ", trainingCode);
-		log.info("employeeDTO : {} ", employeeDTO);
-		trainingService.updateDeleteYN(trainingCode, employeeDTO.getEmpCode());
+		trainingService.trainingDelete(trainingCode);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제 성공"));
 	}
 
 	@PostMapping("/training")
-	public ResponseEntity<ResponseDTO> insertTraining(@RequestBody TrainingDTO trainingDTO) {
+	public ResponseEntity<ResponseDTO> insertTraining(@RequestBody com.insadong.application.study.dto.TrainingDTO trainingDTO, @AuthenticationPrincipal EmployeeDTO empDTO) {
 
-		log.info("DTO : {} ", trainingDTO);
-		long empCode = 1000;
-		trainingService.insertTraining(trainingDTO, empCode);
+		log.info("training : {} ", trainingDTO);
+		log.info("emp : {} ", empDTO);
+		trainingService.insertTraining(trainingDTO, empDTO.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록이 완료되었습니다. 메인 페이지로 이동합니다."));
 	}
@@ -84,7 +84,6 @@ public class TrainingController {
 	public ResponseEntity<ResponseDTO> searchTrainingByTitle(@RequestParam(name = "search") String trainingTitle,
 	                                                         @RequestParam(name = "page", defaultValue = "1") int page) {
 
-		log.info("검색어 : {} ", trainingTitle);
 
 		Page<TrainingDTO> trainingList = trainingService.selectTrainingListByTrainingTitle(trainingTitle, page);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(trainingList);

@@ -8,6 +8,7 @@ import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.emporg.repository.EmpDeptRepository;
 import com.insadong.application.emporg.repository.EmpJobRepository;
 import com.insadong.application.emporg.repository.EmpRepository;
+import com.insadong.application.study.repository.StudyInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -31,13 +32,16 @@ public class EmpService {
 	private final EmpDeptRepository empDeptRepository;
 	private final EmpJobRepository empJobRepository;
 	private final EmployeeRepository employeeRepository;
+	private final StudyInfoRepository studyInfoRepository;
 
-	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository) {
+	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository
+			, StudyInfoRepository studyInfoRepository) {
 		this.empRepository = empRepository;
 		this.modelMapper = modelMapper;
 		this.empDeptRepository = empDeptRepository;
 		this.empJobRepository = empJobRepository;
 		this.employeeRepository = employeeRepository;
+		this.studyInfoRepository = studyInfoRepository;
 	}
 
 	/*1. 구성원 전체 조회*/
@@ -119,7 +123,7 @@ public class EmpService {
 
 
 	/*4. 부서, 직책 조회*/
-	public  Map<String, Object> selectEmpDeptJobList(){
+	public Map<String, Object> selectEmpDeptJobList() {
 		List<Dept> deptList = empDeptRepository.findAll();
 		List<Job> jobList = empJobRepository.findAll();
 
@@ -133,13 +137,13 @@ public class EmpService {
 
 	/* 5. 구성원 등록 */
 	@Transactional
-	public void insertEmp(EmployeeDTO employeeDTO){
+	public void insertEmp(EmployeeDTO employeeDTO) {
 		log.info("[EmpService] insertEmp : {}", employeeDTO);
 		empRepository.save(modelMapper.map(employeeDTO, Employee.class));
 	}
 
 	/* 6. 구성원 상세 조회 */
-	public EmployeeDTO selectEmpDetail(Long empCode){
+	public EmployeeDTO selectEmpDetail(Long empCode) {
 
 		Employee employee = employeeRepository.findById(empCode)
 				.orElseThrow(() -> new IllegalArgumentException("해당 구성원이 없습니다. empCode=" + empCode));
@@ -153,9 +157,8 @@ public class EmpService {
 	/*7. 인사이력 조회*/
 
 
-
 	public List<com.insadong.application.study.dto.EmpDTO> viewTeacherList() {
-        
+
 		return empRepository.findByDeptDeptCode("DE0003").stream().map(teacher -> modelMapper.map(teacher, com.insadong.application.study.dto.EmpDTO.class)).collect(Collectors.toList());
 	}
 }

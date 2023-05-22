@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class FileDTO {
 	
-	private String fileCode;
+	private Long fileCode;
 	
 	private String fileDiv;
 	

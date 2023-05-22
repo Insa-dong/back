@@ -17,19 +17,21 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "TB_STUDY_INFO")
-public class studyInfoEntity {
+@SequenceGenerator(name = "STUDY_INFO_SEQ_GEN", sequenceName = "SEQ_STUDY_INFO_CODE", allocationSize = 1, initialValue = 1)
+public class StudyInfoEntity {
 
 	@Id
 	@Column(name = "STUDY_INFO_CODE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDY_INFO_SEQ_GEN")
 	private Long studyInfoCode;
 
 	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "STUDY")
-	private studyEntity study;
+	private StudyEntity study;
 
 	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "TEACHER")
-	private empEntity teacher;
+	private EmpEntity teacher;
 
 	@Column(name = "STUDY_INFO_START_DATE")
 	private Date studyInfoStartDate;

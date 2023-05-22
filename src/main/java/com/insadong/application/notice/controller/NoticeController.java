@@ -1,15 +1,21 @@
 package com.insadong.application.notice.controller;
 
+import java.io.IOException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.insadong.application.common.ResponseDTO;
-import com.insadong.application.emporg.dto.EmpDTO;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.notice.dto.NoticeDTO;
 import com.insadong.application.notice.service.NoticeService;
 import com.insadong.application.paging.Pagenation;
@@ -32,7 +38,7 @@ public class NoticeController {
 	/* 공지사항 전체목록 조회 */
 	@GetMapping("/noticelist")
 	public ResponseEntity<ResponseDTO> selectNoticeList(@RequestParam(name = "page", defaultValue = "1") int page) {
-		log.info("[NoticeController] : selectNoticeList start ==================================== ");
+		log.info("[NoticeControll	er] : selectNoticeList start ==================================== ");
 		log.info("[NoticeController] : page : {}", page);
 
 		Page<NoticeDTO> noticeDTOList = noticeService.selectNoticeList(page);
@@ -52,8 +58,7 @@ public class NoticeController {
 
 	/* 공지사항 검색조건 조회 */
 	@GetMapping("/noticesearch")
-	public ResponseEntity<ResponseDTO> searchNoticeByOption(
-			@RequestParam(name = "page", defaultValue = "1") int page,
+	public ResponseEntity<ResponseDTO> searchNoticeByOption(@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "searchOption") String searchOption,
 			@RequestParam(name = "searchKeyword") String searchKeyword) {
 
@@ -75,6 +80,19 @@ public class NoticeController {
 		log.info("[NoticeController] : searchNoticeByOption end ==================================== ");
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
+
+	/* 공지사항 등록 */
+	@PostMapping("/noticeregist")
+	public ResponseEntity<ResponseDTO> registNotice(@ModelAttribute NoticeDTO noticeDTO, @AuthenticationPrincipal EmployeeDTO employeeDTO) throws IOException {
+		
+		log.info("[NoticeController] noticeDTO: {}", noticeDTO);
+		
+		noticeDTO.setNoticeWriter(employeeDTO);
+		
+		noticeService.registNotice(noticeDTO);
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 등록 성공"));
 	}
 
 }
