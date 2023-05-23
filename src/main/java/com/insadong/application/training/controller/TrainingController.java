@@ -62,7 +62,7 @@ public class TrainingController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
 	}
 
-	@DeleteMapping("/training/delete/{trainingCode}")
+	@DeleteMapping("/training/{trainingCode}")
 	public ResponseEntity<ResponseDTO> trainingDelete(@PathVariable Long trainingCode) {
 
 		trainingService.trainingDelete(trainingCode);
