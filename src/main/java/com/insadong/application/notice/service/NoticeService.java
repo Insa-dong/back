@@ -1,9 +1,15 @@
 package com.insadong.application.notice.service;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -15,10 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.insadong.application.common.entity.Employee;
+import com.insadong.application.common.entity.File;
 import com.insadong.application.common.entity.Notice;
 import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.notice.dto.FileDTO;
 import com.insadong.application.notice.dto.NoticeDTO;
+import com.insadong.application.notice.repository.FileRepository;
 import com.insadong.application.notice.repository.NoticeRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,17 +37,19 @@ public class NoticeService {
 
 	private final NoticeRepository noticeRepository;
 	private final EmployeeRepository employeeRepository;
+	private final FileRepository fileRepository;
 	private final ModelMapper modelMapper;
-	
+
 	@Value("${image.image-url}")
 	private String IMAGE_URL;
 	@Value("${image.image-dir}")
 	private String IMAGE_DIR;
 
 	public NoticeService(NoticeRepository noticeRepository, EmployeeRepository employeeRepository,
-			ModelMapper modelMapper) {
+			FileRepository fileRepository, ModelMapper modelMapper) {
 		this.noticeRepository = noticeRepository;
 		this.employeeRepository = employeeRepository;
+		this.fileRepository = fileRepository;
 		this.modelMapper = modelMapper;
 	}
 
@@ -123,20 +133,41 @@ public class NoticeService {
 	/* 공지사항 등록 */
 	@Transactional
 	public void registNotice(NoticeDTO noticeDTO) throws IOException {
+		Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
 
-		for(MultipartFile file : noticeDTO.getNoticeFile()) {
+		for (MultipartFile file : noticeDTO.getNoticeFile()) {
 			
+
 			FileDTO fileDTO = new FileDTO();
-			
-			
+
 			String originFileName = file.getOriginalFilename();
 			String saveFileName = UUID.randomUUID().toString().replace("-", "");
 			String fileFath = IMAGE_DIR;
 			Long fileSize = file.getSize();
 			
-		
+			Path uploadPath = Paths.get(IMAGE_DIR);
 			
-			Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
+			if(!Files.exists(uploadPath)) {
+				Files.createDirectories(uploadPath);
+			}
+			
+			String replaceFileName = saveFileName + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+			
+			try(InputStream inputStream = file.getInputStream()) {
+				Path filePath = uploadPath.resolve(replaceFileName);
+				Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				throw new IOException("파일을 저장하지 못하였습니다. saveFileName : " + saveFileName);
+			}
+			
+			fileDTO.setOriginFileName(originFileName);
+			fileDTO.setSaveFileName(saveFileName);
+			fileDTO.setFileFath(IMAGE_DIR);
+			fileDTO.setFileSize(fileSize);
+			fileDTO.setNoticeCode(modelMapper.map(notice, NoticeDTO.class));
+
+			fileRepository.save(modelMapper.map(fileDTO, File.class));
+			
 		}
 
 	}

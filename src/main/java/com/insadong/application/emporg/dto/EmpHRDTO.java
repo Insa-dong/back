@@ -1,11 +1,14 @@
 package com.insadong.application.emporg.dto;
 
-import java.util.Date;
+import com.insadong.application.employee.dto.EmployeeDTO;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class EmpHRDTO {
 
     private Long hrCode;
-    private Long empCode;
+    private EmployeeDTO employeeDTO;
     private Date hrUpdateDate;
     private String hrDiv;
     private EmpDeptDTO dept;
