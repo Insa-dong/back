@@ -1,4 +1,4 @@
-package com.insadong.application.study.dto;
+package com.insadong.application.employee.dto;
 
 import com.insadong.application.common.entity.EmpAuth;
 import lombok.Data;
@@ -9,25 +9,31 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-public class EmpDTO implements UserDetails {
+public class EmpDTOImplUS implements UserDetails {
 
 	private Long empCode;
 	private String empName;
+	private String empId;
+	private String empPwd;
+	private String empPhone;
+	private String empEmail;
+
 	private List<EmpAuth> empAuthList;
 	private Collection<? extends GrantedAuthority> authorities;
 
+	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
 
 	@Override
 	public String getPassword() {
-		return null;
+		return empPwd;
 	}
 
 	@Override
 	public String getUsername() {
-		return null;
+		return empId;
 	}
 
 	@Override
@@ -49,4 +55,6 @@ public class EmpDTO implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
+
 }
