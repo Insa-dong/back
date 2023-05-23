@@ -90,7 +90,8 @@ public class StudyInfoController {
 
 	/* 강사 강의 리스트 조회 */
 	@GetMapping("/emp/teacherStudyList/{empCode}")
-	public ResponseEntity<ResponseDTO> selectTeacherStudyListByEmpCode(@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long empCode) {
+	public ResponseEntity<ResponseDTO> selectTeacherStudyListByEmpCode(@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long empCode,
+			@AuthenticationPrincipal StudyInfoDTO teacher) {
 
 		log.info("[EmpController] : selectTeacherStudyListByEmpCode start =============================== ");
 		log.info("[EmpController] : page : {}", page);
