@@ -1,31 +1,29 @@
 package com.insadong.application.employee.service;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.insadong.application.common.entity.Employee;
-import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.employee.dto.TokenDTO;
-import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.employee.entity.EmployeeEntity;
+import com.insadong.application.employee.repository.empAuthRepository;
 import com.insadong.application.exception.IdsearchFailedException;
 import com.insadong.application.exception.LoginFailedException;
 import com.insadong.application.exception.UserNotFoundException;
 import com.insadong.application.jwt.TokenProvider;
-
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class AuthService {
 
-	private final EmployeeRepository employeeRepository;
+	private final empAuthRepository employeeRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final ModelMapper modelMapper;
 	private final TokenProvider tokenProvider;
 
-	public AuthService(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper,
-			TokenProvider tokenProvider) {
+	public AuthService(empAuthRepository employeeRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper,
+	                   TokenProvider tokenProvider) {
 		this.employeeRepository = employeeRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.modelMapper = modelMapper;
@@ -33,13 +31,13 @@ public class AuthService {
 	}
 
 	/* 로그인 */
-	public TokenDTO login(EmployeeDTO employeeDTO) {
+	public TokenDTO login(EmpDTOImplUS employeeDTO) {
 
 		log.info("[AuthService] login start ======================================");
 		log.info("[AuthService] employeeDTO : {}", employeeDTO);
 
 		// 1. 아이디로 DB에서 해당 유저가 있는지 조회
-		Employee employee = employeeRepository.findByEmpId(employeeDTO.getEmpId())
+		EmployeeEntity employee = employeeRepository.findByEmpId(employeeDTO.getEmpId())
 				.orElseThrow(() -> new LoginFailedException("잘못 된 아이디 또는 비밀번호입니다."));
 
 		// 2. 비밀번호 매칭 확인
@@ -48,37 +46,37 @@ public class AuthService {
 		}
 
 		// 3. 토큰 발급
-		TokenDTO tokenDTO = tokenProvider.generateTokenDTO(modelMapper.map(employee, EmployeeDTO.class));
+		TokenDTO tokenDTO = tokenProvider.generateTokenDTO(modelMapper.map(employee, EmpDTOImplUS.class));
 
 		log.info("[AuthService] tokenDTO : {}", tokenDTO);
 
 		log.info("[AuthService] login end ======================================");
-		
+
 		return tokenDTO;
 	}
-	
+
 	/* 아이디 찾기 */
-	public EmployeeDTO idSearch(EmployeeDTO employeeDTO) {
-		
-		Employee employee = employeeRepository.findByEmpNameAndEmpPhone(employeeDTO.getEmpName(), employeeDTO.getEmpPhone())
+	public EmpDTOImplUS idSearch(EmpDTOImplUS employeeDTO) {
+
+		EmployeeEntity employee = employeeRepository.findByEmpNameAndEmpPhone(employeeDTO.getEmpName(), employeeDTO.getEmpPhone())
 				.orElseThrow(() -> new IdsearchFailedException("입력하신 정보와 일치하는 아이디가 존재하지 않습니다."));
-		
-				
-		return modelMapper.map(employee, EmployeeDTO.class);
+
+
+		return modelMapper.map(employee, EmpDTOImplUS.class);
 	}
 
 	/* 비밀번호 찾기 */
-	public EmployeeDTO findById(EmployeeDTO employeeDTO) {
+	public EmpDTOImplUS findById(EmpDTOImplUS employeeDTO) {
 
-		Employee employee = employeeRepository.findByEmpId(employeeDTO.getEmpId())
+		EmployeeEntity employee = employeeRepository.findByEmpId(employeeDTO.getEmpId())
 				.orElseThrow(() -> new UserNotFoundException("해당 아이디와 일치하는 사용자가 없습니다."));
 
 		if (employee.getEmpEmail().equals(employeeDTO.getEmpEmail())) {
-			return modelMapper.map(employee, EmployeeDTO.class);
+			return modelMapper.map(employee, EmpDTOImplUS.class);
 		} else {
 			return null;
 		}
 
 	}
-	
+
 }
