@@ -90,7 +90,7 @@ public class NoticeController {
 		
 //		noticeDTO.setNoticeWriter(employeeDTO);
 		
-		noticeService.registNotice(noticeDTO, employeeDTO);
+		noticeService.registNotice(noticeDTO, employeeDTO.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 등록 성공"));
 	}

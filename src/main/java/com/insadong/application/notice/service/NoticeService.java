@@ -134,8 +134,8 @@ public class NoticeService {
 
 	/* 공지사항 등록 */
 	@Transactional
-	public void registNotice(NoticeDTO noticeDTO, EmpDTOImplUS empDTO) throws IOException {
-		Employee foundEmp = employeeRepository.findById(empDTO.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("조회 실패"));
+	public void registNotice(NoticeDTO noticeDTO, Long empCode) throws IOException {
+		Employee foundEmp = employeeRepository.findById(empCode).orElseThrow(() -> new IllegalArgumentException("조회 실패"));
 		noticeDTO.setNoticeWriter(modelMapper.map(foundEmp, EmployeeDTO.class));
 		Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
 
