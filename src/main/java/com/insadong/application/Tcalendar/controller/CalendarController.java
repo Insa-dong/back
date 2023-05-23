@@ -2,7 +2,7 @@ package com.insadong.application.Tcalendar.controller;
 
 import com.insadong.application.Tcalendar.service.CalendarService;
 import com.insadong.application.common.ResponseDTO;
-import com.insadong.application.study.dto.EmpDTO;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class CalendarController {
 	}
 
 	@GetMapping("/myScheduleList")
-	public ResponseEntity<ResponseDTO> viewMyCal(@AuthenticationPrincipal EmpDTO empDTO) {
+	public ResponseEntity<ResponseDTO> viewMyCal(@AuthenticationPrincipal EmpDTOImplUS empDTO) {
 
 		log.info("emp : {} ", empDTO);
 

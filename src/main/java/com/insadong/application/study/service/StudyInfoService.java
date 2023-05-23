@@ -1,7 +1,10 @@
 package com.insadong.application.study.service;
 
+import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.study.dto.PetiteStudyDTO;
 import com.insadong.application.study.dto.PetiteStudyInfoDTO;
 import com.insadong.application.study.dto.StudyInfoDTO;
+import com.insadong.application.study.entity.EmpEntity;
 import com.insadong.application.study.entity.StudyInfoEntity;
 import com.insadong.application.study.repository.PetiteEmpRepository;
 import com.insadong.application.study.repository.PetiteTrainingRepository;
@@ -46,7 +49,10 @@ public class StudyInfoService {
 	}
 
 	@Transactional
-	public void modifyStudyInfo(PetiteStudyInfoDTO studyInfo, Long studyInfoCode) {
+	public void modifyStudyInfo(PetiteStudyInfoDTO studyInfo, Long studyInfoCode, Long empCode) {
+		PetiteStudyDTO study = studyInfo.getStudy();
+		EmpEntity empEntity = empRepository.findById(empCode).orElseThrow(() -> new IllegalArgumentException("조회 실패"));
+		study.setStudyWriter(modelMapper.map(empEntity, EmployeeDTO.class));
 
 		StudyInfoEntity foundStudyInfo = studyInfoRepository.findById(studyInfoCode).orElseThrow(() -> new IllegalArgumentException("조회 실패~"));
 		studyTimeRepository.deleteByStudyCode(foundStudyInfo.getStudy().getStudyCode());
@@ -69,7 +75,10 @@ public class StudyInfoService {
 	}
 
 	@Transactional
-	public void insertStudy(PetiteStudyInfoDTO studyInfo) {
+	public void insertStudy(PetiteStudyInfoDTO studyInfo, Long empCode) {
+		PetiteStudyDTO study = studyInfo.getStudy();
+		EmpEntity empEntity = empRepository.findById(empCode).orElseThrow(() -> new IllegalArgumentException("조회 실패"));
+		study.setStudyWriter(modelMapper.map(empEntity, EmployeeDTO.class));
 
 		StudyInfoEntity saveEntity = modelMapper.map(studyInfo, StudyInfoEntity.class);
 

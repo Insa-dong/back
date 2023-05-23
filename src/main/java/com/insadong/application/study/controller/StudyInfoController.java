@@ -1,7 +1,7 @@
 package com.insadong.application.study.controller;
 
 import com.insadong.application.common.ResponseDTO;
-import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
@@ -53,11 +53,10 @@ public class StudyInfoController {
 	}
 
 	@PutMapping("/studyInfo/{studyInfoCode}")
-	public ResponseEntity<ResponseDTO> modifyStudyInfo(@PathVariable Long studyInfoCode, @RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmployeeDTO emp) {
+	public ResponseEntity<ResponseDTO> modifyStudyInfo(@PathVariable Long studyInfoCode, @RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmpDTOImplUS emp) {
 
 
 		PetiteStudyDTO study = studyInfo.getStudy();
-		study.setStudyModifier(emp);
 		study.setStudyModifyDate(new Date());
 		PetiteTrainingDTO training = study.getTraining();
 		training.setTrainingUpdate(new Date());
@@ -67,22 +66,21 @@ public class StudyInfoController {
 		log.info("emp : {} ", emp);
 		log.info("study : {} ", study);
 
-		studyInfoService.modifyStudyInfo(studyInfo, studyInfoCode);
+		studyInfoService.modifyStudyInfo(studyInfo, studyInfoCode, emp.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 완료"));
 	}
 
 	@PostMapping("/studyInsert")
-	public ResponseEntity<ResponseDTO> insertStudyInfo(@RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmployeeDTO emp) {
+	public ResponseEntity<ResponseDTO> insertStudyInfo(@RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmpDTOImplUS emp) {
 
 		PetiteStudyDTO study = studyInfo.getStudy();
 		study.setStudyDate(new Date());
-		study.setStudyWriter(emp);
 		studyInfo.setStudy(study);
 
 		log.info("studyInfo : {} ", studyInfo);
 
-		studyInfoService.insertStudy(studyInfo);
+		studyInfoService.insertStudy(studyInfo, emp.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 완료"));
 	}
