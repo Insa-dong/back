@@ -1,14 +1,9 @@
 package com.insadong.application.studystu.service;
 
-import com.insadong.application.attend.repository.AttendRepository;
-import com.insadong.application.common.entity.*;
-import com.insadong.application.student.repository.StudentRepository;
-import com.insadong.application.study.dto.StudyStuDTO;
-import com.insadong.application.study.repository.StudyInfoRepository;
-import com.insadong.application.study.repository.StudyRepository;
-import com.insadong.application.studystu.repository.StudyStuRepository;
-import com.insadong.application.training.repository.TrainingRepository;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +11,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.List;
+import com.insadong.application.attend.dto.AttendDTO;
+import com.insadong.application.attend.repository.AttendRepository;
+import com.insadong.application.common.entity.Attend;
+import com.insadong.application.common.entity.Student;
+import com.insadong.application.common.entity.Study;
+import com.insadong.application.common.entity.StudyInfo;
+import com.insadong.application.common.entity.StudyStu;
+import com.insadong.application.common.entity.StudyStuPK;
+import com.insadong.application.common.entity.Training;
+import com.insadong.application.student.repository.StudentRepository;
+import com.insadong.application.study.dto.StudyStuDTO;
+import com.insadong.application.study.repository.StudyInfoRepository;
+import com.insadong.application.study.repository.StudyRepository;
+import com.insadong.application.studystu.repository.StudyStuRepository;
+import com.insadong.application.training.repository.TrainingRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -156,10 +166,29 @@ public class StudyStuService {
 
 		return studyStuDTOList;
 	}
+	
 
-
+	
+//	public Page<StudyStuDTO> selectStudentListByStudy(int page, Long studyCode) {
+//	    log.info("[StudyStuService] selectStudentListByStudy start ================================");
+//
+//	    Study study = studyRepository.findById(studyCode)
+//	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
+//
+//	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("studyStuPK.stuCode").descending());
+//
+//	    Page<StudyStu> studyStuList = studyStuRepository.findByStudyStuPK_StudyCode(pageable, studyCode);
+//	    Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> {
+//	        StudyStuDTO studyStuDTO = modelMapper.map(studyStu, StudyStuDTO.class);
+//
+//	       
+//	        return studyStuDTO;
+//	    });
+//
+//	    log.info("[StudyStuService] selectStudentListByStudy end ================================");
+//
+//	    return studyStuDTOList;
+//	}
 }
 	
-	
-
 

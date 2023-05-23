@@ -6,10 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import com.insadong.application.common.entity.Student;
-import com.insadong.application.common.entity.Study;
 import com.insadong.application.common.entity.StudyInfo;
 import com.insadong.application.common.entity.StudyStu;
 import com.insadong.application.common.entity.StudyStuPK;
@@ -25,7 +23,8 @@ public interface StudyStuRepository extends JpaRepository<StudyStu, StudyStuPK>{
 	List<StudyInfo> findAllStudyInfo();
 
 	 /* 강의별 수강생 조회 */
-	Page<StudyStu> findByStudyStuPK_StudyCode(Long studyCode, Pageable pageable);
+	 Page<StudyStu> findByStudyStuPK_StudyCode(Long studyCode, Pageable pageable);
+	
 
 }
 

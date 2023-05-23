@@ -9,13 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.insadong.application.advice.service.AdviceService;
 import com.insadong.application.attend.dto.AttendDTO;
 import com.insadong.application.attend.repository.AttendRepository;
-import com.insadong.application.common.entity.Advice;
 import com.insadong.application.common.entity.Attend;
-import com.insadong.application.common.entity.Student;
+import com.insadong.application.common.entity.Study;
 import com.insadong.application.student.repository.StudentRepository;
+import com.insadong.application.study.repository.StudyRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,42 +25,46 @@ public class AttendService {
 	private final ModelMapper modelMapper;
 	private final AttendRepository attendRepository;
 	private final StudentRepository studentRepository;
+	private final StudyRepository studyRepository;
 	
 	public AttendService(ModelMapper modelMapper, AttendRepository attendRepository
-			,StudentRepository studentRepository) {
+			,StudentRepository studentRepository, StudyRepository studyRepository) {
 		this.attendRepository = attendRepository;
 		this.modelMapper = modelMapper;
 		this.studentRepository = studentRepository;
+		this.studyRepository = studyRepository;
 	}
 	
 	
-	/* 수강생 출결 조회 */
-	
-	public Page<AttendDTO> selectAttendListByStudent(int page, Long stuCode) {
-		
-		log.info("[AttendService] selectAttendListByStudent start ==============================");
-		
-		Student findStu = studentRepository.findById(stuCode)
-				.orElseThrow(() -> new IllegalArgumentException("해당 학생이 없습니다. stuCode = " + stuCode));
-		
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("student.stuCode").descending());
-		
-		Page<Attend> attendList = attendRepository.findByStudent(pageable, findStu);
+		/* 수강생 출결 조회 */
+		public Page<AttendDTO> selectAttendListByStudent(int page, Long studyCode) {
+	    log.info("[AttendService] selectAttendListByStudent start ==============================");
+
+	    Study findStudy = studyRepository.findById(studyCode)
+	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode= " + studyCode));
+
+	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("attendDate").descending());
+
+	    Page<Attend> attendList = attendRepository.findByStudy(pageable, findStudy);
 	    Page<AttendDTO> attendDTOList = attendList.map(attend -> modelMapper.map(attend, AttendDTO.class));
-	    
+
 	    log.info("[AttendService] attendDTOList.getContent() : {}", attendDTOList.getContent());
-	    
+
 	    log.info("[AttendService] selectAttendListByStudent end  ==============================");
-	    
+
 	    return attendDTOList;
 	}
+
 	
 	/* 수강생 출결 등록 */
 	@Transactional
 	public void insertAttend(AttendDTO attendDto) {
+		log.info("[AttendService] insertAttend Start ===================================");
+		log.info("[AttendService] attendDto : {}", attendDto);
 		
 		attendRepository.save(modelMapper.map(attendDto, Attend.class));
 		
+		log.info("[AttendService] insertAttend End ==============================");
 	}
 
 	/* 수강생 출결 수정 */
