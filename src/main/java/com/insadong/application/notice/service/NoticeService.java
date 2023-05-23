@@ -135,44 +135,46 @@ public class NoticeService {
 	/* 공지사항 등록 */
 	@Transactional
 	public void registNotice(NoticeDTO noticeDTO, Long empCode) throws IOException {
-		Employee foundEmp = employeeRepository.findById(empCode).orElseThrow(() -> new IllegalArgumentException("조회 실패"));
+		Employee foundEmp = employeeRepository.findById(empCode)
+				.orElseThrow(() -> new IllegalArgumentException("조회 실패"));
 		noticeDTO.setNoticeWriter(modelMapper.map(foundEmp, EmployeeDTO.class));
 		Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
 
-		for (MultipartFile file : noticeDTO.getNoticeFile()) {
-			
+		if (!(noticeDTO.getNoticeFile() == null)) {
 
-			FileDTO fileDTO = new FileDTO();
+			for (MultipartFile file : noticeDTO.getNoticeFile()) {
 
-			String originFileName = file.getOriginalFilename();
-			String saveFileName = UUID.randomUUID().toString().replace("-", "");
-			String fileFath = IMAGE_DIR;
-			Long fileSize = file.getSize();
-			
-			Path uploadPath = Paths.get(IMAGE_DIR);
-			
-			if(!Files.exists(uploadPath)) {
-				Files.createDirectories(uploadPath);
+				FileDTO fileDTO = new FileDTO();
+
+				String originFileName = file.getOriginalFilename();
+				String saveFileName = UUID.randomUUID().toString().replace("-", "");
+				String fileFath = IMAGE_DIR;
+				Long fileSize = file.getSize();
+
+				Path uploadPath = Paths.get(IMAGE_DIR);
+
+				if (!Files.exists(uploadPath)) {
+					Files.createDirectories(uploadPath);
+				}
+
+				String replaceFileName = saveFileName + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+
+				try (InputStream inputStream = file.getInputStream()) {
+					Path filePath = uploadPath.resolve(replaceFileName);
+					Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e) {
+					throw new IOException("파일을 저장하지 못하였습니다. saveFileName : " + saveFileName);
+				}
+
+				fileDTO.setOriginFileName(originFileName);
+				fileDTO.setSaveFileName(saveFileName);
+				fileDTO.setFileFath(IMAGE_DIR);
+				fileDTO.setFileSize(fileSize);
+				fileDTO.setNotice(modelMapper.map(notice, NoticeDTO.class));
+
+				fileRepository.save(modelMapper.map(fileDTO, File.class));
+
 			}
-			
-			String replaceFileName = saveFileName + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-			
-			try(InputStream inputStream = file.getInputStream()) {
-				Path filePath = uploadPath.resolve(replaceFileName);
-				Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException e) {
-				throw new IOException("파일을 저장하지 못하였습니다. saveFileName : " + saveFileName);
-			}
-			
-			fileDTO.setOriginFileName(originFileName);
-			fileDTO.setSaveFileName(saveFileName);
-			fileDTO.setFileFath(IMAGE_DIR);
-			fileDTO.setFileSize(fileSize);
-//			fileDTO.setNoticeCode(empDTO.getEmpCode());
-			fileDTO.setNotice(modelMapper.map(notice, NoticeDTO.class));
-
-			fileRepository.save(modelMapper.map(fileDTO, File.class));
-			
 		}
 
 	}
