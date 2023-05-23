@@ -11,9 +11,9 @@ public class FileDTO {
 	
 	private String fileDiv;
 	
-	private NoticeDTO noticeCode;
+	private NoticeDTO notice;
 	
-	private TrainingDTO trainingCode;
+	private TrainingDTO training;
 	
 	private String originFileName;
 	
