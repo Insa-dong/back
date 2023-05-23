@@ -91,7 +91,7 @@ public class StudyInfoController {
 	/* 강사 강의 리스트 조회 */
 	@GetMapping("/emp/teacherStudyList/{empCode}")
 	public ResponseEntity<ResponseDTO> selectTeacherStudyListByEmpCode(@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long empCode,
-			@AuthenticationPrincipal StudyInfoDTO teacher) {
+	                                                                   @AuthenticationPrincipal StudyInfoDTO teacher) {
 
 		log.info("[EmpController] : selectTeacherStudyListByEmpCode start =============================== ");
 		log.info("[EmpController] : page : {}", page);
@@ -110,4 +110,11 @@ public class StudyInfoController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
+	@DeleteMapping("/studyInfo/{studyCode}")
+	public ResponseEntity<ResponseDTO> deleteStudyByStudyCode(@PathVariable long studyCode) {
+
+		studyInfoService.deleteStudyByStudyCode(studyCode);
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제 성공"));
+	}
 }
