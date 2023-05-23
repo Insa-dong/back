@@ -1,6 +1,6 @@
 package com.insadong.application.jwt;
 
-import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.employee.dto.TokenDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,7 +9,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,7 +37,7 @@ public class TokenProvider {
 		this.userDetailsService = userDetailsService;
 	}
 
-	public TokenDTO generateTokenDTO(EmployeeDTO employee) {
+	public TokenDTO generateTokenDTO(EmpDTOImplUS employee) {
 
 		log.info("[TokenProvider] generateTokenDTO Start =====================================");
 
@@ -66,7 +65,7 @@ public class TokenProvider {
 	}
 
 	public Authentication getAuthentication(String jwt) {
-		
+
 		log.info("jwt : {}", jwt);
 
 		Claims claims = parseClaims(jwt);

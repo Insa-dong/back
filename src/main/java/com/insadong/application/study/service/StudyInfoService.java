@@ -71,17 +71,14 @@ public class StudyInfoService {
 	@Transactional
 	public void insertStudy(PetiteStudyInfoDTO studyInfo) {
 
-//		Long trainingCode = studyInfo.getStudy().getTraining().getTrainingCode();
-//		TrainingEntity training = trainingRepository.findById(trainingCode).orElseThrow(() -> new IllegalArgumentException("실패 ~"));
-//		log.info("training : {} ", training);
-//
-//
-//		TrainingEntity foundEntity = saveEntity.getStudy().getTraining();
-//
-//		foundEntity.setTrainingCode(training.getTrainingCode());
-//		foundEntity.setTrainingTitle(training.getTrainingTitle());
 		StudyInfoEntity saveEntity = modelMapper.map(studyInfo, StudyInfoEntity.class);
 
 		studyInfoRepository.save(saveEntity);
+	}
+
+	@Transactional
+	public void deleteStudyByStudyCode(long studyCode) {
+
+		studyInfoRepository.deleteById(studyCode);
 	}
 }
