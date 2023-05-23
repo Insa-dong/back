@@ -9,11 +9,18 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "TB_HR")public class HR {
+@Table(name = "TB_HR")
+@SequenceGenerator(name="HR_SEQ_GENERATOR", sequenceName="SEQ_HR_CODE", initialValue=1, allocationSize =1)
+public class HR {
 
     @Id
     @Column(name = "HR_CODE")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="HR_SEQ_GENERATOR")
     private Long hrCode;
+
+    @ManyToOne
+    @JoinColumn(name = "EMP_CODE")
+    private Employee employee;
 
     @Column(name = "HR_UPDATE_DATE")
     private Date hrUpdateDate;

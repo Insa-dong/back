@@ -2,10 +2,13 @@ package com.insadong.application.emporg.service;
 
 import com.insadong.application.common.entity.Dept;
 import com.insadong.application.common.entity.Employee;
+import com.insadong.application.common.entity.HR;
 import com.insadong.application.common.entity.Job;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.emporg.dto.EmpHRDTO;
 import com.insadong.application.emporg.repository.EmpDeptRepository;
+import com.insadong.application.emporg.repository.EmpHRRepository;
 import com.insadong.application.emporg.repository.EmpJobRepository;
 import com.insadong.application.emporg.repository.EmpRepository;
 import com.insadong.application.study.repository.StudyInfoRepository;
@@ -34,14 +37,17 @@ public class EmpService {
 	private final EmployeeRepository employeeRepository;
 	private final StudyInfoRepository studyInfoRepository;
 
+	private final EmpHRRepository empHRRepository;
+
 	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository
-			, StudyInfoRepository studyInfoRepository) {
+			, StudyInfoRepository studyInfoRepository, EmpHRRepository empHRRepository) {
 		this.empRepository = empRepository;
 		this.modelMapper = modelMapper;
 		this.empDeptRepository = empDeptRepository;
 		this.empJobRepository = empJobRepository;
 		this.employeeRepository = employeeRepository;
 		this.studyInfoRepository = studyInfoRepository;
+		this.empHRRepository = empHRRepository;
 	}
 
 	/*1. 구성원 전체 조회*/
@@ -154,7 +160,17 @@ public class EmpService {
 
 	}
 
-	/*7. 인사이력 조회*/
+	/* 7. 인사이력 조회*/
+	public Page<EmpHRDTO> selectEmpRecord(int page, Long empCode) {
+
+		Employee employee = empRepository.findByEmpCode(empCode);
+
+		log.info("service start ========== ");
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("hrCode").descending());
+		Page<HR> empHRList = empHRRepository.findByEmployee(pageable, employee);
+		log.info("service end=============");
+		return empHRList.map(hr -> modelMapper.map(hr, EmpHRDTO.class));
+	}
 
 
 	public List<com.insadong.application.study.dto.EmpDTO> viewTeacherList() {

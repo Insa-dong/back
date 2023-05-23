@@ -2,6 +2,7 @@ package com.insadong.application.emporg.controller;
 
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.emporg.dto.EmpHRDTO;
 import com.insadong.application.emporg.service.EmpService;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
@@ -108,11 +109,39 @@ public class EmpController {
 
 	}
 
+
 	/* 6. 구성원 상세 조회 */
 	@GetMapping("emp/empdetail/{empCode}")
 	public ResponseEntity<ResponseDTO> selectEmpDetail(@PathVariable Long empCode) {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpDetail(empCode)));
 	}
+
+	/* 7. 인사이력 조회*/
+	@GetMapping("/emp/emprecord/{empCode}")
+	public ResponseEntity<ResponseDTO> selectEmpRecord(@RequestParam(name = "page", defaultValue = "1") int page,
+													   @PathVariable Long empCode) {
+		log.info("[EmpController] : selectEmpRecord start ==================================== ");
+		log.info("[EmpController] : page : {}", page);
+
+		Page<EmpHRDTO> empHRDTOList = empService.selectEmpRecord(page, empCode);
+
+		log.info("empHRDTOList {}", empHRDTOList);
+
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empHRDTOList);
+
+		log.info("[EmpController] : pageInfo : {}", pageInfo);
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(empHRDTOList.getContent());
+
+		log.info("[EmpController] : selectEmpRecord end ==================================== ");
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
+
+
+
 
 
 	@GetMapping("/emp/teacher")
