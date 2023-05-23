@@ -23,8 +23,6 @@ public class EmployeeDTO implements UserDetails {
 	private String empId;
 	private String empPwd;
 	private String empPhone;
-	//@Temporal(TemporalType.TIMESTAMP)
-	//@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date hireDate;
 	private Long offCount;
