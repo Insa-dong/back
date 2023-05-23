@@ -55,16 +55,6 @@ public class StudyStuDTO {
         this.trainingTime = trainingTime;
     }
     
-    private String studyTitle;
-    
-    public String getStudyTitle() {
-    	return studyTitle;
-    }
-    
-    public void setStudyTitle(String studyTitle) {
-    		this.studyTitle = studyTitle;
-    }
-
    private Long studyCount;
     
     public Long getStudyCount() {
@@ -84,26 +74,5 @@ public class StudyStuDTO {
     public void setTrainingCode(Long trainingCode) {
     		this.trainingCode = trainingCode;
     }
-    
-    private Date attendDate;
-    
-    public Date getAttendDate() {
-    	return attendDate;
-    }
-    
-    public void setAttendDate(Date attendDate) {
-    	this.attendDate = attendDate;
-    }
-      
-    private String attendStatus;
-    
-    public String getAttendStatus() {
-    	return attendStatus;
-    }
-    
-    public void setAttendStatus(String attendStatus) {
-    	this.attendStatus = attendStatus;
-    }
-    
-  
+
 }
