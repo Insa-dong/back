@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.insadong.application.common.ResponseDTO;
-import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.notice.dto.NoticeDTO;
 import com.insadong.application.notice.service.NoticeService;
 import com.insadong.application.paging.Pagenation;
@@ -84,13 +83,14 @@ public class NoticeController {
 
 	/* 공지사항 등록 */
 	@PostMapping("/noticeregist")
-	public ResponseEntity<ResponseDTO> registNotice(@ModelAttribute NoticeDTO noticeDTO, @AuthenticationPrincipal EmployeeDTO employeeDTO) throws IOException {
+	public ResponseEntity<ResponseDTO> registNotice(@ModelAttribute NoticeDTO noticeDTO, @AuthenticationPrincipal EmpDTOImplUS employeeDTO) throws IOException {
 		
 		log.info("[NoticeController] noticeDTO: {}", noticeDTO);
+		log.info("[NoticeController] empDTO: {}", employeeDTO);
 		
-		noticeDTO.setNoticeWriter(employeeDTO);
+//		noticeDTO.setNoticeWriter(employeeDTO);
 		
-		noticeService.registNotice(noticeDTO);
+		noticeService.registNotice(noticeDTO, employeeDTO.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 등록 성공"));
 	}

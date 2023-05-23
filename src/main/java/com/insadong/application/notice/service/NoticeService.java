@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.File;
 import com.insadong.application.common.entity.Notice;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.notice.dto.FileDTO;
 import com.insadong.application.notice.dto.NoticeDTO;
@@ -132,7 +134,9 @@ public class NoticeService {
 
 	/* 공지사항 등록 */
 	@Transactional
-	public void registNotice(NoticeDTO noticeDTO) throws IOException {
+	public void registNotice(NoticeDTO noticeDTO, Long empCode) throws IOException {
+		Employee foundEmp = employeeRepository.findById(empCode).orElseThrow(() -> new IllegalArgumentException("조회 실패"));
+		noticeDTO.setNoticeWriter(modelMapper.map(foundEmp, EmployeeDTO.class));
 		Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
 
 		for (MultipartFile file : noticeDTO.getNoticeFile()) {
@@ -164,7 +168,8 @@ public class NoticeService {
 			fileDTO.setSaveFileName(saveFileName);
 			fileDTO.setFileFath(IMAGE_DIR);
 			fileDTO.setFileSize(fileSize);
-			fileDTO.setNoticeCode(modelMapper.map(notice, NoticeDTO.class));
+//			fileDTO.setNoticeCode(empDTO.getEmpCode());
+			fileDTO.setNotice(modelMapper.map(notice, NoticeDTO.class));
 
 			fileRepository.save(modelMapper.map(fileDTO, File.class));
 			
