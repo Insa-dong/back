@@ -30,7 +30,6 @@ public class StudyStu implements Serializable {
 	@Column(name = "STUDY_STATE")
 	private String studyState;
 
-
 	/* StudyStu entity 수정 용도의 메소드를 별도로 정의 */
 	public void update(String studyEnrollDate, String studyState) {
 

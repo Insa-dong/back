@@ -35,14 +35,14 @@ public class AttendController {
 	
 	
 	/* 수강생 출결 조회 */
-	@GetMapping("/students/attend/{stuCode}")
+	@GetMapping("/students/attend/{studyCode}")
 	public ResponseEntity<ResponseDTO> selectAttendListByStudent(
-			@RequestParam(name="page", defaultValue="1") int page, @PathVariable Long stuCode) {
+			@RequestParam(name="page", defaultValue="1") int page, @PathVariable Long studyCode) {
 		
 		log.info("[AttendController] : selectAttendListByStudent start ==================================== ");
 		log.info("[AttendController] : page : {}", page);
 		
-		Page<AttendDTO> attendDTOList = attendService.selectAttendListByStudent(page, stuCode);
+		Page<AttendDTO> attendDTOList = attendService.selectAttendListByStudent(page, studyCode);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(attendDTOList);
 		
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();

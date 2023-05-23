@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.insadong.application.abs.dto.AbsDTO;
 import com.insadong.application.abs.service.AbsService;
 import com.insadong.application.common.ResponseDTO;
-import com.insadong.application.common.entity.Employee;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
@@ -55,7 +55,7 @@ private final AbsService absService;
 	
 	/*1-1 자신의 근태 조회 */
 	@GetMapping("/abs-myAbs")
-	public ResponseEntity<ResponseDTO> myAbsInfo(@AuthenticationPrincipal EmployeeDTO emp,
+	public ResponseEntity<ResponseDTO> myAbsInfo(@AuthenticationPrincipal EmpDTOImplUS emp,
 	                                                        @RequestParam(name = "page", defaultValue = "1") int page) {
 
 
@@ -74,7 +74,7 @@ private final AbsService absService;
 	
 	/* 2. 출근 시간 등록*/
 	@PostMapping("/checkIn")
-	public ResponseEntity<ResponseDTO> checkIn (@AuthenticationPrincipal EmployeeDTO emp) {
+	public ResponseEntity<ResponseDTO> checkIn (@AuthenticationPrincipal EmpDTOImplUS emp) {
 		Long empCode = emp.getEmpCode();
 	    try {
 	        absService.checkIn(empCode);
@@ -86,7 +86,7 @@ private final AbsService absService;
 	
 	/* 3. 퇴근 시간 등록*/
 	@PutMapping("/checkOut")
-	public ResponseEntity<ResponseDTO> checkOut (@AuthenticationPrincipal EmployeeDTO emp) {
+	public ResponseEntity<ResponseDTO> checkOut (@AuthenticationPrincipal EmpDTOImplUS emp) {
 		Long empCode = emp.getEmpCode();
 	    try {
 	        absService.checkOut(empCode);

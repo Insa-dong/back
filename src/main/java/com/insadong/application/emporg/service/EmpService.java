@@ -166,7 +166,7 @@ public class EmpService {
 		Employee employee = empRepository.findByEmpCode(empCode);
 
 		log.info("service start ========== ");
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("hrCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("hrCode").descending());
 		Page<HR> empHRList = empHRRepository.findByEmployee(pageable, employee);
 		log.info("service end=============");
 		return empHRList.map(hr -> modelMapper.map(hr, EmpHRDTO.class));

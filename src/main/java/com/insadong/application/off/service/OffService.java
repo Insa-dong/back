@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Off;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.off.dto.OffDTO;
 import com.insadong.application.off.repository.EmpOffRepository;
@@ -40,20 +41,12 @@ public class OffService {
 
 	/* 연차 신청 */
 	@Transactional
-	public void applyOff(OffDTO offDTO, EmployeeDTO loggedInUser) {
+	public void applyOff(OffDTO offDTO, EmpDTOImplUS loggedInUser) {
 
 		Off off = new Off();
 
 		LocalDate offStart = offDTO.getOffStart();
 		LocalDate offEnd = offDTO.getOffEnd();
-
-		List<String> signStatusList = Arrays.asList("승인", "대기");
-
-		// 이미 해당 날짜 범위에 승인, 대기 상태인 연차 신청이 있는지 확인. 
-		if (offRepository.existsByOffStartLessThanEqualAndOffEndGreaterThanEqualAndSignStatusIn(offStart, offEnd,
-				signStatusList)) {
-			throw new RuntimeException("이미 해당 날짜에 연차를 신청했습니다.");
-		}
 
 		off.setOffStart(offStart);
 		off.setOffEnd(offEnd);
@@ -69,11 +62,12 @@ public class OffService {
 		off.setOffDay(offDay);
 	
 		// 신청자 설정
-	    Employee requester = modelMapper.map(loggedInUser, Employee.class);
-	    off.setSignRequester(requester);
+		Employee foundEmp = empOffRepository.findById(loggedInUser.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("asd"));
+//	    Employee requester = modelMapper.map(loggedInUser, Employee.class);
+	    off.setSignRequester(foundEmp);
 	
 		// 결재자 = 신청자 부서 팀장
-		Employee payer = empOffRepository.findTeamLeaderByDept(requester.getDept());
+		Employee payer = empOffRepository.findTeamLeaderByDept(foundEmp.getDept());
 		off.setSignPayer(payer);
 
 		// 신청일 설정
@@ -83,7 +77,14 @@ public class OffService {
 		offRepository.save(off);
 
 	}
-
+	
+	/*2. 연차 중복 조회 */
+	
+	public boolean checkExistingOff(LocalDate offStart, LocalDate offEnd) {
+	    List<String> signStatusList = Arrays.asList("승인", "대기");
+	    return offRepository.existsByOffStartLessThanEqualAndOffEndGreaterThanEqualAndSignStatusIn(offStart, offEnd, signStatusList);
+	}
+	
 	/* 3. 예정 연차 조회 */
 	public List<OffDTO> myComingUpOffList(Long empCode) {
 		List<Off> offList = offRepository.findBySignRequester_EmpCode(empCode, Sort.by("offStart"));
@@ -95,4 +96,6 @@ public class OffService {
 		return offDTOList;
 
 	}
+
+	
 }
