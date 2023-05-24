@@ -19,6 +19,8 @@ import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
+import com.insadong.application.student.dto.StudentDTO;
+import com.insadong.application.study.dto.StudyDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,14 +59,20 @@ public class AttendController {
 	
 	/* 수강생 출결 등록 */
 	@PostMapping("/students/attend")
-	public ResponseEntity<ResponseDTO> insertAttend(@RequestBody AttendDTO attendDto ) {
-		
-		/* 강사만 등록할수 있는 권한 추가 예정 */
-		attendService.insertAttend(attendDto);
-		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출결 등록 성공"));
-		
+	public ResponseEntity<ResponseDTO> insertAttend(@RequestBody AttendDTO attendDto) {
+	    StudyDTO studyDto = new StudyDTO();
+	    studyDto.setStudyCode(attendDto.getStudyCode());
+	    attendDto.setStudy(studyDto);
+	    
+	    StudentDTO studentDto = new StudentDTO();
+	    studentDto.setStuCode(attendDto.getStuCode());
+	    attendDto.setStudent(studentDto);
+	    
+	    attendService.insertAttend(attendDto);
+	    
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출결 등록 성공"));
 	}
+	
 	
 	/* 수강생 출결 수정 */
 	@PutMapping("/students/attend")
@@ -85,4 +93,5 @@ public class AttendController {
 	    attendService.deleteAttend(attendCode);
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상담일지 삭제 성공"));
 	}
+			
 }

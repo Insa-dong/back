@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import com.insadong.application.attend.dto.AttendDTO;
 import com.insadong.application.attend.repository.AttendRepository;
 import com.insadong.application.common.entity.Attend;
+import com.insadong.application.common.entity.Student;
 import com.insadong.application.common.entity.Study;
+import com.insadong.application.student.dto.StudentDTO;
 import com.insadong.application.student.repository.StudentRepository;
 import com.insadong.application.study.repository.StudyRepository;
 
@@ -55,7 +57,7 @@ public class AttendService {
 	    return attendDTOList;
 	}
 
-	
+
 	/* 수강생 출결 등록 */
 	@Transactional
 	public void insertAttend(AttendDTO attendDto) {
@@ -91,8 +93,6 @@ public class AttendService {
 
 		    attendRepository.delete(attend);
 	}
-
-
 
 
 }
