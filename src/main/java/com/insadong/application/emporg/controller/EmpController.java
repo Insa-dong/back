@@ -146,7 +146,7 @@ public class EmpController {
 	}
 
 	/* 구성원 부서이동*/
-	@PutMapping("/emp/empupdatddept")
+	@PutMapping("/emp/empupdatedept")
 	public ResponseEntity<ResponseDTO>	updateEmpDept(@RequestBody EmployeeDTO employeeDTO){
 		empService.updateEmpDept(employeeDTO);
 
@@ -154,6 +154,16 @@ public class EmpController {
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDTO(HttpStatus.OK, "구성원 부서이동 성공"));
+	}
+
+	@PutMapping("/emp/empupdatejob")
+	public ResponseEntity<ResponseDTO>	updateEmpJob(@RequestBody EmployeeDTO employeeDTO){
+		empService.updateEmpJob(employeeDTO);
+
+
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "구성원 직책변경 성공"));
 	}
 
 
