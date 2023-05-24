@@ -36,6 +36,7 @@ public class CalendarService {
 		List<Calendar> foundList = calendarRepository.findAllById(codeList);
 		log.info("codeList : {} ", codeList);
 		log.info("foundList : {} ", foundList);
-		
+		calendarRepository.saveAll(calList);
 	}
 }
+
