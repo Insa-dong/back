@@ -23,7 +23,7 @@ import lombok.Setter;
 @DynamicInsert
 @Table(name="TB_ATTEND")
 @SequenceGenerator(name="ATTEND_SEQ_GENERATOR",
-sequenceName="SEQ_ADVICE_CODE",
+sequenceName="SEQ_ATTEND_CODE",
 initialValue=1, allocationSize=1)
 public class Attend {
 	
