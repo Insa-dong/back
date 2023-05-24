@@ -80,9 +80,9 @@ public class AttendController {
 	
 	
 	/* 수강생 출결 삭제 */
-	@DeleteMapping("/students/attend/{stuCode}")
-	public ResponseEntity<ResponseDTO> deleteAttend(@PathVariable Long stuCode) {
-	    attendService.deleteAttend(stuCode);
+	@DeleteMapping("/students/attend/{attendCode}")
+	public ResponseEntity<ResponseDTO> deleteAttend(@PathVariable Long attendCode) {
+	    attendService.deleteAttend(attendCode);
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상담일지 삭제 성공"));
 	}
 }

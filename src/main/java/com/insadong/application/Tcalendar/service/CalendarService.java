@@ -6,6 +6,10 @@ import com.insadong.application.Tcalendar.repository.CalendarRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -19,11 +23,19 @@ public class CalendarService {
 		this.modelMapper = modelMapper;
 	}
 
-	public CalendarDTO viewMyScheduleList(Long empCode) {
+	public List<CalendarDTO> viewMyScheduleList(Long empCode) {
 
-		Calendar foundMySchedule = calendarRepository.findByEmployeeEmpCode(empCode);
-		log.info("found : {} ", foundMySchedule);
+		return calendarRepository.findByEmployeeEmpCode(empCode).stream().map(schedule -> modelMapper.map(schedule, CalendarDTO.class)).collect(Collectors.toList());
+	}
 
-		return null;
+	@Transactional
+	public void updateMyCal(List<CalendarDTO> calendar) {
+		List<Calendar> calList = calendar.stream().map(cal -> modelMapper.map(cal, Calendar.class)).collect(Collectors.toList());
+		List<Long> codeList = calList.stream().map(Calendar::getCalCode).collect(Collectors.toList());
+
+		List<Calendar> foundList = calendarRepository.findAllById(codeList);
+		log.info("codeList : {} ", codeList);
+		log.info("foundList : {} ", foundList);
+		
 	}
 }

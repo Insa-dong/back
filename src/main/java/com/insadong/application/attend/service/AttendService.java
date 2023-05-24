@@ -85,12 +85,14 @@ public class AttendService {
 
 	/* 수강생 출결 삭제 */
 	@Transactional
-	public void deleteAttend(Long stuCode) {
-		 Attend attend = attendRepository.findById(stuCode)
-		            .orElseThrow(() -> new IllegalArgumentException("해당 출결이 없습니다. stuCode = " + stuCode));
+	public void deleteAttend(Long attendCode) {
+		 Attend attend = attendRepository.findById(attendCode)
+		            .orElseThrow(() -> new IllegalArgumentException("해당 출결이 없습니다. attendCode = " + attendCode));
 
 		    attendRepository.delete(attend);
 	}
+
+
 
 
 }

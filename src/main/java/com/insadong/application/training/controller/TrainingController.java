@@ -1,7 +1,7 @@
 package com.insadong.application.training.controller;
 
 import com.insadong.application.common.ResponseDTO;
-import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
@@ -55,7 +55,7 @@ public class TrainingController {
 	}
 
 	@PutMapping("/training")
-	public ResponseEntity<ResponseDTO> modifyTraining(@RequestBody TrainingDTO trainingDTO, @AuthenticationPrincipal EmployeeDTO employeeDTO) {
+	public ResponseEntity<ResponseDTO> modifyTraining(@RequestBody TrainingDTO trainingDTO, @AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
 
 		trainingService.updateTraining(trainingDTO, employeeDTO.getEmpCode());
 
@@ -71,7 +71,7 @@ public class TrainingController {
 	}
 
 	@PostMapping("/training")
-	public ResponseEntity<ResponseDTO> insertTraining(@RequestBody com.insadong.application.study.dto.TrainingDTO trainingDTO, @AuthenticationPrincipal EmployeeDTO empDTO) {
+	public ResponseEntity<ResponseDTO> insertTraining(@RequestBody com.insadong.application.study.dto.TrainingDTO trainingDTO, @AuthenticationPrincipal EmpDTOImplUS empDTO) {
 
 		log.info("training : {} ", trainingDTO);
 		log.info("emp : {} ", empDTO);

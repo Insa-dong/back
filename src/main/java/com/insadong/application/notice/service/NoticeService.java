@@ -1,14 +1,15 @@
 package com.insadong.application.notice.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.UUID;
-
+import com.insadong.application.common.entity.Employee;
+import com.insadong.application.common.entity.File;
+import com.insadong.application.common.entity.Notice;
+import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.notice.dto.FileDTO;
+import com.insadong.application.notice.dto.NoticeDTO;
+import com.insadong.application.notice.repository.FileRepository;
+import com.insadong.application.notice.repository.NoticeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -32,7 +33,6 @@ import com.insadong.application.notice.repository.FileRepository;
 import com.insadong.application.notice.repository.NoticeRepository;
 
 import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Service
 public class NoticeService {
@@ -48,7 +48,7 @@ public class NoticeService {
 	private String IMAGE_DIR;
 
 	public NoticeService(NoticeRepository noticeRepository, EmployeeRepository employeeRepository,
-			FileRepository fileRepository, ModelMapper modelMapper) {
+	                     FileRepository fileRepository, ModelMapper modelMapper) {
 		this.noticeRepository = noticeRepository;
 		this.employeeRepository = employeeRepository;
 		this.fileRepository = fileRepository;
@@ -176,9 +176,17 @@ public class NoticeService {
 
 				fileRepository.save(modelMapper.map(fileDTO, File.class));
 
+
+				fileDTO.setOriginFileName(originFileName);
+				fileDTO.setSaveFileName(saveFileName);
+				fileDTO.setFileFath(IMAGE_DIR);
+				fileDTO.setFileSize(fileSize);
+//			fileDTO.setNoticeCode(empDTO.getEmpCode());
+				fileDTO.setNotice(modelMapper.map(notice, NoticeDTO.class));
+
+				fileRepository.save(modelMapper.map(fileDTO, File.class));
 			}
 		}
-
 	}
 	
 	/* 공지사항 상세 조회*/
