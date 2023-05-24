@@ -28,6 +28,8 @@ public class NoticeDTO {
 	@JsonIgnore
 	private List<MultipartFile> noticeFile;
 	
+	private List<FileDTO> fileList;
+	
 	
 	
 

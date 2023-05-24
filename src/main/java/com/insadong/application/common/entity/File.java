@@ -28,14 +28,9 @@ public class File {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FILE_SEQ_GENERATOR")
 	private Long fileCode;
 	
-	@ManyToOne
-	@JoinColumn(name="NOTICE_CODE")
-	private Notice noticeCode;
-	
-	@ManyToOne
-	@JoinColumn(name="TRAINING_CODE")
-	private Training trainingCode;
-	
+	@Column(name="NOTICE_CODE")
+	private Long noticeCode;
+
 	@Column(name="ORIGIN_FILE_NAME")
 	private String originFileName;
 	

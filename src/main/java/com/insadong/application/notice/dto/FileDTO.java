@@ -9,11 +9,7 @@ public class FileDTO {
 	
 	private Long fileCode;
 	
-	private String fileDiv;
-	
-	private NoticeDTO notice;
-	
-	private TrainingDTO training;
+	private Long noticeCode;
 	
 	private String originFileName;
 	
@@ -22,8 +18,6 @@ public class FileDTO {
 	private String fileFath;
 	
 	private Long fileSize;
-	
-	private String fileUploadTime;
 	
 
 }

@@ -12,6 +12,7 @@ import com.insadong.application.notice.repository.NoticeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,15 +22,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.UUID;
+import com.insadong.application.common.entity.Employee;
+import com.insadong.application.common.entity.File;
+import com.insadong.application.common.entity.Notice;
+import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.notice.dto.FileDTO;
+import com.insadong.application.notice.dto.NoticeDTO;
+import com.insadong.application.notice.repository.FileRepository;
+import com.insadong.application.notice.repository.NoticeRepository;
 
+import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class NoticeService {
@@ -60,6 +63,7 @@ public class NoticeService {
 		Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("noticeCode").descending());
 
 		Page<Notice> noticeList = noticeRepository.findAll(pageable);
+
 		Page<NoticeDTO> noticeDTOList = noticeList.map(notice -> modelMapper.map(notice, NoticeDTO.class));
 
 		log.info("[NoticeService] selectNoticeList.getContent() : {}", noticeDTOList.getContent());
@@ -135,8 +139,9 @@ public class NoticeService {
 		Employee foundEmp = employeeRepository.findById(empCode)
 				.orElseThrow(() -> new IllegalArgumentException("조회 실패"));
 		noticeDTO.setNoticeWriter(modelMapper.map(foundEmp, EmployeeDTO.class));
-		Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
 
+		Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
+		
 		if (!(noticeDTO.getNoticeFile() == null)) {
 
 			for (MultipartFile file : noticeDTO.getNoticeFile()) {
@@ -167,7 +172,7 @@ public class NoticeService {
 				fileDTO.setSaveFileName(saveFileName);
 				fileDTO.setFileFath(IMAGE_DIR);
 				fileDTO.setFileSize(fileSize);
-				fileDTO.setNotice(modelMapper.map(notice, NoticeDTO.class));
+				fileDTO.setNoticeCode(notice.getNoticeCode());
 
 				fileRepository.save(modelMapper.map(fileDTO, File.class));
 
@@ -182,6 +187,30 @@ public class NoticeService {
 				fileRepository.save(modelMapper.map(fileDTO, File.class));
 			}
 		}
+	}
+	
+	/* 공지사항 상세 조회*/
+	public NoticeDTO selectNoticeList(Long noticeCode) {
+
+		log.info("[NoticeService] selectNoticeList start ============================== ");
+		log.info("[NoticeService] noticeCode : {}", noticeCode);
+
+		Notice notice = noticeRepository.findById(noticeCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다. noticeCode=" + noticeCode));
+
+		List<File> files = fileRepository.findByNoticeCode(noticeCode);
+		if (files.isEmpty()) {
+			throw new IllegalArgumentException("해당 코드의 파일이 없습니다.");
+		}
+		
+		log.info("[NoticeService] files : {}", files);
+		
+		
+		
+		NoticeDTO noticeDTO = modelMapper.map(notice, NoticeDTO.class);
+		noticeDTO.setNoticeFile(null);
+
+		return noticeDTO;
 	}
 
 }
