@@ -1,6 +1,7 @@
 package com.insadong.application.common.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "TB_HR")
 @SequenceGenerator(name="HR_SEQ_GENERATOR", sequenceName="SEQ_HR_CODE", initialValue=1, allocationSize =1)
@@ -35,4 +37,7 @@ public class HR {
     @ManyToOne
     @JoinColumn(name = "JOB_CODE")
     private Job job;
+
+
+//    public HR(){}
 }

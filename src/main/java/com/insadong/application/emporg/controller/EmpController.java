@@ -145,6 +145,16 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
+	/* 구성원 부서이동*/
+	@PutMapping("/emp/empupdatddept")
+	public ResponseEntity<ResponseDTO>	updateEmpDept(@RequestBody EmployeeDTO employeeDTO){
+		empService.updateEmpDept(employeeDTO);
+
+
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "구성원 부서이동 성공"));
+	}
 
 
 

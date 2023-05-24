@@ -2,13 +2,10 @@ package com.insadong.application.emporg.repository;
 
 import com.insadong.application.common.entity.Dept;
 import com.insadong.application.common.entity.Employee;
-import com.insadong.application.common.entity.Job;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -50,12 +47,13 @@ public interface EmpRepository extends JpaRepository<Employee, Long> {
 
     Employee findByEmpCode(Long empCode);
     /* 구성원 부서이동*/
-    @Query("UPDATE Employee e SET e.dept = :newDept WHERE e.empCode = :empCode")
-    void moveEmployeeToDept(@Param("empCode") Long empCode, @Param("newDept") Dept newDept);
-
-    /* 구성원 직책이동*/
-    @Query("UPDATE Employee e SET e.job = :newJob WHERE e.empCode = :empCode")
-    void moveEmployeeToJob(@Param("empCode") Long empCode, @Param("newJob") Job newJob);
+//    @Query("UPDATE Employee e SET e.dept.deptCode = :newDeptCode WHERE e.empCode = :empCode")
+//    void moveEmployeeToDept(@Param("empCode") Long empCode, @Param("newDeptCode") String newDeptCode);
+//
+//
+//    /* 구성원 직책이동*/
+//    @Query("UPDATE Employee e SET e.job.jobCode = :newJobCode WHERE e.empCode = :empCode")
+//    void moveEmployeeToJob(@Param("empCode") Long empCode, @Param("newJobCode") Job newJob);
 
 
     /*4. 강사 전체 조회 */

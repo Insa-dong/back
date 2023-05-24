@@ -67,6 +67,10 @@ public class Employee {
 	@OneToMany(mappedBy = "signRequester")
     private List<Off> offs;
 
+	public void updateDept(Dept dept){
+		this.dept = dept;
+	}
+
 }
 
 

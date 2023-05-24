@@ -22,6 +22,6 @@ public class EmployeeDTO {
 	private Date hireDate;
 	private Long offCount;
 	private String empState;
-	@DateTimeFormat(pattern = "yy/MM/dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 }
