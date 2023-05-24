@@ -56,6 +56,27 @@ public class AttendService {
 
 	    return attendDTOList;
 	}
+		
+		/* 수강생 출결 상세 조회 */
+		public Page<AttendDTO> selectAttendListDetailByStudent(int page, Long stuCode) {
+			log.info("[AttendService] selectAttendListDetailByStudent start ==============================");
+
+		    Student findStudent = studentRepository.findById(stuCode)
+		            .orElseThrow(() -> new IllegalArgumentException("해당 학생이 없습니다. stuCode= " + stuCode));
+
+		    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("student.stuCode").descending());
+
+		    Page<Attend> attendList = attendRepository.findByStudent(pageable, findStudent);
+		    Page<AttendDTO> attendDTOList = attendList.map(attend -> modelMapper.map(attend, AttendDTO.class));
+
+		    log.info("[AttendService] attendDTOList.getContent() : {}", attendDTOList.getContent());
+
+		    log.info("[AttendService] selectAttendListDetailByStudent end  ==============================");
+
+		    return attendDTOList;
+		}
+
+
 
 
 	/* 수강생 출결 등록 */
@@ -93,6 +114,5 @@ public class AttendService {
 
 		    attendRepository.delete(attend);
 	}
-
 
 }
