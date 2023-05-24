@@ -37,12 +37,11 @@ public class Calendar {
 	private Date calEndDate;
 
 	@ManyToOne
-	@JoinColumn(name = "EMP_CODE")
+	@JoinColumn(name = "EMP_CODE", updatable = false)
 	private EmpEntity employee;
 
-	public void update(String calTitle, String calContent, Date calStartDate, Date calEndDate) {
+	public void update(String calTitle, Date calStartDate, Date calEndDate) {
 		this.calTitle = calTitle;
-		this.calContent = calContent;
 		this.calStartDate = calStartDate;
 		this.calEndDate = calEndDate;
 	}
