@@ -2,6 +2,7 @@ package com.insadong.application.off.controller;
 
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -91,6 +92,11 @@ public class OffController {
                     .filter(off -> off.getOffEnd().getYear() == year.get())
                     .collect(Collectors.toList());
         }
+        
+        //최근 날짜부터
+        offDTOList = offDTOList.stream()
+        	    .sorted(Comparator.comparing(OffDTO::getOffStart).reversed())
+        	    .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", offDTOList));
     }
