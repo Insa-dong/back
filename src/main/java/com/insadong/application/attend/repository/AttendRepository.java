@@ -12,4 +12,8 @@ public interface AttendRepository extends JpaRepository<Attend, Long> {
 
 	/* 수강생 출결 조회 */
 	Page<Attend> findByStudy(Pageable pageable, Study findStudy);
+
+	/* 수강생 상세 조회 */
+	Page<Attend> findByStudent(Pageable pageable, Student findStudent);
+
 }

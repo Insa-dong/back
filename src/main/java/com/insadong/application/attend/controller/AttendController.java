@@ -56,6 +56,25 @@ public class AttendController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 	
+	/* 수강생 출결 상세 조회 */
+	@GetMapping("/students/attendDetail/{stuCode}")
+	public ResponseEntity<ResponseDTO> selectAttendListDetailByStudent(
+			@RequestParam(name="page", defaultValue="1") int page, @PathVariable Long stuCode) {
+		
+		log.info("[AttendController] : selectAttendListDetailByStudent start ==================================== ");
+		log.info("[AttendController] : page : {}", page);
+		
+		Page<AttendDTO> attendDTOList = attendService.selectAttendListDetailByStudent(page, stuCode);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(attendDTOList);
+		
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(attendDTOList.getContent());
+		
+		log.info("[AttendController] : selectAttendListDetailByStudent end ==================================== ");
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
 	
 	/* 수강생 출결 등록 */
 	@PostMapping("/students/attend")
