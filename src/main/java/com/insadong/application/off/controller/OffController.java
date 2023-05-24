@@ -3,6 +3,7 @@ package com.insadong.application.off.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
-import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.off.dto.OffDTO;
 import com.insadong.application.off.service.OffService;
 
@@ -56,7 +56,7 @@ public class OffController {
     @GetMapping("/my-comingUp-off")
     public ResponseEntity<ResponseDTO> myComingUpOffList(@AuthenticationPrincipal EmpDTOImplUS emp) {
     	
-    	List<OffDTO> offDTOList = offService.myComingUpOffList(emp.getEmpCode());
+    	List<OffDTO> offDTOList = offService.myOffList(emp.getEmpCode());
     	
     	// offEnd가 오늘 이후인 항목만 필터링
         LocalDate today = LocalDate.now();
@@ -71,6 +71,29 @@ public class OffController {
     	
     }
     
+    
+	/*4. 연차 사용 기록 조회 : 전체 조회, 연도 조회 한번에 작성 */	
+    @GetMapping("/my-past-off")
+    public ResponseEntity<ResponseDTO> myPastOffList(@AuthenticationPrincipal EmpDTOImplUS emp, @RequestParam Optional<Integer> year) {
+
+        List<OffDTO> offDTOList = offService.myOffList(emp.getEmpCode());
+
+        // offEnd가 오늘 이전인 항목만 필터링
+        LocalDate today = LocalDate.now();
+
+        offDTOList = offDTOList.stream()
+                .filter(off -> off.getOffEnd().isBefore(today) && "승인".equals(off.getSignStatus()))
+                .collect(Collectors.toList());
+
+        // 연도가 주어졌을 때, 그 연도의 데이터만 필터링
+        if (year.isPresent()) {
+            offDTOList = offDTOList.stream()
+                    .filter(off -> off.getOffEnd().getYear() == year.get())
+                    .collect(Collectors.toList());
+        }
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", offDTOList));
+    }
 
 
 }

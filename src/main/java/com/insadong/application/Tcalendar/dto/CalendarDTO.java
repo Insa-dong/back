@@ -1,6 +1,6 @@
 package com.insadong.application.Tcalendar.dto;
 
-import com.insadong.application.study.dto.EmpDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -14,9 +14,11 @@ public class CalendarDTO {
 
 	private String calContent;
 
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date calStartDate;
 
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date calEndDate;
 
-	private EmpDTO employee;
+	private PetiteEmpDTO employee;
 }

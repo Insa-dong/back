@@ -85,8 +85,8 @@ public class OffService {
 	    return offRepository.existsByOffStartLessThanEqualAndOffEndGreaterThanEqualAndSignStatusIn(offStart, offEnd, signStatusList);
 	}
 	
-	/* 3. 예정 연차 조회 */
-	public List<OffDTO> myComingUpOffList(Long empCode) {
+	/* 3,4. 내 연차 조회 */
+	public List<OffDTO> myOffList(Long empCode) {
 		List<Off> offList = offRepository.findBySignRequester_EmpCode(empCode, Sort.by("offStart"));
 		log.info("offList : {} ", offList);
 
