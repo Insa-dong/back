@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,6 +81,8 @@ public class NoticeController {
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
+	
+	
 
 	/* 공지사항 등록 */
 	@PostMapping("/noticeregist")
@@ -94,5 +97,16 @@ public class NoticeController {
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 등록 성공"));
 	}
+	
+	
+	/* 공지사항 상세 조회*/
+	@GetMapping("/notice/{noticeCode}")
+	public ResponseEntity<ResponseDTO> selectNoticeList(@PathVariable Long noticeCode) {
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "조회 성공", noticeService.selectNoticeList(noticeCode)));
+	}
+
 
 }
