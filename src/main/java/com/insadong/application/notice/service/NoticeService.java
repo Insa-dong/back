@@ -177,7 +177,15 @@ public class NoticeService {
 				fileRepository.save(modelMapper.map(fileDTO, File.class));
 
 			}
-		}
+			fileDTO.setOriginFileName(originFileName);
+			fileDTO.setSaveFileName(saveFileName);
+			fileDTO.setFileFath(IMAGE_DIR);
+			fileDTO.setFileSize(fileSize);
+//			fileDTO.setNoticeCode(empDTO.getEmpCode());
+			fileDTO.setNotice(modelMapper.map(notice, NoticeDTO.class));
+
+			fileRepository.save(modelMapper.map(fileDTO, File.class));
+					}
 
 	}
 	
