@@ -189,18 +189,8 @@ public class NoticeService {
 
 		Notice notice = noticeRepository.findById(noticeCode)
 				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다. noticeCode=" + noticeCode));
-
-		List<File> files = fileRepository.findByNoticeCode(noticeCode);
-		if (files.isEmpty()) {
-			throw new IllegalArgumentException("해당 코드의 파일이 없습니다.");
-		}
-		
-		log.info("[NoticeService] files : {}", files);
-		
-		
 		
 		NoticeDTO noticeDTO = modelMapper.map(notice, NoticeDTO.class);
-		noticeDTO.setNoticeFile(null);
 
 		return noticeDTO;
 	}
