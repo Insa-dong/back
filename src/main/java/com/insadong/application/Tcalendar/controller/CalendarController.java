@@ -28,12 +28,14 @@ public class CalendarController {
 
 		List<CalendarDTO> data = calService.viewMyScheduleList(empDTO.getEmpCode());
 
+		log.info("data : {} ", data);
+
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
 	}
 
 	@PutMapping("/myScheduleUpdate")
 	public ResponseEntity<ResponseDTO> updateMyCal(@RequestBody List<CalendarDTO> calendar) {
-
+		log.info("update 시작");
 		log.info("cal : {} ", calendar);
 		calService.updateMyCal(calendar);
 
