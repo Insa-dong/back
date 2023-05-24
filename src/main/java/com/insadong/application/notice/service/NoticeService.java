@@ -1,14 +1,15 @@
 package com.insadong.application.notice.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.UUID;
-
+import com.insadong.application.common.entity.Employee;
+import com.insadong.application.common.entity.File;
+import com.insadong.application.common.entity.Notice;
+import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.repository.EmployeeRepository;
+import com.insadong.application.notice.dto.FileDTO;
+import com.insadong.application.notice.dto.NoticeDTO;
+import com.insadong.application.notice.repository.FileRepository;
+import com.insadong.application.notice.repository.NoticeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,18 +21,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.insadong.application.common.entity.Employee;
-import com.insadong.application.common.entity.File;
-import com.insadong.application.common.entity.Notice;
-import com.insadong.application.employee.dto.EmpDTOImplUS;
-import com.insadong.application.employee.dto.EmployeeDTO;
-import com.insadong.application.employee.repository.EmployeeRepository;
-import com.insadong.application.notice.dto.FileDTO;
-import com.insadong.application.notice.dto.NoticeDTO;
-import com.insadong.application.notice.repository.FileRepository;
-import com.insadong.application.notice.repository.NoticeRepository;
-
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -48,7 +45,7 @@ public class NoticeService {
 	private String IMAGE_DIR;
 
 	public NoticeService(NoticeRepository noticeRepository, EmployeeRepository employeeRepository,
-			FileRepository fileRepository, ModelMapper modelMapper) {
+	                     FileRepository fileRepository, ModelMapper modelMapper) {
 		this.noticeRepository = noticeRepository;
 		this.employeeRepository = employeeRepository;
 		this.fileRepository = fileRepository;
@@ -174,17 +171,17 @@ public class NoticeService {
 
 				fileRepository.save(modelMapper.map(fileDTO, File.class));
 
-			}
-			fileDTO.setOriginFileName(originFileName);
-			fileDTO.setSaveFileName(saveFileName);
-			fileDTO.setFileFath(IMAGE_DIR);
-			fileDTO.setFileSize(fileSize);
+
+				fileDTO.setOriginFileName(originFileName);
+				fileDTO.setSaveFileName(saveFileName);
+				fileDTO.setFileFath(IMAGE_DIR);
+				fileDTO.setFileSize(fileSize);
 //			fileDTO.setNoticeCode(empDTO.getEmpCode());
-			fileDTO.setNotice(modelMapper.map(notice, NoticeDTO.class));
+				fileDTO.setNotice(modelMapper.map(notice, NoticeDTO.class));
 
-			fileRepository.save(modelMapper.map(fileDTO, File.class));
-					}
-
+				fileRepository.save(modelMapper.map(fileDTO, File.class));
+			}
+		}
 	}
 
 }
