@@ -166,7 +166,7 @@ public class EmpService {
 				modelMapper.map(employeeDTO.getDept(), Dept.class)
 		);
 
-//		empHRRepository.save(new HR());
+//		empHRRepository.save(new HR(employeeDTO.getDept() , employeeDTO.));
 
 
 		log.info("[EmpService] updateEmpDept end ============================== ");

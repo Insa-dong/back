@@ -39,5 +39,9 @@ public class HR {
     private Job job;
 
 
-//    public HR(){}
+//    public HR(Date hrUpdateDate, String hrDiv, Dept dept) {
+//        this.hrUpdateDate = hrUpdateDate;
+//        this.hrDiv = hrDiv;
+//        this.dept = dept;
+//    }
 }
