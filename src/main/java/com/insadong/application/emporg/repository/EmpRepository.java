@@ -16,11 +16,11 @@ public interface EmpRepository extends JpaRepository<Employee, Long> {
 
     /*1. 구성원 전체 조회 - 재직 중*/
     @EntityGraph(attributePaths = {"dept", "job"})
-	Page<Employee> findByEmpState(Pageable pageable, String empState);
+    Page<Employee> findByEmpStateIn(Pageable pageable, List<String> empStates);
 
 	/*2. 구성원 부서별 조회*/
-	@EntityGraph(attributePaths = {"dept", "job"})
-	Page<Employee> findByDeptAndEmpState(Pageable pageable, Dept dept, String empState);
+    @EntityGraph(attributePaths = {"dept", "job"})
+    Page<Employee> findByDeptAndEmpStateIn(Pageable pageable, Dept dept, List<String> empStates);
 
 //    /*3-1. 구성원 이름 검색*/
 //    @EntityGraph(attributePaths={"dept", "job"})
@@ -36,15 +36,17 @@ public interface EmpRepository extends JpaRepository<Employee, Long> {
 
     /* 3-1. 구성원 이름 검색 */
     @EntityGraph(attributePaths = {"dept", "job"})
-    Page<Employee> findByEmpNameContainsAndEmpState(Pageable pageable, String empName , String empState);
+    Page<Employee> findByEmpNameContainsAndEmpStateIn(Pageable pageable, String empName, List<String> empStates);
 
     /* 3-2. 구성원 부서 검색 */
     @EntityGraph(attributePaths = {"dept", "job"})
-    Page<Employee> findByDeptDeptCodeInAndEmpState(Pageable pageable, List<String> findDeptCodeList, String empState);
+    Page<Employee> findByDeptDeptCodeInAndEmpStateIn(Pageable pageable, List<String> findDeptCodeList, List<String> empStates);
+
 
     /* 3-3. 구성원 직책 검색 */
     @EntityGraph(attributePaths = {"dept", "job"})
-    Page<Employee> findByJobJobCodeInAndEmpState(Pageable pageable, List<String> findJobCodeList, String empState);
+    Page<Employee> findByJobJobCodeInAndEmpStateIn(Pageable pageable, List<String> findJobCodeList, List<String> empStates);
+
 
     Employee findByEmpCode(Long empCode);
     /* 구성원 부서이동*/
@@ -52,7 +54,7 @@ public interface EmpRepository extends JpaRepository<Employee, Long> {
     void moveEmployeeToDept(@Param("empCode") Long empCode, @Param("newDept") Dept newDept);
 
     /* 구성원 직책이동*/
-    @Query("UPDATE Employee e SET e.dept = :newJob WHERE e.empCode = :empCode")
+    @Query("UPDATE Employee e SET e.job = :newJob WHERE e.empCode = :empCode")
     void moveEmployeeToJob(@Param("empCode") Long empCode, @Param("newJob") Job newJob);
 
 

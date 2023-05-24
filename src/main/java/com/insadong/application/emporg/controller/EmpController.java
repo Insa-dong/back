@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/insa/v1")
@@ -27,10 +30,11 @@ public class EmpController {
 	/*1. 구성원 전체 조회*/
 	@GetMapping("/emp")
 	public ResponseEntity<ResponseDTO> selectEmpList(@RequestParam(name = "page", defaultValue = "1") int page) {
-		log.info("[EmpController] : selectEmpList start ==================================== ");
+		log.info("[EmpController] : selectEmpList start ====================================");
 		log.info("[EmpController] : page : {}", page);
 
-		Page<EmployeeDTO> empDTOList = empService.selectEmpList(page);
+		List<String> empStates = Arrays.asList("재직중", "휴직중");
+		Page<EmployeeDTO> empDTOList = empService.selectEmpList(page, empStates);
 
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empDTOList);
 
@@ -40,10 +44,11 @@ public class EmpController {
 		responseDTOWithPaging.setPageInfo(pageInfo);
 		responseDTOWithPaging.setData(empDTOList.getContent());
 
-		log.info("[EmpController] : selectEmpList end ==================================== ");
+		log.info("[EmpController] : selectEmpList end ====================================");
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
+
 
 	/*2. 구성원 부서별 조회*/
 	@GetMapping("/emp/dept/{deptCode}")
