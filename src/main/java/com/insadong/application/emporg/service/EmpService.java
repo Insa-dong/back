@@ -153,27 +153,6 @@ public class EmpService {
 
 	}
 
-	/* 8. 구성원 부서이동*/
-	@Transactional
-	public void updateEmpDept(EmployeeDTO employeeDTO){
-		log.info("[EmpService] updateEmpDept start ============================== ");
-		log.info("[EmpService] employeeDTO : {}", employeeDTO);
-
-		Employee originEmployee = empRepository.findById(employeeDTO.getEmpCode())
-				.orElseThrow(() -> new IllegalArgumentException("해당 구성원이 없습니다. empCode = " + employeeDTO.getEmpCode()));
-
-		originEmployee.updateDept(
-				modelMapper.map(employeeDTO.getDept(), Dept.class)
-		);
-
-//		empHRRepository.save(new HR(employeeDTO.getDept() , employeeDTO.));
-
-
-		log.info("[EmpService] updateEmpDept end ============================== ");
-
-
-	}
-
 	/* 7. 인사이력 조회*/
 	public Page<EmpHRDTO> selectEmpRecord(int page, Long empCode) {
 
@@ -185,6 +164,44 @@ public class EmpService {
 		log.info("service end=============");
 		return empHRList.map(hr -> modelMapper.map(hr, EmpHRDTO.class));
 	}
+
+	/* 8. 구성원 부서이동*/
+	@Transactional
+	public void updateEmpDept(EmployeeDTO employeeDTO){
+		log.info("[EmpService] updateEmpDept start ============================== ");
+		log.info("[EmpService] employeeDTO : {}", employeeDTO);
+
+		Employee originEmployee = empRepository.findById(employeeDTO.getEmpCode())
+				.orElseThrow(() -> new IllegalArgumentException("해당 구성원이 없습니다. empCode = " + employeeDTO.getEmpCode()));
+
+		empHRRepository.save(new HR(originEmployee, "부서이동", originEmployee.getDept()));
+
+		originEmployee.updateDept(
+				modelMapper.map(employeeDTO.getDept(), Dept.class)
+		);
+
+		log.info("[EmpService] updateEmpDept end ============================== ");
+	}
+
+	/* 8. 구성원 직책변동*/
+	@Transactional
+	public void updateEmpJob(EmployeeDTO employeeDTO){
+		log.info("[EmpService] updateEmpDept start ============================== ");
+		log.info("[EmpService] employeeDTO : {}", employeeDTO);
+
+		Employee originEmployee = empRepository.findById(employeeDTO.getEmpCode())
+				.orElseThrow(() -> new IllegalArgumentException("해당 구성원이 없습니다. empCode = " + employeeDTO.getEmpCode()));
+
+		empHRRepository.save(new HR(originEmployee, "직책변경", originEmployee.getJob()));
+
+		originEmployee.updateDept(
+				modelMapper.map(employeeDTO.getDept(), Dept.class)
+		);
+
+		log.info("[EmpService] updateEmpDept end ============================== ");
+	}
+
+
 
 
 

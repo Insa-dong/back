@@ -3,6 +3,7 @@ package com.insadong.application.common.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
+@DynamicInsert
 @Table(name = "TB_HR")
 @SequenceGenerator(name="HR_SEQ_GENERATOR", sequenceName="SEQ_HR_CODE", initialValue=1, allocationSize =1)
 public class HR {
@@ -38,10 +40,15 @@ public class HR {
     @JoinColumn(name = "JOB_CODE")
     private Job job;
 
+    public HR(Employee employee, String hrDiv, Dept dept) {
+        this.employee = employee;
+        this.hrDiv = hrDiv;
+        this.dept = dept;
+    }
 
-//    public HR(Date hrUpdateDate, String hrDiv, Dept dept) {
-//        this.hrUpdateDate = hrUpdateDate;
-//        this.hrDiv = hrDiv;
-//        this.dept = dept;
-//    }
+    public HR(Employee employee, String hrDiv, Job job) {
+        this.employee = employee;
+        this.hrDiv = hrDiv;
+        this.job = job;
+    }
 }
