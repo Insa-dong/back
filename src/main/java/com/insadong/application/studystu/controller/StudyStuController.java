@@ -1,6 +1,9 @@
 package com.insadong.application.studystu.controller;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.insadong.application.attend.dto.AttendDTO;
+import com.insadong.application.attend.dto.StudyStuAttendDTO;
+import com.insadong.application.attend.service.AttendService;
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
@@ -28,9 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 public class StudyStuController {
 
 	private final StudyStuService studyStuService;
+	private final AttendService attendService;
 
-	public StudyStuController(StudyStuService studyStuService) {
+	public StudyStuController(StudyStuService studyStuService, AttendService attendService) {
 		this.studyStuService = studyStuService;
+		this.attendService = attendService;
 	}
 	
 	/* Only 관리자 */
@@ -122,4 +130,38 @@ public class StudyStuController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 	
+	/* 강의별 수강생 & 출결 조회 */
+	@GetMapping("/studyAndAttend/{studyCode}")
+	public ResponseEntity<ResponseDTO> selectStudentAndAttendListByStudy(
+	        @RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long studyCode) {
+
+	    log.info("[StudyStuAttendController] : selectStudentAndAttendListByStudy start ==================================== ");
+	    log.info("[StudyStuAttendController] : page : {}", page);
+
+	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("study.studyCode").ascending());
+	    
+	    Page<StudyStuDTO> studentList = studyStuService.selectStudentListByStudy(page, studyCode);
+	    Page<AttendDTO> attendList = attendService.selectAttendListByStudent(page, studyCode);
+
+	    // 페이징 정보 생성
+	    PagingButtonInfo studentPageInfo = Pagenation.getPagingButtonInfo(studentList);
+	    PagingButtonInfo attendPageInfo = Pagenation.getPagingButtonInfo(attendList);
+
+	    // 응답 데이터 생성
+	    StudyStuAttendDTO result = new StudyStuAttendDTO();
+	    result.setStudentList(studentList.getContent());
+	    result.setAttendList(attendList.getContent());
+
+	    // 응답 객체 생성 및 데이터 설정
+	    ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+	    responseDTOWithPaging.setPageInfo(studentPageInfo);
+	    responseDTOWithPaging.setData(result);
+
+	    log.info("[StudyStuAttendController] : selectStudentAndAttendListByStudy end ==================================== ");
+
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
+
+	
+
 }

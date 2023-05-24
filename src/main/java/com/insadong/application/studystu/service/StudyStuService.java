@@ -11,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.insadong.application.attend.dto.AttendDTO;
 import com.insadong.application.attend.repository.AttendRepository;
-import com.insadong.application.common.entity.Attend;
 import com.insadong.application.common.entity.Student;
 import com.insadong.application.common.entity.Study;
 import com.insadong.application.common.entity.StudyInfo;
@@ -158,7 +156,7 @@ public class StudyStuService {
 		Study study = studyRepository.findById(studyCode)
 				.orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
 
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("studyStuPK.stuCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("studyStuPK.studyCode").descending());
 		Page<StudyStu> studyStuList = studyStuRepository.findByStudyStuPK_StudyCode(studyCode, pageable);
 		Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> modelMapper.map(studyStu, StudyStuDTO.class));
 
@@ -166,29 +164,7 @@ public class StudyStuService {
 
 		return studyStuDTOList;
 	}
-	
 
-	
-//	public Page<StudyStuDTO> selectStudentListByStudy(int page, Long studyCode) {
-//	    log.info("[StudyStuService] selectStudentListByStudy start ================================");
-//
-//	    Study study = studyRepository.findById(studyCode)
-//	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode = " + studyCode));
-//
-//	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("studyStuPK.stuCode").descending());
-//
-//	    Page<StudyStu> studyStuList = studyStuRepository.findByStudyStuPK_StudyCode(pageable, studyCode);
-//	    Page<StudyStuDTO> studyStuDTOList = studyStuList.map(studyStu -> {
-//	        StudyStuDTO studyStuDTO = modelMapper.map(studyStu, StudyStuDTO.class);
-//
-//	       
-//	        return studyStuDTO;
-//	    });
-//
-//	    log.info("[StudyStuService] selectStudentListByStudy end ================================");
-//
-//	    return studyStuDTOList;
-//	}
 }
 	
 
