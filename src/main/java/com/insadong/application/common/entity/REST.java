@@ -32,4 +32,7 @@ public class REST {
 
     @Column(name = "REST_MEMO")
     private String restMemo;
+
+    @Column(name = "REST_STATE")
+    private String restState;
 }

@@ -21,10 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -39,6 +36,7 @@ public class EmpService {
 	private final StudyInfoRepository studyInfoRepository;
 
 	private final EmpHRRepository empHRRepository;
+
 
 	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository
 			, StudyInfoRepository studyInfoRepository, EmpHRRepository empHRRepository) {
@@ -200,6 +198,17 @@ public class EmpService {
 
 		log.info("[EmpService] updateEmpJob end ============================== ");
 	}
+
+	/*9. 구성원 삭제*/
+	@Transactional
+	public void deleteEmp(Long empCode) {
+		Employee originEmp = empRepository.findById(empCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당 구성원이 없습니다."));
+
+		originEmp.setEmpState("퇴사");
+		originEmp.setEndDate(new Date());
+	}
+
 
 
 

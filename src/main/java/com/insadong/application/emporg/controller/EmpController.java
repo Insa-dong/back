@@ -155,6 +155,8 @@ public class EmpController {
 				.body(new ResponseDTO(HttpStatus.OK, "구성원 부서이동 성공"));
 	}
 
+
+
 	/* 구성원 직책변경*/
 	@PutMapping("/emp/empupdatejob")
 	public ResponseEntity<ResponseDTO>	updateEmpJob(@RequestBody EmployeeDTO employeeDTO){
@@ -163,6 +165,15 @@ public class EmpController {
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDTO(HttpStatus.OK, "구성원 직책변경 성공"));
+	}
+
+	/*구성원 삭제*/
+	@DeleteMapping("/emp/empdelete/{empCode}")
+	public ResponseEntity<ResponseDTO> deleteEmp(@PathVariable Long empCode) {
+		empService.deleteEmp(empCode);
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "구성원 삭제 성공"));
 	}
 
 
