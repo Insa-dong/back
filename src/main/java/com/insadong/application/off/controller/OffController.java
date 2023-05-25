@@ -7,21 +7,27 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.insadong.application.abs.dto.AbsDTO;
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
-import com.insadong.application.emporg.service.EmpService;
 import com.insadong.application.off.dto.OffDTO;
 import com.insadong.application.off.service.OffService;
+import com.insadong.application.paging.Pagenation;
+import com.insadong.application.paging.PagingButtonInfo;
+import com.insadong.application.paging.ResponseDTOWithPaging;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -106,6 +112,31 @@ public class OffController {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", offDTOList));
     }
-
+    
+    /* 5. 연차 신청 취소 - 삭제 */
+    @DeleteMapping("/cancelOff/{signCode}")
+    public ResponseEntity<ResponseDTO> cancelOff(@PathVariable Long signCode, @AuthenticationPrincipal EmpDTOImplUS loggedInUser) {
+    	
+    	offService.deleteOff(signCode, loggedInUser);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제 성공"));
+    }
+    
+    /* 6. 연차 신청 내역 조회 (팀장) */
+    @GetMapping("/mySignOff")
+    public ResponseEntity<ResponseDTO> mySignOffList (@AuthenticationPrincipal EmpDTOImplUS loggedInUser, 
+    													@RequestParam(name="page", defaultValue="1") int page) {
+    	
+    	Page<OffDTO> offDTOList = offService.mySignOffList(loggedInUser.getEmpCode(), page);
+		
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(offDTOList);
+		
+		
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+	    responseDTOWithPaging.setPageInfo(pageInfo);
+	    responseDTOWithPaging.setData(offDTOList.getContent()); 
+	    
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+    	
+    }
 
 }

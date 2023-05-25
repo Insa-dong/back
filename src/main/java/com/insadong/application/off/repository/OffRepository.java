@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -29,6 +31,10 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 
 	/* 내 연차 조회 */
 	List<Off> findBySignRequester_EmpCode(Long empCode, Sort by);
+
+	/* 연차 신청 조회 */
+
+	Page<Off> findBySignPayer_EmpCode(Long empCode, PageRequest pageRequest);
 
 	
 
