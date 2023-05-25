@@ -20,7 +20,5 @@ public class EvaDTO {
 	private String evaUpdateTime;
 	private String evaDeleteStatus;
 	
-	private Long stuCode;
-	private Long studyInfoCode;
 
 }

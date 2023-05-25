@@ -97,14 +97,6 @@ public class EvaController {
 	@PostMapping("/students/eva")
 	public ResponseEntity<ResponseDTO> insertEva(@RequestBody EvaDTO evaDto) {
 		
-	    StudyInfoDTO studyInfoDto = new StudyInfoDTO();
-	    studyInfoDto.setStudyInfoCode(evaDto.getStudyInfoCode());
-	    evaDto.setStudyInfo(studyInfoDto);
-
-	    StudentDTO studentDto = new StudentDTO();
-	    studentDto.setStuCode(evaDto.getStuCode());
-	    evaDto.setStudent(studentDto);
-
 	    evaService.insertEva(evaDto);
 
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 평가 작성 성공"));

@@ -22,7 +22,4 @@ public class AdviceDTO {
 	private String adviceLogUpdate;
 	private String adviceLogDelete;
 	
-	private Long stuCode;
-	private Long empCode;
-
 }

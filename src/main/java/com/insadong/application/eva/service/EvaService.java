@@ -60,7 +60,10 @@ public class EvaService {
 	public void deleteEva(Long evaCode) {
 		 Eva eva = evaRepository.findById(evaCode)
 		        .orElseThrow(() -> new IllegalArgumentException("해당 평가가 없습니다. evaCode = " + evaCode));
-
+		 
+		 log.info("[EvaService] eva : {} ", eva);
+		 System.out.println(evaCode);
+		 
 		 evaRepository.delete(eva);
 		
 	}

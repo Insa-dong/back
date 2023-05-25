@@ -18,7 +18,4 @@ public class AttendDTO {
 	private Date attendDate;
 	private String attendStatus;
 	
-	private Long stuCode;
-	private Long studyCode;
-	
 }
