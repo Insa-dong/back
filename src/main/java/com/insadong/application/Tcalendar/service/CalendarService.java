@@ -38,5 +38,13 @@ public class CalendarService {
 		log.info("foundList : {} ", foundList);
 		calendarRepository.saveAll(calList);
 	}
+
+	@Transactional
+	public void updateMyCalInfo(CalendarDTO calendar) {
+
+		Calendar foundCal = calendarRepository.findById(calendar.getCalCode()).orElseThrow(() -> new IllegalStateException("조회 실패"));
+
+		foundCal.update(calendar.getCalTitle(), calendar.getCalStartDate(), calendar.getCalEndDate());
+	}
 }
 

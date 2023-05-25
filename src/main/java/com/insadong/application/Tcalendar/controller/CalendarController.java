@@ -41,4 +41,13 @@ public class CalendarController {
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
 	}
+
+	@PutMapping("/myScheduleInfoUpdate")
+	public ResponseEntity<ResponseDTO> updateMyCalInfo(@RequestBody CalendarDTO calendar) {
+		log.info("update 시작");
+		log.info("cal : {} ", calendar);
+		calService.updateMyCalInfo(calendar);
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
+	}
 }
