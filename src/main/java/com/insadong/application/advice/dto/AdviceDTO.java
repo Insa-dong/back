@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.insadong.application.common.entity.Employee;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.student.dto.StudentDTO;
 
 import lombok.Data;
@@ -20,5 +21,8 @@ public class AdviceDTO {
 	private Date adviceLogDate;
 	private String adviceLogUpdate;
 	private String adviceLogDelete;
+	
+	private Long stuCode;
+	private Long empCode;
 
 }

@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.insadong.application.advice.dto.AdviceDTO;
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.eva.dto.EvaDTO;
 import com.insadong.application.eva.service.EvaService;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
+import com.insadong.application.student.dto.StudentDTO;
+import com.insadong.application.study.dto.StudyInfoDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,10 +61,10 @@ public class EvaController {
 	
 	
 	/* 관리자 평가 삭제 */
-	@DeleteMapping("/students-management/eva/{stuCode}")
-	public ResponseEntity<ResponseDTO> deleteEva(@PathVariable Long stuCode) {
+	@DeleteMapping("/students-management/eva/{evaCode}")
+	public ResponseEntity<ResponseDTO> deleteEva(@PathVariable Long evaCode) {
 		
-	    evaService.deleteEva(stuCode);
+	    evaService.deleteEva(evaCode);
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "평가 삭제 성공"));
 	}
 	
@@ -96,12 +96,20 @@ public class EvaController {
 	/* 사용자 평가 등록 */
 	@PostMapping("/students/eva")
 	public ResponseEntity<ResponseDTO> insertEva(@RequestBody EvaDTO evaDto) {
-
 		
-		evaService.insertEva(evaDto);
+	    StudyInfoDTO studyInfoDto = new StudyInfoDTO();
+	    studyInfoDto.setStudyInfoCode(evaDto.getStudyInfoCode());
+	    evaDto.setStudyInfo(studyInfoDto);
 
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 평가 작성 성공"));
+	    StudentDTO studentDto = new StudentDTO();
+	    studentDto.setStuCode(evaDto.getStuCode());
+	    evaDto.setStudent(studentDto);
+
+	    evaService.insertEva(evaDto);
+
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 평가 작성 성공"));
 	}
+	
 	
 	/* 사용자 평가 수정 */
 	@PutMapping("/students/eva")

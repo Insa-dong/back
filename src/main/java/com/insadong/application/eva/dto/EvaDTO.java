@@ -19,5 +19,8 @@ public class EvaDTO {
 	private Date evaWriteDate;
 	private String evaUpdateTime;
 	private String evaDeleteStatus;
+	
+	private Long stuCode;
+	private Long studyInfoCode;
 
 }
