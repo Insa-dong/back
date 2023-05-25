@@ -3,7 +3,6 @@ package com.insadong.application.off.dto;
 import java.time.LocalDate;
 import java.util.Date;
 
-import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.employee.dto.EmployeeDTO;
 
 import lombok.Data;

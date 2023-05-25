@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.insadong.application.common.entity.Dept;
 import com.insadong.application.common.entity.Employee;
+import com.insadong.application.off.dto.EmpOffDTO;
+import com.insadong.application.off.dto.OffDTO;
 
 @Repository
 public interface EmpOffRepository extends JpaRepository<Employee, Long>{
@@ -18,7 +20,6 @@ public interface EmpOffRepository extends JpaRepository<Employee, Long>{
     Employee findTeamLeaderByDept(@Param("dept") Dept dept);
 	
 
-	
 	
 
 }

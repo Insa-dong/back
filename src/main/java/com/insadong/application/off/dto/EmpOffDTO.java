@@ -23,11 +23,12 @@ public class EmpOffDTO implements UserDetails{
 		private String empName;
 		private String empId;
 		private String empPwd;
-		private Double offCount; // 남은 연차
+		private Long offCount; // 총 연차(15로 고정)
 		private String empState;
 		private List<EmpAuth> empAuthList;
 		private List<OffDTO> offs;
 		private Double usedOff; // 사용한 연차
+		private Double remainingOff; // 잔여 연차
 
 		
 		private Collection<? extends GrantedAuthority> authorities;

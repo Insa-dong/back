@@ -43,45 +43,58 @@ public class OffService {
 	@Transactional
 	public void applyOff(OffDTO offDTO, EmpDTOImplUS loggedInUser) {
 
-		Off off = new Off();
-
+		
 		LocalDate offStart = offDTO.getOffStart();
 		LocalDate offEnd = offDTO.getOffEnd();
-
-		off.setOffStart(offStart);
-		off.setOffEnd(offEnd);
-		off.setOffDiv(offDTO.getOffDiv());
-		off.setSignReason(offDTO.getSignReason());
-		off.setSignStatus("대기"); // 고정값
+		
+		// 중복 여부 확인
+	    if (checkExistingOff(offStart, offEnd)) {
+	        throw new IllegalArgumentException("이미 신청된 연차가 존재합니다.");
+	    }
 
 		// 연차 일수 계산
 		long days = ChronoUnit.DAYS.between(offStart, offEnd) + 1;
 
 		// 반차면 0.5개로
 		double offDay = offDTO.getOffDiv().contains("반차") ? 0.5 : days;
-		off.setOffDay(offDay);
-	
+
 		// 신청자 설정
 		Employee foundEmp = empOffRepository.findById(loggedInUser.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("asd"));
-//	    Employee requester = modelMapper.map(loggedInUser, Employee.class);
-	    off.setSignRequester(foundEmp);
+		// 신청자 타입 변환 (Employee -> EmployeeDTO)
+		EmployeeDTO empDTO = modelMapper.map(foundEmp, EmployeeDTO.class);
 	
 		// 결재자 = 신청자 부서 팀장
 		Employee payer = empOffRepository.findTeamLeaderByDept(foundEmp.getDept());
-		off.setSignPayer(payer);
+		
+		// 결재자 타입 변환 (Employee -> EmployeeDTO)
+		EmployeeDTO payerDTO = modelMapper.map(payer, EmployeeDTO.class);
 
 		// 신청일 설정
 		LocalDate requestDate = LocalDate.now();
-		off.setRequestDate(Date.from(requestDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		Date requestDateConverted = Date.from(requestDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-		offRepository.save(off);
+		OffDTO offDTOs = new OffDTO();
+		offDTOs.setOffStart(offStart);
+		offDTOs.setOffEnd(offEnd);
+		offDTOs.setOffDiv(offDTO.getOffDiv());
+		offDTOs.setSignReason(offDTO.getSignReason());
+		offDTOs.setSignStatus("대기"); // 고정값
+		offDTOs.setOffDay(offDay);
+		offDTOs.setSignRequester(empDTO);
+		offDTOs.setSignPayer(payerDTO);
+		offDTOs.setRequestDate(requestDateConverted);
+		
+		log.info("[OffService] applyOff : {}", offDTOs);
+		
+		offRepository.save(modelMapper.map(offDTOs, Off.class));
 
 	}
 	
 	/*2. 연차 중복 조회 */
-	
 	public boolean checkExistingOff(LocalDate offStart, LocalDate offEnd) {
+		
 	    List<String> signStatusList = Arrays.asList("승인", "대기");
+	    
 	    return offRepository.existsByOffStartLessThanEqualAndOffEndGreaterThanEqualAndSignStatusIn(offStart, offEnd, signStatusList);
 	}
 	
