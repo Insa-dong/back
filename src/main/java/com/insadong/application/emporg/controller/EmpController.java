@@ -150,16 +150,15 @@ public class EmpController {
 	public ResponseEntity<ResponseDTO>	updateEmpDept(@RequestBody EmployeeDTO employeeDTO){
 		empService.updateEmpDept(employeeDTO);
 
-
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDTO(HttpStatus.OK, "구성원 부서이동 성공"));
 	}
 
+	/* 구성원 직책변경*/
 	@PutMapping("/emp/empupdatejob")
 	public ResponseEntity<ResponseDTO>	updateEmpJob(@RequestBody EmployeeDTO employeeDTO){
 		empService.updateEmpJob(employeeDTO);
-
 
 		return ResponseEntity
 				.ok()

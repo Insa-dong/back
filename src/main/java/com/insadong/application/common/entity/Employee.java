@@ -71,6 +71,10 @@ public class Employee {
 		this.dept = dept;
 	}
 
+	public void updateJob(Job job){
+		this.job = job;
+	}
+
 }
 
 
