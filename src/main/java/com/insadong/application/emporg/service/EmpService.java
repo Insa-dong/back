@@ -186,7 +186,7 @@ public class EmpService {
 	/* 8. 구성원 직책변동*/
 	@Transactional
 	public void updateEmpJob(EmployeeDTO employeeDTO){
-		log.info("[EmpService] updateEmpDept start ============================== ");
+		log.info("[EmpService] updateEmpJob start ============================== ");
 		log.info("[EmpService] employeeDTO : {}", employeeDTO);
 
 		Employee originEmployee = empRepository.findById(employeeDTO.getEmpCode())
@@ -194,11 +194,11 @@ public class EmpService {
 
 		empHRRepository.save(new HR(originEmployee, "직책변경", originEmployee.getJob()));
 
-		originEmployee.updateDept(
-				modelMapper.map(employeeDTO.getDept(), Dept.class)
+		originEmployee.updateJob(
+				modelMapper.map(employeeDTO.getJob(), Job.class)
 		);
 
-		log.info("[EmpService] updateEmpDept end ============================== ");
+		log.info("[EmpService] updateEmpJob end ============================== ");
 	}
 
 
