@@ -79,14 +79,7 @@ public class AttendController {
 	/* 수강생 출결 등록 */
 	@PostMapping("/students/attend")
 	public ResponseEntity<ResponseDTO> insertAttend(@RequestBody AttendDTO attendDto) {
-	    StudyDTO studyDto = new StudyDTO();
-	    studyDto.setStudyCode(attendDto.getStudyCode());
-	    attendDto.setStudy(studyDto);
-	    
-	    StudentDTO studentDto = new StudentDTO();
-	    studentDto.setStuCode(attendDto.getStuCode());
-	    attendDto.setStudent(studentDto);
-	    
+
 	    attendService.insertAttend(attendDto);
 	    
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "출결 등록 성공"));
