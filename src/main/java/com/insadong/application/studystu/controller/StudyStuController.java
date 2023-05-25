@@ -69,9 +69,9 @@ public class StudyStuController {
 	
 
 	/* 3. 수강생 강의 삭제 */
-	@DeleteMapping("/students-management/study/{stuCode}")
-	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long stuCode) {
-	    studyStuService.deleteStudy(stuCode);
+	@DeleteMapping("/students-management/study/{studyCode}")
+	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long studyCode) {
+	    studyStuService.deleteStudy(studyCode);
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
 	}
 
@@ -138,7 +138,7 @@ public class StudyStuController {
 	    log.info("[StudyStuAttendController] : selectStudentAndAttendListByStudy start ==================================== ");
 	    log.info("[StudyStuAttendController] : page : {}", page);
 
-	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("study.studyCode").ascending());
+	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("study.studyCode").descending());
 	    
 	    Page<StudyStuDTO> studentList = studyStuService.selectStudentListByStudy(page, studyCode);
 	    Page<AttendDTO> attendList = attendService.selectAttendListByStudent(page, studyCode);

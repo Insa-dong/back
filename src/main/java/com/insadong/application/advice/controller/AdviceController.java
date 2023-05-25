@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.insadong.application.advice.dto.AdviceDTO;
 import com.insadong.application.advice.service.AdviceService;
 import com.insadong.application.common.ResponseDTO;
+import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
+import com.insadong.application.student.dto.StudentDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,9 +62,9 @@ public class AdviceController {
 	
 	
 	/* 2. 수강생 상담 삭제 */
-	@DeleteMapping("/students-management/advice/{stuCode}")
-	public ResponseEntity<ResponseDTO> deleteAdvice(@PathVariable Long stuCode) {
-	    adviceService.deleteAdvice(stuCode);
+	@DeleteMapping("/students-management/advice/{adviceLogCode}")
+	public ResponseEntity<ResponseDTO> deleteAdvice(@PathVariable Long adviceLogCode) {
+	    adviceService.deleteAdvice(adviceLogCode);
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상담일지 삭제 성공"));
 	}
 
@@ -99,12 +100,20 @@ public class AdviceController {
 	public ResponseEntity<ResponseDTO> insertAdvice(@RequestBody AdviceDTO adviceDto) {
 
 		/* 관리자만 등록하는 구문 추가해야 함 */
+//		StudentDTO studentDto = new StudentDTO();
+//		studentDto.setStuCode(adviceDto.getStuCode());
+//		adviceDto.setStudent(studentDto);
+//
+//		EmployeeDTO employeeDto = new EmployeeDTO();
+//		employeeDto.setEmpCode(employeeDto.getEmpCode());
+//		adviceDto.setWriter(employeeDto);
+//		
 		adviceService.insertAdvice(adviceDto);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 상담일지 작성 성공"));
 	}
 	
-	
+		
 	/* 3. 수강생 상담 수정 */
 	@PutMapping("/students/advice")
 	public ResponseEntity<ResponseDTO> updateAdvice(@RequestBody AdviceDTO adviceDto) {

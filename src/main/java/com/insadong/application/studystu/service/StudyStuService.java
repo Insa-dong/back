@@ -93,9 +93,9 @@ public class StudyStuService {
 
 	/* 3. 수강생 강의 삭제 */
 	@Transactional
-	public void deleteStudy(Long stuCode) {
+	public void deleteStudy(Long studyCode) {
 
-		List<StudyStu> studyStus = studyStuRepository.findByStudyStuPKStuCode(stuCode);
+		List<StudyStu> studyStus = studyStuRepository.findByStudyStuPKStuCode(studyCode);
 		studyStuRepository.deleteAll(studyStus);
 	}
 
