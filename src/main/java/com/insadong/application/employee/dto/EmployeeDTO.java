@@ -2,7 +2,6 @@ package com.insadong.application.employee.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -22,6 +21,6 @@ public class EmployeeDTO {
 	private Date hireDate;
 	private Long offCount;
 	private String empState;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 }
