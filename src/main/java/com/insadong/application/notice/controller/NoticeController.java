@@ -1,11 +1,6 @@
 package com.insadong.application.notice.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
@@ -114,30 +109,36 @@ public class NoticeController {
 	}
 
 	/* 파일 다운로드 */
-	@GetMapping("/download/{fileName}/{originName}")
-	public void download(@PathVariable String fileName, @PathVariable String originName, HttpServletResponse response) throws Exception {
-		try {
-			
-			String extension = originName.substring(originName.lastIndexOf("."));
-			
-			String path = "src/main/resources/static/productimgs/" + fileName + extension;
+//	@GetMapping("/download/{fileName}")
+//	public void download(@PathVariable String fileName, HttpServletResponse response) throws Exception {
+//		try {
+//			
+//			String path = "src/main/resources/static/productimgs/" + fileName;
+//
+//			File file = new File(path);
+//			response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+//
+//			// 파일 읽어오기
+//			FileInputStream fileInputStream = new FileInputStream(path);
+//			OutputStream out = response.getOutputStream();
+//
+//			int read = 0;
+//			byte[] buffer = new byte[1024];
+//			// 1024바이트씩 계속 읽으면서 outputStream에 저장, -1이 나오면 더이상 읽을 파일이 없음
+//			while ((read = fileInputStream.read(buffer)) != -1) {
+//				out.write(buffer, 0, read);
+//			}
+//
+//		} catch (Exception e) {
+//			throw new Exception("download error");
+//		}
+//	}
 
-			File file = new File(path);
-			response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
-
-			// 파일 읽어오기
-			FileInputStream fileInputStream = new FileInputStream(path);
-			OutputStream out = response.getOutputStream();
-
-			int read = 0;
-			byte[] buffer = new byte[1024];
-			// 1024바이트씩 계속 읽으면서 outputStream에 저장, -1이 나오면 더이상 읽을 파일이 없음
-			while ((read = fileInputStream.read(buffer)) != -1) {
-				out.write(buffer, 0, read);
-			}
-
-		} catch (Exception e) {
-			throw new Exception("download error");
-		}
-	}
+//	@GetMapping("/{fileName}")
+//	public ResponseEntity<ResponseDTO> download(@PathVariable("fileName") String fileName) {
+//		byte[] downloadFile = noticeService.downloadFile(fileName);
+//		return ResponseEntity
+//				.ok()
+//				.body(new ResponseDTO(HttpStatus.OK, "조회 성공", downloadFile));
+//	}
 }

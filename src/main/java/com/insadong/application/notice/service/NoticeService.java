@@ -169,7 +169,7 @@ public class NoticeService {
 				}
 
 				fileDTO.setOriginFileName(originFileName);
-				fileDTO.setSaveFileName(saveFileName);
+				fileDTO.setSaveFileName(replaceFileName);
 				fileDTO.setFileFath(IMAGE_DIR);
 				fileDTO.setFileSize(fileSize);
 				fileDTO.setNoticeCode(notice.getNoticeCode());
@@ -194,5 +194,11 @@ public class NoticeService {
 
 		return noticeDTO;
 	}
+
+//	public byte[] downloadFile(String fileName) {
+//		File file = fileRepository.findBySaveFileName(fileName)
+//				.orElseThrow();
+//		return null;
+//	}
 
 }
