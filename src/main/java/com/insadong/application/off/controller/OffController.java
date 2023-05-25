@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
+import com.insadong.application.emporg.service.EmpService;
 import com.insadong.application.off.dto.OffDTO;
 import com.insadong.application.off.service.OffService;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/off")
 public class OffController {
@@ -39,19 +42,22 @@ public class OffController {
     public ResponseEntity<ResponseDTO> applyOff(@RequestBody OffDTO offDTO, @AuthenticationPrincipal EmpDTOImplUS loggedInUser) {
     	// 로그인한 구성원이 신청자
 //        offDTO.setSignRequester(loggedInUser);
-
+    	log.info("[OffController] applyOff start ------------------- ");
+    	log.info("[OffController] applyOff {} :  ", offDTO );
+    	
+    	
         offService.applyOff(offDTO, loggedInUser);
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 성공", offDTO));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 성공"));
     }
 
-    /*2. 연차 중복 조회 */
+    /*2. 연차 중복 조회 
     @GetMapping("/check-existing-off")
     public ResponseEntity<ResponseDTO> checkExistingOff(@RequestParam LocalDate offStart, @RequestParam LocalDate offEnd) {
        
     	boolean isExistingOff = offService.checkExistingOff(offStart, offEnd);
        
     	return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", isExistingOff));
-    }
+    } */
 		
 	/*3. 예정 연차 조회*/	
     @GetMapping("/my-comingUp-off")
