@@ -11,9 +11,13 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.insadong.application.abs.dto.AbsDTO;
+import com.insadong.application.common.entity.Abs;
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Off;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
@@ -66,6 +70,11 @@ public class OffService {
 		// 결재자 = 신청자 부서 팀장
 		Employee payer = empOffRepository.findTeamLeaderByDept(foundEmp.getDept());
 		
+		// 결재자가 신청자와 동일하다면, 신청자를 결재자로 설정합니다.
+	    if(payer.getEmpCode().equals(foundEmp.getEmpCode())) {
+	        payer = foundEmp;
+	    }
+		
 		// 결재자 타입 변환 (Employee -> EmployeeDTO)
 		EmployeeDTO payerDTO = modelMapper.map(payer, EmployeeDTO.class);
 
@@ -108,6 +117,27 @@ public class OffService {
 
 		return offDTOList;
 
+	}
+
+	/* 5. 연차 취소*/
+	public void deleteOff(Long signCode, EmpDTOImplUS loggedInUser) {
+		
+		Employee foundEmp = empOffRepository.findById(loggedInUser.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("해당 구성원을 찾을 수 없습니다."));
+
+	    offRepository.deleteById(signCode);
+	}
+
+	
+	/* 6. 연차 신청 내역 조회(팀장) */
+	public Page<OffDTO> mySignOffList(Long empCode, int page) {
+		
+		PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.ASC, "signCode"));
+		
+		Page<Off> offList = offRepository.findBySignPayer_EmpCode(empCode, pageRequest);
+		
+		Page<OffDTO> offDTIList = offList.map(off -> modelMapper.map(off, OffDTO.class));
+		
+		return offDTIList;
 	}
 
 	
