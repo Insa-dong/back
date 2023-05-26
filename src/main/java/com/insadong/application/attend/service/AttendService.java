@@ -1,6 +1,7 @@
 package com.insadong.application.attend.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -130,3 +131,4 @@ public class AttendService {
 	}
 
 }
+

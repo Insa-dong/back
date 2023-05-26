@@ -99,7 +99,6 @@ public class AttendController {
 		
 	}
 	
-	
 	/* 수강생 출결 삭제 */
 	@DeleteMapping("/students/attend/{attendCode}")
 	public ResponseEntity<ResponseDTO> deleteAttend(@PathVariable Long attendCode) {

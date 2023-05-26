@@ -10,6 +10,7 @@ import lombok.Data;
 public class StudyStuAttendDTO {
 	
 	private List<StudyStuDTO> studentList;
-    private List<AttendDTO> attendList;
+	private List<AttendDTO> attendList;
+    
 
 }

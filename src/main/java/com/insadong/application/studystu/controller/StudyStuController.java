@@ -153,7 +153,7 @@ public class StudyStuController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 	
-	
+		
 	/* 강의별 수강생 & 출결 조회 */
 	@GetMapping("/studyAndAttend/{studyCode}")
 	public ResponseEntity<ResponseDTO> selectStudentAndAttendListByStudy(
@@ -185,7 +185,5 @@ public class StudyStuController {
 
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
-
 	
-
 }

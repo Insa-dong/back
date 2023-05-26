@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.insadong.application.attend.repository.AttendRepository;
+import com.insadong.application.attend.service.AttendService;
 import com.insadong.application.common.entity.Student;
 import com.insadong.application.common.entity.Study;
 import com.insadong.application.common.entity.StudyInfo;
@@ -38,13 +39,15 @@ public class StudyStuService {
 	private final StudyRepository studyRepository;
 	private final AttendRepository attendRepository;
 	private final StudyInfoRepository studyInfoRepository;
+	private final AttendService attendService;
 
 	public StudyStuService(StudyStuRepository studyStuRepository,
 	                       ModelMapper modelMapper, StudentRepository studentRepository
 			, TrainingRepository trainingRepository
 			, StudyRepository studyRepository
 			, AttendRepository attendRepository
-			, StudyInfoRepository studyInfoRepository) {
+			, StudyInfoRepository studyInfoRepository
+			, AttendService attendService) {
 		this.modelMapper = modelMapper;
 		this.studyStuRepository = studyStuRepository;
 		this.studentRepository = studentRepository;
@@ -52,6 +55,7 @@ public class StudyStuService {
 		this.studyRepository = studyRepository;
 		this.attendRepository = attendRepository;
 		this.studyInfoRepository = studyInfoRepository;
+		this.attendService = attendService;
 
 	}
 

@@ -11,7 +11,7 @@ public class StudyStuDTO {
     private StudentDTO student;
     private String studyEnrollDate;
     private String studyState;
-     
+    
     // 강의 명 가져 오기 위한 변수 선언
     private String trainingTitle;
 
