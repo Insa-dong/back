@@ -79,7 +79,6 @@ public class StudyInfoController {
 		studyInfo.setStudy(study);
 
 		log.info("studyInfo : {} ", studyInfo);
-
 		studyInfoService.insertStudy(studyInfo, emp.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 완료"));
