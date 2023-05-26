@@ -1,6 +1,6 @@
 package com.insadong.application.common.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,12 +41,12 @@ public class Attend {
 	private Student student;
 	
 	@Column(name="ATTEND_DATE")
-	private Date attendDate;
+	private LocalDate attendDate;
 		
 	@Column(name="ATTEND_STATUS")
 	private String attendStatus;
 	
-	public void update(Date attendDate, String attendStatus) {
+	public void update(LocalDate attendDate, String attendStatus) {
 		
 		this.attendDate = attendDate;
 		this.attendStatus = attendStatus;

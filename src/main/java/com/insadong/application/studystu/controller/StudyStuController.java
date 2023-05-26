@@ -85,17 +85,17 @@ public class StudyStuController {
 //	}
 //	
 	
-	/* 3. 수강생 강의 삭제 */
-	@DeleteMapping("/students-management/study/{studyCode}")
-	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long studyCode) {
-	    List<Attend> attends = attendRepository.findByStudyStudyCode(studyCode);
-	    attendRepository.deleteAll(attends);
-
-	    // 수강생 강의 삭제
-	    studyStuService.deleteStudy(studyCode);
-
-	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
-	}
+//	/* 3. 수강생 강의 삭제 */
+//	@DeleteMapping("/students-management/study/{studyCode}")
+//	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long studyCode) {
+//	    List<Attend> attends = attendRepository.findByStudyStudyCode(studyCode);
+//	    attendRepository.deleteAll(attends);
+//
+//	    // 수강생 강의 삭제
+//	    studyStuService.deleteStudy(studyCode);
+//
+//	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
+//	}
 
 
 
@@ -153,7 +153,6 @@ public class StudyStuController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 	
-		
 	/* 강의별 수강생 & 출결 조회 */
 	@GetMapping("/studyAndAttend/{studyCode}")
 	public ResponseEntity<ResponseDTO> selectStudentAndAttendListByStudy(
@@ -185,5 +184,8 @@ public class StudyStuController {
 
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
+	
+
+
 	
 }
