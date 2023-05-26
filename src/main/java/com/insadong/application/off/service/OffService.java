@@ -141,4 +141,27 @@ public class OffService {
 	}
 
 	
+
+	/* 7.  연차 승인 처리 (팀장)*/
+	@Transactional
+	public void signUpOff(Long signCode, OffDTO offDTO) {
+		
+		log.info("[OffService] signUpOff start ------------------- ");
+    	
+		
+		Off off = offRepository.findById(signCode).orElseThrow(() -> new RuntimeException("연차 신청이 없습니다."));
+		
+	    off.setSignStatus(offDTO.getSignStatus());
+	    off.setReturnReason(offDTO.getReturnReason());
+	    off.setHandleDate(new Date());
+	    
+	    offRepository.save(off);
+	    
+	    
+	    log.info("[OffService] off {} :  ", off );
+	    log.info("[OffService] signUpOff end ------------------- ");
+		
+	}
+
+	
 }

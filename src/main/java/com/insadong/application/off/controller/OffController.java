@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,8 +47,8 @@ public class OffController {
 	/*1. 연차 신청*/
     @PostMapping("/apply")
     public ResponseEntity<ResponseDTO> applyOff(@RequestBody OffDTO offDTO, @AuthenticationPrincipal EmpDTOImplUS loggedInUser) {
-    	// 로그인한 구성원이 신청자
-//        offDTO.setSignRequester(loggedInUser);
+
+    	
     	log.info("[OffController] applyOff start ------------------- ");
     	log.info("[OffController] applyOff {} :  ", offDTO );
     	
@@ -56,15 +57,7 @@ public class OffController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 성공"));
     }
 
-    /*2. 연차 중복 조회 
-    @GetMapping("/check-existing-off")
-    public ResponseEntity<ResponseDTO> checkExistingOff(@RequestParam LocalDate offStart, @RequestParam LocalDate offEnd) {
-       
-    	boolean isExistingOff = offService.checkExistingOff(offStart, offEnd);
-       
-    	return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", isExistingOff));
-    } */
-		
+
 	/*3. 예정 연차 조회*/	
     @GetMapping("/my-comingUp-off")
     public ResponseEntity<ResponseDTO> myComingUpOffList(@AuthenticationPrincipal EmpDTOImplUS emp) {
@@ -137,6 +130,51 @@ public class OffController {
 	    
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
     	
+    }    
+    /* 7. 연차 승인 처리 (팀장) */
+    @PutMapping("/mySignOff/{signCode}")
+    public ResponseEntity<ResponseDTO> signUpOff(@PathVariable Long signCode, @RequestBody OffDTO offDTO) {
+    	
+    	offService.signUpOff(signCode, offDTO);
+    	
+    	log.info("[OffController] signUpOff start ------------------- ");
+    	log.info("[OffController] signUpOff {} :  ", offDTO );
+    	
+    	return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "승인 처리 성공"));
+    	
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }
