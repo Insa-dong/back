@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,14 +48,14 @@ public class Off {
 	@Column(name="SIGN_STATUS")
 	private String signStatus;						// 승인 상태
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="SIGN_REQUESTER")
 	private Employee signRequester;					// 신청자 emp_code 조인
 	
 	@Column(name="OFF_DIV")
 	private String offDiv;							// 종류
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="SIGN_PAYER")
 	private Employee signPayer;						// 결재자 emp_code 조인
 	

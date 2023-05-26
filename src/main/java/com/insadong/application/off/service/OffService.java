@@ -109,7 +109,7 @@ public class OffService {
 	
 	/* 3,4. 내 연차 조회 */
 	public List<OffDTO> myOffList(Long empCode) {
-		List<Off> offList = offRepository.findBySignRequester_EmpCode(empCode, Sort.by("offStart"));
+		 List<Off> offList = offRepository.findBySignRequester_EmpCodeOrSignPayer_EmpCode(empCode, empCode, Sort.by("offStart"));
 		log.info("offList : {} ", offList);
 
 		List<OffDTO> offDTOList = offList.stream().map(off -> modelMapper.map(off, OffDTO.class))
