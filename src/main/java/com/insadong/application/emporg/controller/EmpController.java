@@ -168,7 +168,7 @@ public class EmpController {
 	}
 
 	/*구성원 삭제*/
-	@DeleteMapping("/emp/empdelete/{empCode}")
+	@PutMapping("/emp/empdelete/{empCode}")
 	public ResponseEntity<ResponseDTO> deleteEmp(@PathVariable Long empCode) {
 		empService.deleteEmp(empCode);
 		return ResponseEntity
