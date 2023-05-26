@@ -66,6 +66,18 @@ public class Off {
 	
 	@Column(name="HANDLE_DATE")
 	private Date handleDate;						// 처리 일자
+
+
+	
+	/* 수정 메소드 */
+	public void updateOff(String signStatus, String returnReason, Date handleDate) {
+		
+		this.signStatus = signStatus;
+		this.returnReason = returnReason;
+		this.handleDate = handleDate;
+		
+		
+	}
 	
 }
 
