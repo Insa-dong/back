@@ -11,7 +11,6 @@ import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -141,7 +140,7 @@ public class NoticeService {
 		noticeDTO.setNoticeWriter(modelMapper.map(foundEmp, EmployeeDTO.class));
 
 		Notice notice = noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
-		
+
 		if (!(noticeDTO.getNoticeFile() == null)) {
 
 			for (MultipartFile file : noticeDTO.getNoticeFile()) {
@@ -180,8 +179,8 @@ public class NoticeService {
 		}
 
 	}
-	
-	/* 공지사항 상세 조회*/
+
+	/* 공지사항 상세 조회 */
 	public NoticeDTO selectNoticeList(Long noticeCode) {
 
 		log.info("[NoticeService] selectNoticeList start ============================== ");
@@ -189,7 +188,7 @@ public class NoticeService {
 
 		Notice notice = noticeRepository.findById(noticeCode)
 				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다. noticeCode=" + noticeCode));
-		
+
 		NoticeDTO noticeDTO = modelMapper.map(notice, NoticeDTO.class);
 
 		return noticeDTO;
@@ -200,5 +199,21 @@ public class NoticeService {
 //				.orElseThrow();
 //		return null;
 //	}
+
+	@Transactional
+	public void updateNotice(NoticeDTO noticeDTO, Long empCode) {
+
+		Notice notice = noticeRepository.findById(noticeDTO.getNoticeCode())
+				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다."));
+
+		if (notice.getNoticeWriter().equals(empCode)) {
+			
+			notice.setNoticeTitle(noticeDTO.getNoticeTitle());
+			notice.setNoticeContent(noticeDTO.getNoticeContent());
+		} else {
+			throw new IllegalArgumentException("수정할 수 있는 권한이 없습니다.");
+		}
+
+	}
 
 }
