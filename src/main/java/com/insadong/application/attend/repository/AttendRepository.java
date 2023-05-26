@@ -1,5 +1,8 @@
 package com.insadong.application.attend.repository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +18,10 @@ public interface AttendRepository extends JpaRepository<Attend, Long> {
 
 	/* 수강생 상세 조회 */
 	Page<Attend> findByStudent(Pageable pageable, Student findStudent);
+
+	List<Attend> findByStudyStudyCode(Long studyCode);
+
+	/* 수강생 날짜 별 검색*/
+	Page<Attend> findByAttendDate(LocalDate attendDate, Pageable pageable);
 
 }

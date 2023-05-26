@@ -1,5 +1,7 @@
 package com.insadong.application.attend.service;
 
+import java.time.LocalDate;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -14,7 +16,6 @@ import com.insadong.application.attend.repository.AttendRepository;
 import com.insadong.application.common.entity.Attend;
 import com.insadong.application.common.entity.Student;
 import com.insadong.application.common.entity.Study;
-import com.insadong.application.student.dto.StudentDTO;
 import com.insadong.application.student.repository.StudentRepository;
 import com.insadong.application.study.repository.StudyRepository;
 
@@ -113,6 +114,19 @@ public class AttendService {
 		            .orElseThrow(() -> new IllegalArgumentException("해당 출결이 없습니다. attendCode = " + attendCode));
 
 		    attendRepository.delete(attend);
+	}
+
+	
+	/* 수강생 날짜별 출석 검색*/
+	public Page<AttendDTO> selectStudentAttends(LocalDate attendDate, int page) {
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("attendDate").descending());
+
+		Page<Attend> attendList = attendRepository.findByAttendDate(attendDate, pageable);
+
+		Page<AttendDTO> attendDtoList = attendList.map(attend -> modelMapper.map(attend, AttendDTO.class));
+	
+		return attendDtoList;
 	}
 
 }

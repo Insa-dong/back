@@ -1,6 +1,9 @@
 package com.insadong.application.attend.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,8 +22,6 @@ import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
-import com.insadong.application.student.dto.StudentDTO;
-import com.insadong.application.study.dto.StudyDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -105,5 +106,23 @@ public class AttendController {
 	    attendService.deleteAttend(attendCode);
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상담일지 삭제 성공"));
 	}
+	
+	/* 수강생 날짜 별 조회 (검색) */
+	@GetMapping("/student-attends/{attendDate}")
+	public ResponseEntity<ResponseDTO> selectStudentAttends(
+			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate attendDate,
+	        @RequestParam(name="page", defaultValue="1") int page) {
+
+	    Page<AttendDTO> attendDtoList = attendService.selectStudentAttends(attendDate, page);
+	    
+	    PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(attendDtoList);
+	    
+	    ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+	    responseDTOWithPaging.setPageInfo(pageInfo);
+	    responseDTOWithPaging.setData(attendDtoList.getContent()); 
+	    
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
+	
 			
 }
