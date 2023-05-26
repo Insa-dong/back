@@ -175,6 +175,21 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "구성원 휴직 신청 성공"));
 	}
 
+	/* 휴직 리스트 */
+	@GetMapping("emp/emprestlist")
+	public ResponseEntity<ResponseDTO> selectRestList(@RequestParam(name = "page", defaultValue = "1") int page) {
+		Page<RestDTO> restDTOList = empService.selectRestList(page);
+
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(restDTOList);
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(restDTOList.getContent());
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "휴직 리스트 조회 성공", responseDTOWithPaging));
+	}
+
+
 	/*구성원 삭제*/
 	@PutMapping("/emp/empdelete/{empCode}")
 	public ResponseEntity<ResponseDTO> deleteEmp(@PathVariable Long empCode) {
@@ -183,6 +198,8 @@ public class EmpController {
 				.ok()
 				.body(new ResponseDTO(HttpStatus.OK, "구성원 삭제 성공"));
 	}
+
+
 
 
 
