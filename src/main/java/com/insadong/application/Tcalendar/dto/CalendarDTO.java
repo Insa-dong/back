@@ -20,5 +20,8 @@ public class CalendarDTO {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date calEndDate;
 
+	private String calColor;
+
 	private PetiteEmpDTO employee;
+
 }

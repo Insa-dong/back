@@ -22,6 +22,7 @@ public class Calendar {
 
 	@Id
 	@Column(name = "CAL_CODE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CALENDAR_SEQ_GEN")
 	private Long calCode;
 
 	@Column(name = "CAL_TITLE")
@@ -35,6 +36,9 @@ public class Calendar {
 
 	@Column(name = "CAL_END_DATE")
 	private Date calEndDate;
+
+	@Column(name = "CAL_COLOR")
+	private String calColor;
 
 	@ManyToOne
 	@JoinColumn(name = "EMP_CODE", updatable = false)
