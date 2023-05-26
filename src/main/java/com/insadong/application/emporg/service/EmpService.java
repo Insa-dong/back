@@ -1,16 +1,11 @@
 package com.insadong.application.emporg.service;
 
-import com.insadong.application.common.entity.Dept;
-import com.insadong.application.common.entity.Employee;
-import com.insadong.application.common.entity.HR;
-import com.insadong.application.common.entity.Job;
+import com.insadong.application.common.entity.*;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.emporg.dto.EmpHRDTO;
-import com.insadong.application.emporg.repository.EmpDeptRepository;
-import com.insadong.application.emporg.repository.EmpHRRepository;
-import com.insadong.application.emporg.repository.EmpJobRepository;
-import com.insadong.application.emporg.repository.EmpRepository;
+import com.insadong.application.emporg.dto.RestDTO;
+import com.insadong.application.emporg.repository.*;
 import com.insadong.application.study.repository.StudyInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -37,9 +32,11 @@ public class EmpService {
 
 	private final EmpHRRepository empHRRepository;
 
+	private final RestRepository restRepository;
+
 
 	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository
-			, StudyInfoRepository studyInfoRepository, EmpHRRepository empHRRepository) {
+			, StudyInfoRepository studyInfoRepository, EmpHRRepository empHRRepository, RestRepository restRepository) {
 		this.empRepository = empRepository;
 		this.modelMapper = modelMapper;
 		this.empDeptRepository = empDeptRepository;
@@ -47,6 +44,7 @@ public class EmpService {
 		this.employeeRepository = employeeRepository;
 		this.studyInfoRepository = studyInfoRepository;
 		this.empHRRepository = empHRRepository;
+		this.restRepository = restRepository;
 	}
 
 	/*1. 구성원 전체 조회*/
@@ -208,6 +206,14 @@ public class EmpService {
 		originEmp.setEmpState("퇴사");
 		originEmp.setEndDate(new Date());
 	}
+
+	/* 10. 휴직 신청*/
+	@Transactional
+	public void insertEmpRest(RestDTO restDTO) {
+		log.info("우아아아아 : {}", restDTO);
+		restRepository.save(modelMapper.map(restDTO, Rest.class));
+	}
+
 
 
 

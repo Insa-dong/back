@@ -3,6 +3,7 @@ package com.insadong.application.emporg.controller;
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.emporg.dto.EmpHRDTO;
+import com.insadong.application.emporg.dto.RestDTO;
 import com.insadong.application.emporg.service.EmpService;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
@@ -165,6 +166,13 @@ public class EmpController {
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDTO(HttpStatus.OK, "구성원 직책변경 성공"));
+	}
+	/*휴직 신청*/
+	@PostMapping("/emp/emprestregist")
+	public ResponseEntity<ResponseDTO> insertEmpRest(@RequestBody RestDTO restDTO){
+		empService.insertEmpRest(restDTO);
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "구성원 휴직 신청 성공"));
 	}
 
 	/*구성원 삭제*/
