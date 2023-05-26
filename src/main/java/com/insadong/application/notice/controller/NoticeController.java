@@ -1,6 +1,11 @@
 package com.insadong.application.notice.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -109,30 +115,30 @@ public class NoticeController {
 	}
 
 	/* 파일 다운로드 */
-//	@GetMapping("/download/{fileName}")
-//	public void download(@PathVariable String fileName, HttpServletResponse response) throws Exception {
-//		try {
-//			
-//			String path = "src/main/resources/static/productimgs/" + fileName;
-//
-//			File file = new File(path);
-//			response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
-//
-//			// 파일 읽어오기
-//			FileInputStream fileInputStream = new FileInputStream(path);
-//			OutputStream out = response.getOutputStream();
-//
-//			int read = 0;
-//			byte[] buffer = new byte[1024];
-//			// 1024바이트씩 계속 읽으면서 outputStream에 저장, -1이 나오면 더이상 읽을 파일이 없음
-//			while ((read = fileInputStream.read(buffer)) != -1) {
-//				out.write(buffer, 0, read);
-//			}
-//
-//		} catch (Exception e) {
-//			throw new Exception("download error");
-//		}
-//	}
+	@GetMapping("/download/{fileName}")
+	public void download(@PathVariable String fileName, HttpServletResponse response) throws Exception {
+		try {
+			
+			String path = "src/main/resources/static/productimgs/" + fileName;
+
+			File file = new File(path);
+			response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+
+			// 파일 읽어오기
+			FileInputStream fileInputStream = new FileInputStream(path);
+			OutputStream out = response.getOutputStream();
+
+			int read = 0;
+			byte[] buffer = new byte[1024];
+			// 1024바이트씩 계속 읽으면서 outputStream에 저장, -1이 나오면 더이상 읽을 파일이 없음
+			while ((read = fileInputStream.read(buffer)) != -1) {
+				out.write(buffer, 0, read);
+			}
+
+		} catch (Exception e) {
+			throw new Exception("download error");
+		}
+	}
 
 //	@GetMapping("/{fileName}")
 //	public ResponseEntity<ResponseDTO> download(@PathVariable("fileName") String fileName) {
@@ -141,4 +147,18 @@ public class NoticeController {
 //				.ok()
 //				.body(new ResponseDTO(HttpStatus.OK, "조회 성공", downloadFile));
 //	}
+	
+	/* 공지사항 수정 */
+	@PutMapping("/notice")
+	public ResponseEntity<ResponseDTO> updateNotice(@ModelAttribute NoticeDTO noticeDTO, 
+			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
+		
+		noticeService.updateNotice(noticeDTO, employeeDTO.getEmpCode());
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "공지사항 수정 성공"));
+		
+	}
+
 }
