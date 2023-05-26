@@ -1,7 +1,5 @@
 package com.insadong.application.study.dto;
 
-import java.util.Date;
-
 import com.insadong.application.student.dto.StudentDTO;
 
 import lombok.Data;
