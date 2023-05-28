@@ -151,7 +151,11 @@ public class NoticeController {
 	/* 공지사항 수정 */
 	@PutMapping("/notice")
 	public ResponseEntity<ResponseDTO> updateNotice(@ModelAttribute NoticeDTO noticeDTO, 
-			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
+			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) throws IOException {
+		
+		log.info("[NoticeController] noticeDTO: {}", noticeDTO);
+		log.info("emp : {} " , employeeDTO);
+		
 		
 		noticeService.updateNotice(noticeDTO, employeeDTO.getEmpCode());
 		
