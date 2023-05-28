@@ -121,11 +121,13 @@ public class OffService {
 	
 	/* 3,4. 내 연차 조회 */
 	public List<OffDTO> myOffList(Long empCode) {
-		 List<Off> offList = offRepository.findBySignRequester_EmpCodeOrSignPayer_EmpCode(empCode, empCode, Sort.by("offStart"));
+		List<Off> offList = offRepository.findBySignRequester_EmpCodeOrSignPayer_EmpCode(empCode, empCode, Sort.by("offStart"));
 		log.info("offList : {} ", offList);
 
-		List<OffDTO> offDTOList = offList.stream().map(off -> modelMapper.map(off, OffDTO.class))
-				.collect(Collectors.toList());
+		List<OffDTO> offDTOList = offList.stream()
+	            .filter(off -> off.getSignRequester().getEmpCode().equals(empCode)) // 신청자가 자신인 경우만 필터링
+	            .map(off -> modelMapper.map(off, OffDTO.class))
+	            .collect(Collectors.toList());
 
 		return offDTOList;
 
@@ -143,7 +145,7 @@ public class OffService {
 	/* 6. 연차 신청 내역 조회(팀장) */
 	public Page<OffDTO> mySignOffList(Long empCode, int page) {
 		
-		PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.ASC, "signCode"));
+		PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "signCode"));
 		
 		Page<Off> offList = offRepository.findBySignPayer_EmpCode(empCode, pageRequest);
 		
