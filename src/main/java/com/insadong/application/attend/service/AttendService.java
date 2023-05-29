@@ -1,7 +1,9 @@
 package com.insadong.application.attend.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -41,23 +43,23 @@ public class AttendService {
 	
 	
 		/* 수강생 출결 조회 */
-		public Page<AttendDTO> selectAttendListByStudent(int page, Long studyCode) {
-	    log.info("[AttendService] selectAttendListByStudent start ==============================");
-
-	    Study findStudy = studyRepository.findById(studyCode)
-	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode= " + studyCode));
-
-	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("attendDate").descending());
-
-	    Page<Attend> attendList = attendRepository.findByStudy(pageable, findStudy);
-	    Page<AttendDTO> attendDTOList = attendList.map(attend -> modelMapper.map(attend, AttendDTO.class));
-
-	    log.info("[AttendService] attendDTOList.getContent() : {}", attendDTOList.getContent());
-
-	    log.info("[AttendService] selectAttendListByStudent end  ==============================");
-
-	    return attendDTOList;
-	}
+//		public Page<AttendDTO> selectAttendListByStudent(Long studyCode) {
+//	    log.info("[AttendService] selectAttendListByStudent start ==============================");
+//
+//	    Study findStudy = studyRepository.findById(studyCode)
+//	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode= " + studyCode));
+//
+//	    Pageable pageable = PageRequest.of(page - 1, 20, Sort.by("attendDate").descending());
+//
+//	    Page<Attend> attendList = attendRepository.findByStudy(pageable, findStudy);
+//	    Page<AttendDTO> attendDTOList = attendList.map(attend -> modelMapper.map(attend, AttendDTO.class));
+//
+//	    log.info("[AttendService] attendDTOList.getContent() : {}", attendDTOList.getContent());
+//
+//	    log.info("[AttendService] selectAttendListByStudent end  ==============================");
+//
+//	    return attendDTOList;
+//	}
 		
 		/* 수강생 출결 상세 조회 */
 		public Page<AttendDTO> selectAttendListDetailByStudent(int page, Long stuCode) {
@@ -119,17 +121,48 @@ public class AttendService {
 
 	
 	/* 수강생 날짜별 출석 검색*/
-	public Page<AttendDTO> selectStudentAttends(LocalDate attendDate, int page) {
-		
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("attendDate").descending());
+//	public Page<AttendDTO> selectStudentAttends(LocalDate attendDate, int page) {
+//		
+//		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("attendDate").descending());
+//
+//		Page<Attend> attendList = attendRepository.findByAttendDate(attendDate, pageable);
+//
+//		Page<AttendDTO> attendDtoList = attendList.map(attend -> modelMapper.map(attend, AttendDTO.class));
+//	
+//		return attendDtoList;
+//	}
 
-		Page<Attend> attendList = attendRepository.findByAttendDate(attendDate, pageable);
 
-		Page<AttendDTO> attendDtoList = attendList.map(attend -> modelMapper.map(attend, AttendDTO.class));
+	public List<AttendDTO> selectStudentAttendsByDate(LocalDate attendDate) {
+		List<Attend> attendList = attendRepository.findByAttendDate(attendDate);
+		return attendList.stream()
+		.map(attend -> modelMapper.map(attend, AttendDTO.class))
+		.collect(Collectors.toList());
+		}
 	
-		return attendDtoList;
+	
+	public List<AttendDTO> selectAttendListByStudent(Long studyCode) {
+	    log.info("[AttendService] selectAttendListByStudent start ==============================");
+
+	    Study findStudy = studyRepository.findById(studyCode)
+	            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 없습니다. studyCode= " + studyCode));
+
+	    List<Attend> attendList = attendRepository.findByStudy(findStudy);
+	    List<AttendDTO> attendDTOList = new ArrayList<>();
+
+	    for (Attend attend : attendList) {
+	        if (attend.getStudy().getStudyCode().equals(studyCode)) {
+	            AttendDTO attendDTO = modelMapper.map(attend, AttendDTO.class);
+	            attendDTOList.add(attendDTO);
+	        }
+	    }
+
+	    log.info("[AttendService] attendDTOList : {}", attendDTOList);
+
+	    log.info("[AttendService] selectAttendListByStudent end  ==============================");
+
+	    return attendDTOList;
 	}
-	
 
 }
 
