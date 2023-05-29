@@ -10,4 +10,6 @@ public interface FileRepository extends JpaRepository<File, Long>{
 
 	List<File> findByNoticeCode(Long noticeCode);
 
+	File findBySaveFileName(String fileName);
+
 }
