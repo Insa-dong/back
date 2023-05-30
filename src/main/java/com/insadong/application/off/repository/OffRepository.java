@@ -6,12 +6,14 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Off;
+
 
 @Repository
 public interface OffRepository extends JpaRepository<Off, Long> {
@@ -30,14 +32,24 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 	List<Off> findBySignRequester_EmpCodeAndSignStatus(Long empCode, String signStatuses);
 
 	/* 내 연차 조회 */
-	List<Off> findBySignRequester_EmpCode(Long empCode, Sort by);
-
+	List<Off> findBySignRequester_EmpCodeOrSignPayer_EmpCode(Long signRequester, Long signPayer, Sort by);
+ 
 	/* 연차 신청 조회 */
 
 	Page<Off> findBySignPayer_EmpCode(Long empCode, PageRequest pageRequest);
+	Page<Off> findBySignRequester_EmpNameContains(Pageable pageable, String empName);
+	Page<Off> findBySignStatus(Pageable pageable, String searchKeyword);
 
 	/* 연차 승인 처리*/
 	Off findBySignPayer_EmpCode(Long empCode);
+
+	
+
+	
+
+	
+
+	
 
 	
 

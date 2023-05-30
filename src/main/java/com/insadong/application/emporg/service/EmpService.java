@@ -214,6 +214,22 @@ public class EmpService {
 		restRepository.save(modelMapper.map(restDTO, Rest.class));
 	}
 
+	/* 11. 휴직 리스트 조회*/
+	public Page<RestDTO> selectRestList(int page){
+		log.info("[EmpService] selectRestList start ==============================");
+
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("restCode").descending());
+
+		Page<Rest> empList = restRepository.findAll(pageable);
+		Page<RestDTO> RestDTOList = empList.map(rest -> modelMapper.map(rest, RestDTO.class));
+
+		log.info("[EmpService] selectRestList.getContent(): {}", RestDTOList.getContent());
+
+		log.info("[EmpService] selectRestList end ===============================");
+
+		return RestDTOList;
+	}
+
 
 
 

@@ -44,9 +44,11 @@ public class Calendar {
 	@JoinColumn(name = "EMP_CODE", updatable = false)
 	private EmpEntity employee;
 
-	public void update(String calTitle, Date calStartDate, Date calEndDate) {
+	public void update(String calTitle, String calContent, Date calStartDate, Date calEndDate, String calColor) {
 		this.calTitle = calTitle;
+		this.calContent = calContent;
 		this.calStartDate = calStartDate;
 		this.calEndDate = calEndDate;
+		this.calColor = calColor;
 	}
 }

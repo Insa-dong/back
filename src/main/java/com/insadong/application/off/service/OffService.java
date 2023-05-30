@@ -13,15 +13,15 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.insadong.application.abs.dto.AbsDTO;
-import com.insadong.application.common.entity.Abs;
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Off;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.off.dto.EmpOffDTO;
 import com.insadong.application.off.dto.OffDTO;
 import com.insadong.application.off.repository.EmpOffRepository;
 import com.insadong.application.off.repository.OffRepository;
@@ -35,11 +35,14 @@ public class OffService {
 	public static final Long TOTAL_OFF_LEAVE = 15L;
 	private final OffRepository offRepository;
 	private final EmpOffRepository empOffRepository;
+	private final EmpOffService empOffService;
 	private final ModelMapper modelMapper;
 
-	public OffService(OffRepository offRepository, EmpOffRepository empOffRepository, ModelMapper modelMapper) {
+	public OffService(OffRepository offRepository, EmpOffRepository empOffRepository, 
+			EmpOffService empOffService, ModelMapper modelMapper) {
 		this.offRepository = offRepository;
 		this.empOffRepository = empOffRepository;
+		this.empOffService = empOffService;
 		this.modelMapper = modelMapper;
 	}
 
@@ -51,6 +54,14 @@ public class OffService {
 		LocalDate offStart = offDTO.getOffStart();
 		LocalDate offEnd = offDTO.getOffEnd();
 		
+		// 신청자 설정
+		Employee foundEmp = empOffRepository.findById(loggedInUser.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("asd"));
+		// 신청자 타입 변환 (Employee -> EmployeeDTO)
+		EmployeeDTO empDTO = modelMapper.map(foundEmp, EmployeeDTO.class);
+		// 신청자 EmpOffDTO 가져오기
+		EmpOffDTO empOffDTO = empOffService.showMyOff(foundEmp.getEmpCode());
+		
+		
 		// 중복 여부 확인
 	    if (checkExistingOff(offStart, offEnd)) {
 	        throw new IllegalArgumentException("이미 신청된 연차가 존재합니다.");
@@ -61,11 +72,12 @@ public class OffService {
 
 		// 반차면 0.5개로
 		double offDay = offDTO.getOffDiv().contains("반차") ? 0.5 : days;
+		
+		// 신청하려는 연차가 남은 연차보다 큰 경우
+	    if (offDay > empOffDTO.getRemainingOff()) {
+	        throw new IllegalArgumentException("남은 연차보다 많은 연차를 신청할 수 없습니다.");
+	    }
 
-		// 신청자 설정
-		Employee foundEmp = empOffRepository.findById(loggedInUser.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("asd"));
-		// 신청자 타입 변환 (Employee -> EmployeeDTO)
-		EmployeeDTO empDTO = modelMapper.map(foundEmp, EmployeeDTO.class);
 	
 		// 결재자 = 신청자 부서 팀장
 		Employee payer = empOffRepository.findTeamLeaderByDept(foundEmp.getDept());
@@ -109,11 +121,13 @@ public class OffService {
 	
 	/* 3,4. 내 연차 조회 */
 	public List<OffDTO> myOffList(Long empCode) {
-		List<Off> offList = offRepository.findBySignRequester_EmpCode(empCode, Sort.by("offStart"));
+		List<Off> offList = offRepository.findBySignRequester_EmpCodeOrSignPayer_EmpCode(empCode, empCode, Sort.by("offStart"));
 		log.info("offList : {} ", offList);
 
-		List<OffDTO> offDTOList = offList.stream().map(off -> modelMapper.map(off, OffDTO.class))
-				.collect(Collectors.toList());
+		List<OffDTO> offDTOList = offList.stream()
+	            .filter(off -> off.getSignRequester().getEmpCode().equals(empCode)) // 신청자가 자신인 경우만 필터링
+	            .map(off -> modelMapper.map(off, OffDTO.class))
+	            .collect(Collectors.toList());
 
 		return offDTOList;
 
@@ -131,7 +145,7 @@ public class OffService {
 	/* 6. 연차 신청 내역 조회(팀장) */
 	public Page<OffDTO> mySignOffList(Long empCode, int page) {
 		
-		PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.ASC, "signCode"));
+		PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "signCode"));
 		
 		Page<Off> offList = offRepository.findBySignPayer_EmpCode(empCode, pageRequest);
 		
@@ -139,8 +153,30 @@ public class OffService {
 		
 		return offDTIList;
 	}
-
 	
+	/* 6-1. 연차 신청 내역 검색 by 신청자, 승인상태 (팀장)*/
+
+	public Page<OffDTO> searchOffByRequesterAndStatus(int page, String searchOption, String searchKeyword) {
+		log.info("[OffService] searchOffByRequesterAndStatus start ==============================");
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("requestDate"));
+		
+		
+		if (searchOption.equals("empName")) {
+			 Page<Off> offList = offRepository.findBySignRequester_EmpNameContains(pageable, searchKeyword);
+			Page<OffDTO> offDTOList = offList.map(off -> modelMapper.map(off, OffDTO.class));
+			log.info("[OffService] searchOffByRequesterAndStatus.getContent(): {}", offDTOList.getContent());
+			return offDTOList;
+		} else if (searchOption.equals("signStatus")) {
+			Page<Off> offList = offRepository.findBySignStatus(pageable, searchKeyword);
+			Page<OffDTO> offDTOList = offList.map(off -> modelMapper.map(off, OffDTO.class));
+			log.info("[OffService] searchOffByRequesterAndStatus.getContent(): {}", offDTOList.getContent());
+			return offDTOList;
+		} else {
+			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
+		}
+		
+	}
+
 
 	/* 7.  연차 승인 처리 (팀장)*/
 	@Transactional
@@ -162,6 +198,7 @@ public class OffService {
 	    log.info("[OffService] signUpOff end ------------------- ");
 		
 	}
+
 
 	
 }
