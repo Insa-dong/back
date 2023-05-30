@@ -1,14 +1,10 @@
 package com.insadong.application.common.entity;
-
-
-
+import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -22,6 +18,5 @@ public class Dept {
 
 	@Column(name = "DEPT_NAME")
 	private String deptName;
-	
 
 }

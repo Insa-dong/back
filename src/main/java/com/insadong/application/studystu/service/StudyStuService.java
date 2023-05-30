@@ -95,23 +95,12 @@ public class StudyStuService {
 	}
 
 
-//	/* 3. 수강생 강의 삭제 */
-//	@Transactional
-//	public void deleteStudy(Long studyCode) {
-//
-//		List<StudyStu> studyStus = studyStuRepository.findByStudyStuPKStuCode(studyCode);
-//		studyStuRepository.deleteAll(studyStus);
-//	}
-		
 	/* 3. 수강생 강의 삭제 */
 	@Transactional
-	public void deleteStudy(Long studyCode) {
-	    // 수강생 강의와 관련된 모든 레코드를 삭제
-	    List<StudyStu> studyStus = studyStuRepository.findByStudyStuPKStuCode(studyCode);
-	    studyStuRepository.deleteAll(studyStus);
-
-	    // 수강생 강의 삭제
-	    studyRepository.deleteById(studyCode);
+	public void deleteStudy(Long stuCode) {
+		
+		List<StudyStu> studyStus = studyStuRepository.findByStudyStuPKStuCode(stuCode);
+		studyStuRepository.deleteAll(studyStus);
 	}
 	
 

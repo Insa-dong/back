@@ -166,14 +166,30 @@ public class NoticeController {
 		
 	}
 	
+	/* 공지사항 수정 - 기존 파일 삭제 */
+	@DeleteMapping("/delete/{fileName}")
+	public ResponseEntity<ResponseDTO> deleteFile(@PathVariable String fileName) throws IOException {
+		
+		log.info("[NoticeController] fileName: {}", fileName);
+		
+		
+		noticeService.deleteFile(fileName);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "기존 파일 삭제 성공"));
+	}
+	
 	/* 공지사항 삭제 */
-//	@DeleteMapping("/notice/{noticeCode}")
-//	public ResponseEntity<ResponseDTO> deleteNotice(@PathVariable Long noticeCode, 
-//			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
-//
-//		noticeService.deleteNotice(noticeCode, employeeDTO.getEmpCode());
-//
-//		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제 성공"));
-//	}
+	@DeleteMapping("/notice/{noticeCode}")
+	public ResponseEntity<ResponseDTO> deleteNotice(@PathVariable Long noticeCode, 
+			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
+		
+		log.info("[NoticeController] employeeDTO: {}", employeeDTO);
+
+		noticeService.deleteNotice(noticeCode, employeeDTO.getEmpCode());
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 삭제 성공"));
+	}
 
 }

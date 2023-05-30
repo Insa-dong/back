@@ -23,8 +23,7 @@ public interface StudyStuRepository extends JpaRepository<StudyStu, StudyStuPK>{
 	List<StudyInfo> findAllStudyInfo();
 
 	 /* 강의별 수강생 조회 */
-	 Page<StudyStu> findByStudyStuPK_StudyCode(Long studyCode, Pageable pageable);
-	 
+	 Page<StudyStu> findByStudyStuPK_StudyCode(Long studyCode, Pageable pageable);	 
 }
 
 

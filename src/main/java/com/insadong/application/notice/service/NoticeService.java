@@ -217,16 +217,16 @@ public class NoticeService {
 			/* 수정 시 파일을 첨부했을 경우 - multipartfile은 파일이 없으면 null이 아니라 빈배열을 반환 따라서
 			 * null이 아니라는 조건을 줘도 조건식에 걸리지 않음 
 			 * 배열의 첫번째 요소가 비었는지를 확인해주면 조건식에 걸림*/
-			if (!noticeDTO.getNoticeFile().get(0).isEmpty()) {
+			if (noticeDTO.getNoticeFile() != null) {
 				
 				/* 기존 파일 삭제 */
-				List<File> beforefiles = fileRepository.findByNoticeCode(noticeDTO.getNoticeCode());
-				for (File beforefile : beforefiles) {
-					FileUploadUtils.deleteFile(IMAGE_DIR, beforefile.getSaveFileName());
-
-					fileRepository.delete(beforefile);
-
-				}
+//				List<File> beforefiles = fileRepository.findByNoticeCode(noticeDTO.getNoticeCode());
+//				for (File beforefile : beforefiles) {
+//					FileUploadUtils.deleteFile(IMAGE_DIR, beforefile.getSaveFileName());
+//
+//					fileRepository.delete(beforefile);
+//
+//				}
 
 				for (MultipartFile file : noticeDTO.getNoticeFile()) {
 
@@ -279,7 +279,33 @@ public class NoticeService {
 		} else {
 			throw new IllegalArgumentException("수정할 수 있는 권한이 없습니다.");
 		}
+	}
+	
+	/* 파일 수정 - 기존 파일 삭제 */
+	@Transactional
+	public void deleteFile(String fileName) throws IOException {
+		
+		File file = fileRepository.findBySaveFileName(fileName);
+		
+		FileUploadUtils.deleteFile(IMAGE_DIR, file.getSaveFileName());
+		
+		fileRepository.delete(file);
+		
+	}
 
+	public void deleteNotice(Long noticeCode, Long empCode) {
+		
+		Notice notice = noticeRepository.findById(noticeCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다. noticeCode=" + noticeCode));
+		
+		if(notice.getNoticeWriter().getEmpCode().equals(empCode)) {
+			
+			noticeRepository.delete(notice);
+		} else {
+			throw new IllegalArgumentException("삭제할 수 있는 권한이 없습니다.");
+		}
+		
+		
 	}
 
 }

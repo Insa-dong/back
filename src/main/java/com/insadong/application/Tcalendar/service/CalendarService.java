@@ -34,9 +34,9 @@ public class CalendarService {
 		return calendarRepository.findByEmployee(empCode).stream().map(schedule -> modelMapper.map(schedule, CalendarDTO.class)).collect(Collectors.toList());
 	}
 
-	public Page<CalendarDTO> viewMyPagingScheduleList(Long empCode, int page) {
+	public Page<CalendarDTO> viewMyPagingScheduleList(Long empCode, int page, String sort) {
 
-		Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("calCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 8, Sort.by(sort).descending());
 
 		return calendarRepository.findByEmployeeEmpCode(empCode, pageable).map(Calendar -> modelMapper.map(Calendar, CalendarDTO.class));
 	}
