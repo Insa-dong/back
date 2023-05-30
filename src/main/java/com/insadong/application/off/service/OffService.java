@@ -145,7 +145,7 @@ public class OffService {
 	/* 6. 연차 신청 내역 조회(팀장) */
 	public Page<OffDTO> mySignOffList(Long empCode, int page) {
 		
-		PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "signCode"));
+		PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "requestDate"));
 		
 		Page<Off> offList = offRepository.findBySignPayer_EmpCode(empCode, pageRequest);
 		
