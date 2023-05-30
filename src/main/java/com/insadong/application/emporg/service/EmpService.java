@@ -208,15 +208,24 @@ public class EmpService {
 	}
 
 	/* 12. 휴직 상태 변경*/
-//	public void updateRestState(){
-//		Rest originRest = restRepository.find
-//
-//	}
+	@Transactional
+	public void updateRestState(RestDTO restDTO) {
+		Rest originRest = restRepository.findById(restDTO.getRestCode())
+				.orElseThrow(() -> new IllegalArgumentException("해당 휴직내역이 없습니다. restCode = " + restDTO.getRestCode()));
+
+
+		if ("승인".equals(restDTO.getRestState())) {
+			originRest.setRestState("승인");
+		} else if ("반려".equals(restDTO.getRestState())) {
+			originRest.setRestState("반려");
+		}
+
+	}
+
 
 	/* 10. 휴직 신청*/
 	@Transactional
 	public void insertEmpRest(RestDTO restDTO) {
-		log.info("우아아아아 : {}", restDTO);
 		restRepository.save(modelMapper.map(restDTO, Rest.class));
 	}
 
