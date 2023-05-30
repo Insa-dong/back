@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,7 @@ import com.insadong.application.notice.dto.FileDTO;
 import com.insadong.application.notice.dto.NoticeDTO;
 import com.insadong.application.notice.repository.FileRepository;
 import com.insadong.application.notice.repository.NoticeRepository;
+import com.insadong.application.util.FileUploadUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -200,20 +202,110 @@ public class NoticeService {
 //		return null;
 //	}
 
+	/* 공지사항 수정 */
 	@Transactional
-	public void updateNotice(NoticeDTO noticeDTO, Long empCode) {
+	public void updateNotice(NoticeDTO noticeDTO, Long empCode) throws IOException {
 
 		Notice notice = noticeRepository.findById(noticeDTO.getNoticeCode())
 				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다."));
+		
+		log.info("[NoticeService] noticeDTO : {}", noticeDTO);
 
-		if (notice.getNoticeWriter().equals(empCode)) {
+		/* 로그인 한 사용자와 게시글 작성자가 일치할 경우*/
+		if (notice.getNoticeWriter().getEmpCode().equals(empCode)) {
 			
-			notice.setNoticeTitle(noticeDTO.getNoticeTitle());
-			notice.setNoticeContent(noticeDTO.getNoticeContent());
+			/* 수정 시 파일을 첨부했을 경우 - multipartfile은 파일이 없으면 null이 아니라 빈배열을 반환 따라서
+			 * null이 아니라는 조건을 줘도 조건식에 걸리지 않음 
+			 * 배열의 첫번째 요소가 비었는지를 확인해주면 조건식에 걸림*/
+			if (noticeDTO.getNoticeFile() != null) {
+				
+				/* 기존 파일 삭제 */
+//				List<File> beforefiles = fileRepository.findByNoticeCode(noticeDTO.getNoticeCode());
+//				for (File beforefile : beforefiles) {
+//					FileUploadUtils.deleteFile(IMAGE_DIR, beforefile.getSaveFileName());
+//
+//					fileRepository.delete(beforefile);
+//
+//				}
+
+				for (MultipartFile file : noticeDTO.getNoticeFile()) {
+
+					FileDTO fileDTO = new FileDTO();
+
+					String originFileName = file.getOriginalFilename();
+					String saveFileName = UUID.randomUUID().toString().replace("-", "");
+					String fileFath = IMAGE_DIR;
+					Long fileSize = file.getSize();
+
+					Path uploadPath = Paths.get(IMAGE_DIR);
+
+					if (!Files.exists(uploadPath)) {
+						Files.createDirectories(uploadPath);
+					}
+
+					String replaceFileName = saveFileName + "."
+							+ FilenameUtils.getExtension(file.getOriginalFilename());
+
+					try (InputStream inputStream = file.getInputStream()) {
+						Path filePath = uploadPath.resolve(replaceFileName);
+						Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e) {
+						throw new IOException("파일을 저장하지 못하였습니다. saveFileName : " + saveFileName);
+					}
+
+					fileDTO.setOriginFileName(originFileName);
+					fileDTO.setSaveFileName(replaceFileName);
+					fileDTO.setFileFath(IMAGE_DIR);
+					fileDTO.setFileSize(fileSize);
+					fileDTO.setNoticeCode(notice.getNoticeCode());
+
+					fileRepository.save(modelMapper.map(fileDTO, File.class));
+					
+					notice.setNoticeTitle(noticeDTO.getNoticeTitle());
+					notice.setNoticeContent(noticeDTO.getNoticeContent());
+					notice.setNoticeModifyDate(new Date());
+
+				}
+				
+			  /* 수정시 첨부파일 없을 경우*/
+			} else {
+
+				notice.setNoticeTitle(noticeDTO.getNoticeTitle());
+				notice.setNoticeContent(noticeDTO.getNoticeContent());
+				notice.setNoticeModifyDate(new Date());
+
+			}
+
 		} else {
 			throw new IllegalArgumentException("수정할 수 있는 권한이 없습니다.");
 		}
+	}
+	
+	/* 파일 수정 - 기존 파일 삭제 */
+	@Transactional
+	public void deleteFile(String fileName) throws IOException {
+		
+		File file = fileRepository.findBySaveFileName(fileName);
+		
+		FileUploadUtils.deleteFile(IMAGE_DIR, file.getSaveFileName());
+		
+		fileRepository.delete(file);
+		
+	}
 
+	public void deleteNotice(Long noticeCode, Long empCode) {
+		
+		Notice notice = noticeRepository.findById(noticeCode)
+				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다. noticeCode=" + noticeCode));
+		
+		if(notice.getNoticeWriter().getEmpCode().equals(empCode)) {
+			
+			noticeRepository.delete(notice);
+		} else {
+			throw new IllegalArgumentException("삭제할 수 있는 권한이 없습니다.");
+		}
+		
+		
 	}
 
 }

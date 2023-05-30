@@ -1,10 +1,16 @@
 package com.insadong.application.Tcalendar.service;
 
 import com.insadong.application.Tcalendar.dto.CalendarDTO;
+import com.insadong.application.Tcalendar.dto.PetiteEmpDTO;
 import com.insadong.application.Tcalendar.entity.Calendar;
 import com.insadong.application.Tcalendar.repository.CalendarRepository;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +31,14 @@ public class CalendarService {
 
 	public List<CalendarDTO> viewMyScheduleList(Long empCode) {
 
-		return calendarRepository.findByEmployeeEmpCode(empCode).stream().map(schedule -> modelMapper.map(schedule, CalendarDTO.class)).collect(Collectors.toList());
+		return calendarRepository.findByEmployee(empCode).stream().map(schedule -> modelMapper.map(schedule, CalendarDTO.class)).collect(Collectors.toList());
+	}
+
+	public Page<CalendarDTO> viewMyPagingScheduleList(Long empCode, int page, String sort) {
+
+		Pageable pageable = PageRequest.of(page - 1, 8, Sort.by(sort).descending());
+
+		return calendarRepository.findByEmployeeEmpCode(empCode, pageable).map(Calendar -> modelMapper.map(Calendar, CalendarDTO.class));
 	}
 
 	@Transactional
@@ -44,7 +57,21 @@ public class CalendarService {
 
 		Calendar foundCal = calendarRepository.findById(calendar.getCalCode()).orElseThrow(() -> new IllegalStateException("조회 실패"));
 
-		foundCal.update(calendar.getCalTitle(), calendar.getCalStartDate(), calendar.getCalEndDate());
+		foundCal.update(calendar.getCalTitle(), calendar.getCalContent(), calendar.getCalStartDate(), calendar.getCalEndDate(), calendar.getCalColor());
+	}
+
+	@Transactional
+	public void registerMySchedule(CalendarDTO calendar, EmpDTOImplUS writer) {
+
+		log.info("calendar : {} ", calendar);
+
+		PetiteEmpDTO employee = new PetiteEmpDTO();
+		employee.setEmpCode(writer.getEmpCode());
+		employee.setEmpName(writer.getEmpName());
+
+		calendar.setEmployee(employee);
+
+		calendarRepository.save(modelMapper.map(calendar, Calendar.class));
 	}
 }
 

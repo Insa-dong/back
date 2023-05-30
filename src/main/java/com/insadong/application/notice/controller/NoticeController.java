@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -151,7 +152,11 @@ public class NoticeController {
 	/* 공지사항 수정 */
 	@PutMapping("/notice")
 	public ResponseEntity<ResponseDTO> updateNotice(@ModelAttribute NoticeDTO noticeDTO, 
-			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
+			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) throws IOException {
+		
+		log.info("[NoticeController] noticeDTO: {}", noticeDTO);
+		log.info("emp : {} " , employeeDTO);
+		
 		
 		noticeService.updateNotice(noticeDTO, employeeDTO.getEmpCode());
 		
@@ -159,6 +164,32 @@ public class NoticeController {
 				.ok()
 				.body(new ResponseDTO(HttpStatus.OK, "공지사항 수정 성공"));
 		
+	}
+	
+	/* 공지사항 수정 - 기존 파일 삭제 */
+	@DeleteMapping("/delete/{fileName}")
+	public ResponseEntity<ResponseDTO> deleteFile(@PathVariable String fileName) throws IOException {
+		
+		log.info("[NoticeController] fileName: {}", fileName);
+		
+		
+		noticeService.deleteFile(fileName);
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "기존 파일 삭제 성공"));
+	}
+	
+	/* 공지사항 삭제 */
+	@DeleteMapping("/notice/{noticeCode}")
+	public ResponseEntity<ResponseDTO> deleteNotice(@PathVariable Long noticeCode, 
+			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
+		
+		log.info("[NoticeController] employeeDTO: {}", employeeDTO);
+
+		noticeService.deleteNotice(noticeCode, employeeDTO.getEmpCode());
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 삭제 성공"));
 	}
 
 }

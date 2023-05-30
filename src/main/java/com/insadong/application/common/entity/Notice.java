@@ -53,7 +53,7 @@ public class Notice {
 	@Column(name="NOTICE_MODIFY_DATE")
 	private Date noticeModifyDate;			// 수정일
 	
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="NOTICE_CODE")
 	private List<File> fileList;
 }
