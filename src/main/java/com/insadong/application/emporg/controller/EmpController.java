@@ -178,6 +178,8 @@ public class EmpController {
 	/* 휴직 리스트 */
 	@GetMapping("emp/emprestlist")
 	public ResponseEntity<ResponseDTO> selectRestList(@RequestParam(name = "page", defaultValue = "1") int page) {
+
+		log.info("[EmpController] : page : {}", page);
 		Page<RestDTO> restDTOList = empService.selectRestList(page);
 
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(restDTOList);
