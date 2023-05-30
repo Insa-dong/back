@@ -4,7 +4,11 @@ import com.insadong.application.Tcalendar.dto.CalendarDTO;
 import com.insadong.application.Tcalendar.service.CalendarService;
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
+import com.insadong.application.paging.Pagenation;
+import com.insadong.application.paging.PagingButtonInfo;
+import com.insadong.application.paging.ResponseDTOWithPaging;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,10 +32,22 @@ public class CalendarController {
 
 		List<CalendarDTO> data = calService.viewMyScheduleList(empDTO.getEmpCode());
 
-		log.info("data : {} ", data);
-
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
 	}
+
+	@GetMapping("/myPagingScheduleList")
+	public ResponseEntity<ResponseDTO> viewMyPagingCal(@AuthenticationPrincipal EmpDTOImplUS empDTO, @RequestParam(name = "page", defaultValue = "1") int page) {
+
+		Page<CalendarDTO> data = calService.viewMyPagingScheduleList(empDTO.getEmpCode(), page);
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(data);
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(data.getContent());
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
+
 
 	@PutMapping("/myScheduleUpdate")
 	public ResponseEntity<ResponseDTO> updateMyCal(@RequestBody List<CalendarDTO> calendar) {
@@ -49,5 +65,14 @@ public class CalendarController {
 		calService.updateMyCalInfo(calendar);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
+	}
+
+	@PostMapping("/mySchedule")
+	public ResponseEntity<ResponseDTO> registerMySchedule(@RequestBody CalendarDTO calendar, @AuthenticationPrincipal EmpDTOImplUS writer) {
+
+		log.info("writer : {} ", writer);
+
+		calService.registerMySchedule(calendar, writer);
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 성공"));
 	}
 }
