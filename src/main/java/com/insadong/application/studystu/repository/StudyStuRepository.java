@@ -17,7 +17,7 @@ public interface StudyStuRepository extends JpaRepository<StudyStu, StudyStuPK>{
 	Page<StudyStu> findByStudent(Pageable pageable, Student findStudent);
 
 	/* 수강생 강의 삭제 */
-	List<StudyStu> findByStudyStuPKStuCode(Long stuCode);
+	List<StudyStu> findByStudyStuPKStuCode(Long studyCode);
 
 	 @Query("SELECT s FROM StudyInfo s")
 	List<StudyInfo> findAllStudyInfo();

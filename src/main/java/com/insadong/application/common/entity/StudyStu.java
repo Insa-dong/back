@@ -1,12 +1,15 @@
 package com.insadong.application.common.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -29,7 +32,7 @@ public class StudyStu implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "STU_CODE", insertable = false, updatable = false)
 	private Student student;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "STUDY_CODE", insertable = false, updatable = false)
 	private Study study;
@@ -39,7 +42,7 @@ public class StudyStu implements Serializable {
 
 	@Column(name = "STUDY_STATE")
 	private String studyState;
-
+	
 	/* StudyStu entity 수정 용도의 메소드를 별도로 정의 */
 	public void update(String studyEnrollDate, String studyState) {
 

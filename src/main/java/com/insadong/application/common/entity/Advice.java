@@ -1,5 +1,6 @@
 package com.insadong.application.common.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -45,7 +46,7 @@ public class Advice {
 	private String adviceLogContent;
 	
 	@Column(name="ADVICE_LOG_UPDATE")
-	private String adviceLogUpdate;
+	private Date adviceLogUpdate;
 	
 	@Column(name="ADVICE_LOG_DATE")
 	private Date adviceLogDate;
@@ -55,7 +56,7 @@ public class Advice {
 
 	/* Advice entity 수정 용도의 메소드를 별도로 정의 */
 	
-	public void update(Employee writer, String adviceLogContent, Date adviceLogDate, String adviceLogUpdate, String adviceLogDelete) {
+	public void update(Employee writer, String adviceLogContent, Date adviceLogDate, Date adviceLogUpdate, String adviceLogDelete) {
         this.writer = writer;
         this.adviceLogContent = adviceLogContent;
         this.adviceLogDate = adviceLogDate;

@@ -19,7 +19,8 @@ public class AdviceDTO {
 	private String adviceLogContent;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date adviceLogDate;
-	private String adviceLogUpdate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date adviceLogUpdate;
 	private String adviceLogDelete;
 	
 }

@@ -1,7 +1,8 @@
 package com.insadong.application.common.entity;
 
-import java.time.LocalDate;
+import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,12 +42,12 @@ public class Attend {
 	private Student student;
 	
 	@Column(name="ATTEND_DATE")
-	private LocalDate attendDate;
+	private Date attendDate;
 		
 	@Column(name="ATTEND_STATUS")
 	private String attendStatus;
 	
-	public void update(LocalDate attendDate, String attendStatus) {
+	public void update(Date attendDate, String attendStatus) {
 		
 		this.attendDate = attendDate;
 		this.attendStatus = attendStatus;

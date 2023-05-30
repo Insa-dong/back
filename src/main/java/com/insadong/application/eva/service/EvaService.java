@@ -1,5 +1,7 @@
 package com.insadong.application.eva.service;
 
+import java.util.Date;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -9,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.insadong.application.advice.dto.AdviceDTO;
-import com.insadong.application.common.entity.Advice;
 import com.insadong.application.common.entity.Eva;
 import com.insadong.application.common.entity.Student;
 import com.insadong.application.eva.dto.EvaDTO;
@@ -107,6 +107,8 @@ public class EvaService {
 		Eva originEva = evaRepository.findById(evaDto.getEvaCode())
 				.orElseThrow(() -> new IllegalArgumentException("해당 평가가 없습니다. evaCode = " + evaDto.getEvaCode()));
 
+			evaDto.setEvaUpdateTime(new Date());
+			
 			/* 평가 정보 수정 */
 			originEva.update(
 					evaDto.getEvaWriteContent(),

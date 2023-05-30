@@ -78,9 +78,9 @@ public class StudyStuController {
 	
 
 	/* 3. 수강생 강의 삭제 */
-	@DeleteMapping("/students-management/study/{stuCode}")
-	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long stuCode) {
-	    studyStuService.deleteStudy(stuCode);
+	@DeleteMapping("/students-management/study/{studyCode}")
+	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long studyCode) {
+	    studyStuService.deleteStudy(studyCode);
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
 	}
 
