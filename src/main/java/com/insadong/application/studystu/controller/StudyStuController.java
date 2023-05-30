@@ -78,25 +78,11 @@ public class StudyStuController {
 	
 
 	/* 3. 수강생 강의 삭제 */
-//	@DeleteMapping("/students-management/study/{studyCode}")
-//	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long studyCode) {
-//	    studyStuService.deleteStudy(studyCode);
-//	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
-//	}
-//	
-	
-//	/* 3. 수강생 강의 삭제 */
-//	@DeleteMapping("/students-management/study/{studyCode}")
-//	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long studyCode) {
-//	    List<Attend> attends = attendRepository.findByStudyStudyCode(studyCode);
-//	    attendRepository.deleteAll(attends);
-//
-//	    // 수강생 강의 삭제
-//	    studyStuService.deleteStudy(studyCode);
-//
-//	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
-//	}
-
+	@DeleteMapping("/students-management/study/{stuCode}")
+	public ResponseEntity<ResponseDTO> deleteStudy(@PathVariable Long stuCode) {
+	    studyStuService.deleteStudy(stuCode);
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수강생 강의 삭제 성공"));
+	}
 
 
 	/* 4. 수강생 강의 조회 (수강생 번호) */
@@ -154,6 +140,38 @@ public class StudyStuController {
 	}
 	
 	/* 강의별 수강생 & 출결 조회 */
+//	@GetMapping("/studyAndAttend/{studyCode}")
+//	public ResponseEntity<ResponseDTO> selectStudentAndAttendListByStudy(
+//	        @RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long studyCode) {
+//
+//	    log.info("[StudyStuAttendController] : selectStudentAndAttendListByStudy start ==================================== ");
+//	    log.info("[StudyStuAttendController] : page : {}", page);
+//
+//	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("study.studyCode").descending());
+//	    
+//	    Page<StudyStuDTO> studentList = studyStuService.selectStudentListByStudy(page, studyCode);
+//	    Page<AttendDTO> attendList = attendService.selectAttendListByStudent(page, studyCode);
+//
+//	    // 페이징 정보 생성
+//	    PagingButtonInfo studentPageInfo = Pagenation.getPagingButtonInfo(studentList);
+//	    PagingButtonInfo attendPageInfo = Pagenation.getPagingButtonInfo(attendList);
+//
+//	    // 응답 데이터 생성
+//	    StudyStuAttendDTO result = new StudyStuAttendDTO();
+//	    result.setStudentList(studentList.getContent());
+//	    result.setAttendList(attendList.getContent());
+//
+//	    // 응답 객체 생성 및 데이터 설정
+//	    ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+//	    responseDTOWithPaging.setPageInfo(studentPageInfo);
+//	    responseDTOWithPaging.setData(result);
+//
+//	    log.info("[StudyStuAttendController] : selectStudentAndAttendListByStudy end ==================================== ");
+//
+//	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+//	}
+	
+	/* 강의별 수강생 & 출결 조회 */
 	@GetMapping("/studyAndAttend/{studyCode}")
 	public ResponseEntity<ResponseDTO> selectStudentAndAttendListByStudy(
 	        @RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long studyCode) {
@@ -162,18 +180,17 @@ public class StudyStuController {
 	    log.info("[StudyStuAttendController] : page : {}", page);
 
 	    Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("study.studyCode").descending());
-	    
+
 	    Page<StudyStuDTO> studentList = studyStuService.selectStudentListByStudy(page, studyCode);
-	    Page<AttendDTO> attendList = attendService.selectAttendListByStudent(page, studyCode);
+	    List<AttendDTO> attendList = attendService.selectAttendListByStudent(studyCode);
 
 	    // 페이징 정보 생성
 	    PagingButtonInfo studentPageInfo = Pagenation.getPagingButtonInfo(studentList);
-	    PagingButtonInfo attendPageInfo = Pagenation.getPagingButtonInfo(attendList);
 
 	    // 응답 데이터 생성
 	    StudyStuAttendDTO result = new StudyStuAttendDTO();
 	    result.setStudentList(studentList.getContent());
-	    result.setAttendList(attendList.getContent());
+	    result.setAttendList(attendList);
 
 	    // 응답 객체 생성 및 데이터 설정
 	    ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();

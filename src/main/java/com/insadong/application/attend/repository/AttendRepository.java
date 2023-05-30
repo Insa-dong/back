@@ -14,11 +14,18 @@ import com.insadong.application.common.entity.Study;
 public interface AttendRepository extends JpaRepository<Attend, Long> {
 
 	/* 수강생 출결 조회 */
-	Page<Attend> findByStudy(Pageable pageable, Study findStudy);
+	// Page<Attend> findByStudy(Pageable pageable, Study findStudy);
+	List<Attend> findByStudy(Study findStudy);
 
 	/* 수강생 상세 조회 */
 	Page<Attend> findByStudent(Pageable pageable, Student findStudent);
 
 	/* 수강생 날짜 별 검색*/
-	Page<Attend> findByAttendDate(LocalDate attendDate, Pageable pageable);
+	// Page<Attend> findByAttendDate(LocalDate attendDate, Pageable pageable);
+	
+	List<Attend> findByAttendDate(LocalDate attendDate);
+
+	/* 출석 삭제*/
+	List<Attend> findByStudyStudyCode(Long studyCode);
+	
 }

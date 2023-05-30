@@ -14,7 +14,7 @@ public class AttendDTO {
 	private Long attendCode;
 	private StudyDTO study;
 	private StudentDTO student;
-//	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate attendDate;
 	private String attendStatus;
 	
