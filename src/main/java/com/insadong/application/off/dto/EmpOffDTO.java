@@ -6,7 +6,10 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.insadong.application.common.entity.Dept;
 import com.insadong.application.common.entity.EmpAuth;
+import com.insadong.application.common.entity.Employee;
+import com.insadong.application.common.entity.Job;
 import com.insadong.application.employee.dto.DeptDTO;
 import com.insadong.application.employee.dto.JobDTO;
 
@@ -29,8 +32,48 @@ public class EmpOffDTO implements UserDetails{
 		private List<OffDTO> offs;
 		private Double usedOff; // 사용한 연차
 		private Double remainingOff; // 잔여 연차
+		
+		
+		
+		private JobDTO convertToJobDTO(Job job2) {
+			JobDTO jobDTO = new JobDTO();
+			
+			jobDTO.setJobCode(job2.getJobCode());
+			jobDTO.setJobName(job2.getJobName());
+	       
+
+	        return jobDTO;
+		}
+
+
+		private DeptDTO convertToDeptDTO(Dept dept2) {
+			DeptDTO deptDTO = new DeptDTO();
+			
+	        deptDTO.setDeptCode(dept2.getDeptCode());
+	        deptDTO.setDeptName(dept2.getDeptName());
+	       
+
+	        return deptDTO;
+		}
+		
+		public void fromEmployee(Employee emp) {
+		    this.setEmpCode(emp.getEmpCode());
+		    this.setEmpName(emp.getEmpName());
+		    this.setEmpId(emp.getEmpId());
+		    this.setEmpPwd(emp.getEmpPwd());
+		    this.setOffCount(emp.getOffCount());
+		    this.setEmpState(emp.getEmpState());
+		    this.setEmpAuthList(emp.getEmpAuthList());
+
+		    // You'll need to convert `Dept` and `Job` entities to DTOs here
+		    this.setDept(convertToDeptDTO(emp.getDept()));
+		    this.setJob(convertToJobDTO(emp.getJob()));
+		}
 
 		
+
+
+
 		private Collection<? extends GrantedAuthority> authorities;
 		
 		@Override

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.insadong.application.advice.dto.AdviceDTO;
 import com.insadong.application.advice.repository.AdviceRepository;
 import com.insadong.application.common.entity.Advice;
-import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Student;
 import com.insadong.application.student.repository.StudentRepository;
 

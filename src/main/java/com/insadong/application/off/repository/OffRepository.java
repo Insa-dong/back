@@ -43,6 +43,8 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 	/* 연차 승인 처리*/
 	Off findBySignPayer_EmpCode(Long empCode);
 
+
+
 	
 
 	
