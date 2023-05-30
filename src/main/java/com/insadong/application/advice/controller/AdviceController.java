@@ -16,12 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.insadong.application.advice.dto.AdviceDTO;
 import com.insadong.application.advice.service.AdviceService;
 import com.insadong.application.common.ResponseDTO;
-import com.insadong.application.common.entity.Employee;
-import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.paging.Pagenation;
 import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
-import com.insadong.application.student.dto.StudentDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
