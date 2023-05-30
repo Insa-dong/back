@@ -279,7 +279,6 @@ public class NoticeService {
 		} else {
 			throw new IllegalArgumentException("수정할 수 있는 권한이 없습니다.");
 		}
-
 	}
 	
 	/* 파일 수정 - 기존 파일 삭제 */
