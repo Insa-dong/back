@@ -36,9 +36,9 @@ public class CalendarController {
 	}
 
 	@GetMapping("/myPagingScheduleList")
-	public ResponseEntity<ResponseDTO> viewMyPagingCal(@AuthenticationPrincipal EmpDTOImplUS empDTO, @RequestParam(name = "page", defaultValue = "1") int page) {
+	public ResponseEntity<ResponseDTO> viewMyPagingCal(@AuthenticationPrincipal EmpDTOImplUS empDTO, @RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "sort", defaultValue = "calCode") String sort) {
 
-		Page<CalendarDTO> data = calService.viewMyPagingScheduleList(empDTO.getEmpCode(), page);
+		Page<CalendarDTO> data = calService.viewMyPagingScheduleList(empDTO.getEmpCode(), page, sort);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(data);
 
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
