@@ -185,7 +185,7 @@ public class NoticeController {
 	/* 공지사항 삭제 */
 	@DeleteMapping("/notice/{noticeCode}")
 	public ResponseEntity<ResponseDTO> deleteNotice(@PathVariable Long noticeCode, 
-			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
+			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) throws IOException {
 		
 		log.info("[NoticeController] employeeDTO: {}", employeeDTO);
 

@@ -293,14 +293,24 @@ public class NoticeService {
 		
 	}
 
-	public void deleteNotice(Long noticeCode, Long empCode) {
+	/* 공지사항 삭제*/
+	public void deleteNotice(Long noticeCode, Long empCode) throws IOException {
 		
 		Notice notice = noticeRepository.findById(noticeCode)
 				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다. noticeCode=" + noticeCode));
 		
+		
 		if(notice.getNoticeWriter().getEmpCode().equals(empCode)) {
 			
+			List<File> files = fileRepository.findByNoticeCode(noticeCode);
+			
+			for(File file : files ) {
+				
+				FileUploadUtils.deleteFile(IMAGE_DIR, file.getSaveFileName());
+			}
+			
 			noticeRepository.delete(notice);
+			
 		} else {
 			throw new IllegalArgumentException("삭제할 수 있는 권한이 없습니다.");
 		}
