@@ -1,18 +1,21 @@
 package com.insadong.application.off.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.off.dto.EmpOffDTO;
 import com.insadong.application.off.service.EmpOffService;
+import com.insadong.application.paging.Pagenation;
+import com.insadong.application.paging.PagingButtonInfo;
+import com.insadong.application.paging.ResponseDTOWithPaging;
 
 @RestController
 @RequestMapping("/off")
@@ -38,10 +41,19 @@ public class EmpOffController {
 	   
 	 /* 2. 팀원 연차 현황 조회 */
 	   @GetMapping("/teamOff")
-	   public ResponseEntity<ResponseDTO> getTeamOff(@AuthenticationPrincipal EmpDTOImplUS emp) {
+	   public ResponseEntity<ResponseDTO> getTeamOff(@AuthenticationPrincipal EmpDTOImplUS emp,
+			   @RequestParam(name="page", defaultValue="1") int page,
+			   @RequestParam(name="searchOption", required = false) String searchOption, 
+	           @RequestParam(name="searchKeyword", required = false) String searchKeyword) {
 		   
-		   List<EmpOffDTO> teamOffList = empOffService.getTeamOff(emp.getEmpCode());
+		   Page<EmpOffDTO> teamOffList = empOffService.getTeamOff(emp.getEmpCode(), page, searchOption, searchKeyword);
 		   
+		   PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(teamOffList);
+	        
+	        ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+	        responseDTOWithPaging.setPageInfo(pageInfo);
+	        responseDTOWithPaging.setData(teamOffList.getContent()); 
+	        
 		   return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "팀원 연차 현황 조회 성공", teamOffList));
 		}
 	   

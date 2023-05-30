@@ -19,6 +19,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	List<Employee> findByEmpNameContains(String searchKeyword);
 
 	/* 팀원 연차 조회(팀원)*/
-	List<Employee> findByDeptDeptCode(String deptCode);
+	List<Employee> findByDept_DeptCode(String deptCode);
+
+	//Optional<Employee> findByDept_DeptCode(String deptCode);
 
 }
