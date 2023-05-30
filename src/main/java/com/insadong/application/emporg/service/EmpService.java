@@ -207,12 +207,21 @@ public class EmpService {
 		originEmp.setEndDate(new Date());
 	}
 
+	/* 12. 휴직 상태 변경*/
+//	public void updateRestState(){
+//		Rest originRest = restRepository.find
+//
+//	}
+
 	/* 10. 휴직 신청*/
 	@Transactional
 	public void insertEmpRest(RestDTO restDTO) {
 		log.info("우아아아아 : {}", restDTO);
 		restRepository.save(modelMapper.map(restDTO, Rest.class));
 	}
+
+
+
 
 	/* 11. 휴직 리스트 조회*/
 	public Page<RestDTO> selectRestList(int page){
@@ -229,6 +238,7 @@ public class EmpService {
 
 		return RestDTOList;
 	}
+
 
 
 
