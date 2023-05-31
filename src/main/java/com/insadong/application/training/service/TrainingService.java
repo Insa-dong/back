@@ -94,18 +94,26 @@ public class TrainingService {
 	}
 
 	@Transactional
-	public void trainingDelete(Long trainingCode) {
+	public void trainingDelete(List<Long> trainingCode) {
 
-		Training foundTraining = trainingRepository.findById(trainingCode).orElseThrow(() -> new IllegalArgumentException("해당 코드로 과정을 조회할 수 없습니다."));
-		trainingRepository.delete(foundTraining);
+		trainingRepository.deleteAll(trainingRepository.findAllById(trainingCode));
 	}
 
 	public Page<TrainingDTO> selectTrainingListByTrainingTitle(String trainingTitle, int page) {
 
-		Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("trainingCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 7, Sort.by("trainingCode").descending());
 		Page<Training> searchList = trainingRepository.findByTrainingTitleContainsAndTrainingDeleteYn(pageable, trainingTitle, "N");
+		Page<TrainingDTO> searchDTOList = searchList.map(training -> modelMapper.map(training, TrainingDTO.class));
+		List<Long> trainingCodeList = searchList.map(Training::getTrainingCode).toList();
+		List<Long> foundCountList = studyRepository.findByTrainingCodes(trainingCodeList);
 
-		return searchList.map(training -> modelMapper.map(training, TrainingDTO.class));
+		List<TrainingDTO> list = searchDTOList.toList();
+
+		for (int i = 0; i < foundCountList.size(); i++) {
+			list.get(i).setStudyCount(foundCountList.get(i));
+		}
+
+		return new PageImpl<>(list, pageable, trainingRepository.countByTraining());
 	}
 
 }

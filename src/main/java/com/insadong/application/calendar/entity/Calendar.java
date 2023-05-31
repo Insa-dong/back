@@ -1,4 +1,4 @@
-package com.insadong.application.Tcalendar.entity;
+package com.insadong.application.calendar.entity;
 
 import com.insadong.application.study.entity.EmpEntity;
 import lombok.Getter;
