@@ -85,6 +85,27 @@ public class EmpService {
 		return empDTOList;
 	}
 
+	/* 13. 휴직 날짜 검색*/
+	public Page<RestDTO> searchRestDate(int page, String searchOption, String searchKeyword) {
+		log.info("[EmpService] searchRestDate start ==============================");
+		Pageable pageable = PageRequest.of(page - 1, 10);
+
+		if (searchOption.equals("name")) {
+
+		} else if (searchOption.equals("state")) {
+			Page<Rest> restList = restRepository.findByRestState(pageable, searchKeyword);
+			Page<RestDTO> restDTOList = restList.map(rest -> modelMapper.map(rest, RestDTO.class));
+			log.info("[EmpService] searchRestDate.getContent(): {}", restDTOList.getContent());
+			return restDTOList;
+		} else {
+			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
+		}
+
+		return null;
+
+	}
+
+
 
 	/*3. 구성원 검색*/
 	public Page<EmployeeDTO> searchEmpByNameAndDeptAndJob(int page, String searchOption, String searchKeyword) {
@@ -213,12 +234,18 @@ public class EmpService {
 		Rest originRest = restRepository.findById(restDTO.getRestCode())
 				.orElseThrow(() -> new IllegalArgumentException("해당 휴직내역이 없습니다. restCode = " + restDTO.getRestCode()));
 
+		log.info("[EmpService] updateRestState start ============================== ");
+		log.info("[EmpService] originRest : {}", originRest);
+		log.info("[EmpService] restDTO : {}", restDTO);
 
 		if ("승인".equals(restDTO.getRestState())) {
 			originRest.setRestState("승인");
 		} else if ("반려".equals(restDTO.getRestState())) {
 			originRest.setRestState("반려");
 		}
+
+		log.info("[EmpService] originRest : {}", originRest);
+		log.info("[EmpService] updateRestState end ============================== ");
 
 	}
 
