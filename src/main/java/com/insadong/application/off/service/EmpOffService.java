@@ -43,7 +43,7 @@ public class EmpOffService {
 
 		EmpOffDTO empOffDTO = calculateOff(emp);
 
-		log.info("[EmpOffService] empOffDTO{}: ", empOffDTO);
+		//log.info("[EmpOffService] empOffDTO{}: ", empOffDTO);
 
 		log.info("[EmpOffService] showMyOff end -----------------------------");
 
@@ -57,7 +57,7 @@ public class EmpOffService {
 		log.info("[EmpOffService] getTeamOff start -----------------------------");
 
 		Pageable pageable = PageRequest.of(page - 1, 10,
-				Sort.by(Sort.Order.asc("job.jobCode"), Sort.Order.asc("empName")));	// 직급별, 이름순으로 정렬
+				Sort.by(Sort.Order.asc("job.jobCode"), Sort.Order.asc("empName"))); // 직급별, 이름순으로 정렬
 
 		Employee emp = employeeRepository.findById(empCode).orElseThrow(() -> new RuntimeException("직원 조회 실패"));
 
@@ -76,6 +76,7 @@ public class EmpOffService {
 
 		// 검색 조건 추가
 		if (searchOption != null && !searchOption.isEmpty() && searchKeyword != null && !searchKeyword.isEmpty()) {
+
 			if (searchOption.equals("empName")) {
 				teamOffList = teamOffList.stream().filter(empOffDTO -> empOffDTO.getEmpName().contains(searchKeyword))
 						.collect(Collectors.toList());
@@ -100,8 +101,70 @@ public class EmpOffService {
 
 		teamOffList = teamOffList.stream().sorted(comparator).collect(Collectors.toList());
 
-		//검색 및 페이징된 팀원 연차 정보를 반환 -> teamOffList 는 content에 저장됨
-		return new PageImpl<>(teamOffList.subList(start, end), pageable, teamOffList.size()); 
+		// 검색 및 페이징된 팀원 연차 정보를 반환 -> teamOffList 는 content에 저장됨
+		return new PageImpl<>(teamOffList.subList(start, end), pageable, teamOffList.size());
+
+	}
+
+	/* 3. 구성원 연차 현황 조회 */
+	public Page<EmpOffDTO> getEmpOff(int page, String searchOption, String searchKeyword) {
+		log.info("[EmpOffService] getEmpOff start -----------------------------");
+
+		Pageable pageable = PageRequest.of(page - 1, 10,
+				Sort.by(Sort.Order.asc("dept.deptCode"), Sort.Order.asc("job.jobCode"), Sort.Order.asc("empName")));
+
+		List<Employee> empAll = employeeRepository.findAllByDept_DeptCodeNot("DE0003");
+		//log.info("[EmpOffService] empAll {}: ", empAll);
+
+		List<EmpOffDTO> empOffList = new ArrayList<>();
+
+		for (Employee emp : empAll) {
+
+			// 연차 정보 계산 및 EmpOffDTO에 설정
+			EmpOffDTO empOffDTO = calculateOff(emp);
+
+			empOffList.add(empOffDTO);
+		}
+		
+		
+
+		// 검색 조건 추가
+		if (searchOption != null && !searchOption.isEmpty() && searchKeyword != null && !searchKeyword.isEmpty()) {
+
+			if (searchOption.equals("deptName")) {
+				empOffList = empOffList.stream().filter(empOffDTO -> empOffDTO.getDeptName().contains(searchKeyword))
+						.collect(Collectors.toList());
+			} else if (searchOption.equals("empName")) {
+				empOffList = empOffList.stream().filter(empOffDTO -> empOffDTO.getEmpName().contains(searchKeyword))
+						.collect(Collectors.toList());
+			} else if (searchOption.equals("remainingOff")) { // 검색 일수 이상 연차가 남은 팀원 조회
+				double remainingOffThreshold = Double.parseDouble(searchKeyword);
+
+				empOffList = empOffList.stream()
+						.filter(empOffDTO -> empOffDTO.getRemainingOff() >= remainingOffThreshold)
+						.collect(Collectors.toList());
+			} else {
+				throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
+			}
+		}
+
+		
+
+		int start = (int) pageable.getOffset();
+		int end = Math.min((start + pageable.getPageSize()), empOffList.size());
+
+		Comparator<EmpOffDTO> comparator = Comparator.comparing(EmpOffDTO::getDeptCode)
+			    .thenComparing(EmpOffDTO::getJobCode)
+			    .thenComparing(EmpOffDTO::getEmpName);
+
+		empOffList = empOffList.stream().sorted(comparator).collect(Collectors.toList());
+		
+		log.info("[EmpOffService] empOffList {}: ", empOffList);
+
+		log.info("[EmpOffService] getEmpOff end -----------------------------");
+
+		// 검색 및 페이징된 팀원 연차 정보를 반환 -> teamOffList 는 content에 저장됨
+		return new PageImpl<>(empOffList.subList(start, end), pageable, empOffList.size());
 
 	}
 
@@ -117,7 +180,6 @@ public class EmpOffService {
 		Double usedOff = offs.stream().filter(off -> off.getOffEnd().getYear() == currentYear)
 				.mapToDouble(Off::getOffDay).sum();
 		Double remainingOff = emp.getOffCount() - usedOff;
-		log.info("[EmpOffService] remainingOff {} :  ", remainingOff);
 
 		// 계산한 연차 정보를 EmpOffDTO에 설정
 		EmpOffDTO empOffDTO = new EmpOffDTO();
