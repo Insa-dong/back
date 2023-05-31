@@ -75,6 +75,14 @@ public class EmpOffDTO implements UserDetails{
 	    public String getJobCode() {
 	        return this.job.getJobCode();
 	    }
+	    
+	    public String getDeptCode() {
+	        return this.dept.getDeptCode();
+	    }
+	    
+	    public String getDeptName() {
+	        return this.dept.getDeptName();
+	    }
 
 
 		private Collection<? extends GrantedAuthority> authorities;
