@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Off;
+import com.insadong.application.off.dto.OffDTO;
 
 
 @Repository
@@ -33,6 +34,10 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 
 	/* 내 연차 조회 */
 	List<Off> findBySignRequester_EmpCodeOrSignPayer_EmpCode(Long signRequester, Long signPayer, Sort by);
+	
+	/* 연차 상세 조회*/
+	OffDTO findBySignCodeAndSignRequester(Long signCode, Long empCode);
+	
  
 	/* 연차 신청 조회 */
 
@@ -42,6 +47,10 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 
 	/* 연차 승인 처리*/
 	Off findBySignPayer_EmpCode(Long empCode);
+
+	
+
+
 
 
 
