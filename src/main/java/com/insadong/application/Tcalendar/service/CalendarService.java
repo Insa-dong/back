@@ -36,9 +36,13 @@ public class CalendarService {
 
 	public Page<CalendarDTO> viewMyPagingScheduleList(Long empCode, int page, String sort) {
 
-		Pageable pageable = PageRequest.of(page - 1, 8, Sort.by(sort).descending());
-
-		return calendarRepository.findByEmployeeEmpCode(empCode, pageable).map(Calendar -> modelMapper.map(Calendar, CalendarDTO.class));
+		if (sort.equals("calEndDate")) {
+			Pageable pageable = PageRequest.of(page - 1, 8, Sort.by(sort).descending());
+			return calendarRepository.findByEmployeeEmpCode(empCode, pageable).map(Calendar -> modelMapper.map(Calendar, CalendarDTO.class));
+		} else {
+			Pageable pageable = PageRequest.of(page - 1, 8, Sort.by(sort));
+			return calendarRepository.findByEmployeeEmpCode(empCode, pageable).map(Calendar -> modelMapper.map(Calendar, CalendarDTO.class));
+		}
 	}
 
 	@Transactional
@@ -72,6 +76,12 @@ public class CalendarService {
 		calendar.setEmployee(employee);
 
 		calendarRepository.save(modelMapper.map(calendar, Calendar.class));
+	}
+
+	@Transactional
+	public void deleteMySchedule(List<Long> codeList) {
+
+		calendarRepository.deleteAllById(codeList);
 	}
 }
 
