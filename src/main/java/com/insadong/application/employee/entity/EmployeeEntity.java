@@ -55,4 +55,5 @@ public class EmployeeEntity {
 	@OneToMany
 	@JoinColumn(name = "EMP_CODE")
 	private List<EmpAuth> empAuthList;
+	
 }
