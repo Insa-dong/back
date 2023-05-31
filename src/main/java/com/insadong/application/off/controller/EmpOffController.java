@@ -65,13 +65,13 @@ public class EmpOffController {
 			   @RequestParam(name="searchOption", required = false) String searchOption, 
 	           @RequestParam(name="searchKeyword", required = false) String searchKeyword) {
 		   
-		   Page<EmpOffDTO> teamOffList = empOffService.getEmpOff(page, searchOption, searchKeyword);
+		   Page<EmpOffDTO> empOffList = empOffService.getEmpOff(page, searchOption, searchKeyword);
 		   
-		   PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(teamOffList);
+		   PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empOffList);
 	        
 	        ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 	        responseDTOWithPaging.setPageInfo(pageInfo);
-	        responseDTOWithPaging.setData(teamOffList.getContent()); 
+	        responseDTOWithPaging.setData(empOffList.getContent()); 
 	        
 		   return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "구성원 연차 현황 조회 성공", responseDTOWithPaging));
 		}

@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -132,6 +133,16 @@ public class OffService {
 		return offDTOList;
 
 	}
+	
+	/* 3-1,4-1. 내 연차 상세 조회 */
+	public OffDTO myOffDetail(Long signCode, Long empCode) {
+		OffDTO offDTO = offRepository.findBySignCodeAndSignRequester(signCode, empCode);
+		//log.info("offList : {} ", offList);
+
+		return offDTO;
+
+	}
+
 
 	/* 5. 연차 취소*/
 	public void deleteOff(Long signCode, EmpDTOImplUS loggedInUser) {
@@ -198,6 +209,8 @@ public class OffService {
 	    log.info("[OffService] signUpOff end ------------------- ");
 		
 	}
+
+
 
 
 	

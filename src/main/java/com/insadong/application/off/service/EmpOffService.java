@@ -159,7 +159,7 @@ public class EmpOffService {
 
 		empOffList = empOffList.stream().sorted(comparator).collect(Collectors.toList());
 		
-		log.info("[EmpOffService] empOffList {}: ", empOffList);
+		log.info("[EmpOffService] empOffList {}: ", empOffList.size());
 
 		log.info("[EmpOffService] getEmpOff end -----------------------------");
 

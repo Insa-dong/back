@@ -75,6 +75,16 @@ public class OffController {
     	
     }
     
+	/*3-1. 예정 연차 상세 조회*/	
+    @GetMapping("/my-comingUp-off/{signCode}")
+    public ResponseEntity<ResponseDTO> myComingUpOffDetail(@PathVariable Long signCode, @AuthenticationPrincipal EmpDTOImplUS emp) {
+    	
+    	OffDTO offDTO = offService.myOffDetail(signCode, emp.getEmpCode());
+    	
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예정 연차 상세 조회 성공", offDTO));
+    	
+    }
+    
     
 	/*4. 연차 사용 기록 조회 : 전체 조회, 연도 조회 한번에 작성 */	
     @GetMapping("/my-past-off")
