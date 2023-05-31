@@ -17,13 +17,16 @@ public interface StudyStuRepository extends JpaRepository<StudyStu, StudyStuPK>{
 	Page<StudyStu> findByStudent(Pageable pageable, Student findStudent);
 
 	/* 수강생 강의 삭제 */
-	List<StudyStu> findByStudyStuPKStuCode(Long studyCode);
+	List<StudyStu> findByStudyStuPKStudyCode(Long studyCode);
 
 	 @Query("SELECT s FROM StudyInfo s")
 	List<StudyInfo> findAllStudyInfo();
 
 	 /* 강의별 수강생 조회 */
-	 Page<StudyStu> findByStudyStuPK_StudyCode(Long studyCode, Pageable pageable);	 
+	 Page<StudyStu> findByStudyStuPK_StudyCode(Long studyCode, Pageable pageable);
+
+	List<StudyStu> findByStudyStuPKStuCode(Long stuCode);
+
 }
 
 

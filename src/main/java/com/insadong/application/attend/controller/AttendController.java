@@ -1,6 +1,6 @@
 package com.insadong.application.attend.controller;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -112,10 +112,10 @@ public class AttendController {
 	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상담일지 삭제 성공"));
 	}
 	
-	/* 수강생 날짜 별 조회 (검색) */
+//	/* 수강생 날짜 별 조회 (검색) */
 //	@GetMapping("/student-attends/{attendDate}")
 //	public ResponseEntity<ResponseDTO> selectStudentAttends(
-//			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate attendDate,
+//			@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date attendDate,
 //	        @RequestParam(name="page", defaultValue="1") int page) {
 //
 //	    Page<AttendDTO> attendDtoList = attendService.selectStudentAttends(attendDate, page);
@@ -133,7 +133,7 @@ public class AttendController {
 	@GetMapping("/studyAndAttend/{studyCode}/student-attends/{attendDate}")
 	public ResponseEntity<ResponseDTO> selectStudentAttendsByDate(
 	        @PathVariable Long studyCode,
-	        @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate attendDate,
+	        @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date attendDate,
 	        @RequestParam(name="page", defaultValue="1") int page) {
 
 		Page<StudyStuDTO> studentList = studyStuService.selectStudentListByStudy(page, studyCode);

@@ -73,6 +73,7 @@ public class StudyInfoService {
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("studyInfoCode").descending());
 
 		Page<StudyInfoEntity> foundList = studyInfoRepository.findByTeacherEmpCode(pageable, empCode);
+		System.out.println(empCode);
 
 		return foundList.map(studyInfo -> modelMapper.map(studyInfo, StudyInfoDTO.class));
 	}

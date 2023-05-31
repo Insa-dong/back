@@ -1,7 +1,7 @@
 package com.insadong.application.attend.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,7 +121,7 @@ public class AttendService {
 
 	
 	/* 수강생 날짜별 출석 검색*/
-//	public Page<AttendDTO> selectStudentAttends(LocalDate attendDate, int page) {
+//	public Page<AttendDTO> selectStudentAttends(Date attendDate, int page) {
 //		
 //		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("attendDate").descending());
 //
@@ -133,7 +133,7 @@ public class AttendService {
 //	}
 
 
-	public List<AttendDTO> selectStudentAttendsByDate(LocalDate attendDate) {
+	public List<AttendDTO> selectStudentAttendsByDate(Date attendDate) {
 		List<Attend> attendList = attendRepository.findByAttendDate(attendDate);
 		return attendList.stream()
 		.map(attend -> modelMapper.map(attend, AttendDTO.class))
@@ -163,6 +163,7 @@ public class AttendService {
 
 	    return attendDTOList;
 	}
+
 
 }
 
