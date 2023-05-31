@@ -72,6 +72,32 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
+	/* 13. 휴직 검색*/
+	@GetMapping("/emp/emprestsearch")
+	public ResponseEntity<ResponseDTO> searchRestList (
+			@RequestParam(name = "page", defaultValue = "1") int page,
+			@RequestParam(name = "searchOption") String searchOption,
+			@RequestParam(name = "searchKeyword") String searchKeyword){
+
+		log.info("[EmpController] : searchRestList start ==================================== ");
+		log.info("[EmpController] : page : {}", page);
+		log.info("[EmpController] : searchOption : {}", searchOption);
+		log.info("[EmpController] : searchKeyword : {}", searchKeyword);
+
+		Page<RestDTO> restDTOList = empService.searchRestList(page, searchOption, searchKeyword);
+
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(restDTOList);
+
+		log.info("[EmpController] : pageInfo : {}", pageInfo);
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(restDTOList.getContent());
+
+		log.info("[EmpController] : searchEmpByNameAndDeptAndJob end ==================================== ");
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
+
 	/*3. 구성원 검색*/
 	@GetMapping("/empsearch")
 	public ResponseEntity<ResponseDTO> searchEmpByNameAndDeptAndJob(

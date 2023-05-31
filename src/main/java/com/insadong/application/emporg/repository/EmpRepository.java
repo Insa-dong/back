@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -19,17 +20,6 @@ public interface EmpRepository extends JpaRepository<Employee, Long> {
     @EntityGraph(attributePaths = {"dept", "job"})
     Page<Employee> findByDeptAndEmpStateIn(Pageable pageable, Dept dept, List<String> empStates);
 
-//    /*3-1. 구성원 이름 검색*/
-//    @EntityGraph(attributePaths={"dept", "job"})
-//    Page<Employee> findByEmpNameContains(Pageable pageable, String empName);
-//
-//    /*3-2. 구성원 부서 검색*/
-//    @EntityGraph(attributePaths={"dept", "job"})
-//    Page<Employee> findByDeptDeptCodeIn(Pageable pageable, List<String> findDeptCodeList);
-//
-//    /*3-3. 구성원 직책 검색*/
-//    @EntityGraph(attributePaths={"dept", "job"})
-//    Page<Employee> findByJobJobCodeIn(Pageable pageable, List<String> findJobCodeList);
 
     /* 3-1. 구성원 이름 검색 */
     @EntityGraph(attributePaths = {"dept", "job"})
@@ -46,14 +36,10 @@ public interface EmpRepository extends JpaRepository<Employee, Long> {
 
 
     Employee findByEmpCode(Long empCode);
-    /* 구성원 부서이동*/
-//    @Query("UPDATE Employee e SET e.dept.deptCode = :newDeptCode WHERE e.empCode = :empCode")
-//    void moveEmployeeToDept(@Param("empCode") Long empCode, @Param("newDeptCode") String newDeptCode);
-//
-//
-//    /* 구성원 직책이동*/
-//    @Query("UPDATE Employee e SET e.job.jobCode = :newJobCode WHERE e.empCode = :empCode")
-//    void moveEmployeeToJob(@Param("empCode") Long empCode, @Param("newJobCode") Job newJob);
+
+    /* 휴직 검색*/
+    @Query("SELECT e.empCode FROM Employee e WHERE e.empName LIKE %:empName%")
+    List<Long> findByEmpNameContains(String empName);
 
 
     /*4. 강사 전체 조회 */

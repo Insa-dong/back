@@ -85,24 +85,27 @@ public class EmpService {
 		return empDTOList;
 	}
 
-	/* 13. 휴직 날짜 검색*/
-	public Page<RestDTO> searchRestDate(int page, String searchOption, String searchKeyword) {
+	/* 13. 휴직 검색*/
+	public Page<RestDTO> searchRestList(int page, String searchOption, String searchKeyword) {
 		log.info("[EmpService] searchRestDate start ==============================");
 		Pageable pageable = PageRequest.of(page - 1, 10);
 
 		if (searchOption.equals("name")) {
-
+			List<Long> findEmpName = empRepository.findByEmpNameContains(searchKeyword);
+			log.info("[EmpService] findEmpName.getContent(): {}", findEmpName);
+			Page<Rest> restList = restRepository.findByEmployeeEmpCodeIn(pageable, findEmpName);
+			log.info("[EmpService] findEmpName.getContent(): {}", restList.getContent());
+			Page<RestDTO> restDTOList = restList.map(rest -> modelMapper.map(rest, RestDTO.class));
+			log.info("[EmpService] searchRestListName.getContent(): {}", restDTOList.getContent());
+			return restDTOList;
 		} else if (searchOption.equals("state")) {
 			Page<Rest> restList = restRepository.findByRestState(pageable, searchKeyword);
 			Page<RestDTO> restDTOList = restList.map(rest -> modelMapper.map(rest, RestDTO.class));
-			log.info("[EmpService] searchRestDate.getContent(): {}", restDTOList.getContent());
+			log.info("[EmpService] searchRestListState.getContent(): {}", restDTOList.getContent());
 			return restDTOList;
 		} else {
 			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
 		}
-
-		return null;
-
 	}
 
 
