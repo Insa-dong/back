@@ -23,4 +23,7 @@ public class EmployeeDTO {
 	private String empState;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
+	
+	private String newPwd;
+	private String checkPwd;
 }
