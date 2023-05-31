@@ -57,12 +57,12 @@ public class EmpOffService {
 		log.info("[EmpOffService] getTeamOff start -----------------------------");
 
 		Pageable pageable = PageRequest.of(page - 1, 10,
-				Sort.by(Sort.Order.asc("job.jobCode"), Sort.Order.asc("empName")));
+				Sort.by(Sort.Order.asc("job.jobCode"), Sort.Order.asc("empName")));	// 직급별, 이름순으로 정렬
 
 		Employee emp = employeeRepository.findById(empCode).orElseThrow(() -> new RuntimeException("직원 조회 실패"));
 
 		String deptCode = emp.getDept().getDeptCode(); // 팀장 부서 코드
-		List<Employee> deptMembers = employeeRepository.findByDept_DeptCode(deptCode);
+		List<Employee> deptMembers = employeeRepository.findByDept_DeptCode(deptCode); // 팀원 구하기
 
 		List<EmpOffDTO> teamOffList = new ArrayList<>();
 
@@ -100,7 +100,8 @@ public class EmpOffService {
 
 		teamOffList = teamOffList.stream().sorted(comparator).collect(Collectors.toList());
 
-		return new PageImpl<>(teamOffList.subList(start, end), pageable, teamOffList.size());
+		//검색 및 페이징된 팀원 연차 정보를 반환 -> teamOffList 는 content에 저장됨
+		return new PageImpl<>(teamOffList.subList(start, end), pageable, teamOffList.size()); 
 
 	}
 
