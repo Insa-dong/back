@@ -86,14 +86,15 @@ public class StudyInfoController {
 
 
 	/* 강사 강의 리스트 조회 */
-	@GetMapping("/emp/teacherStudyList/{empCode}")
-	public ResponseEntity<ResponseDTO> selectTeacherStudyListByEmpCode(@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable Long empCode,
-	                                                                   @AuthenticationPrincipal StudyInfoDTO teacher) {
+	@GetMapping("/emp/teacherStudyList")
+	public ResponseEntity<ResponseDTO> selectTeacherStudyListByEmpCode(@RequestParam(name = "page", defaultValue = "1") int page,
+	                                                                   @AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
 
+		log.info("[EmpController] employeeDTO: {}", employeeDTO);
 		log.info("[EmpController] : selectTeacherStudyListByEmpCode start =============================== ");
 		log.info("[EmpController] : page : {}", page);
 
-		Page<StudyInfoDTO> studyInfoDTOList = studyInfoService.selectTeacherStudyListByEmpCode(page, empCode);
+		Page<StudyInfoDTO> studyInfoDTOList = studyInfoService.selectTeacherStudyListByEmpCode(page, employeeDTO.getEmpCode());
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(studyInfoDTOList);
 
 		log.info("[EmpController] : pageInfo : {}", pageInfo);

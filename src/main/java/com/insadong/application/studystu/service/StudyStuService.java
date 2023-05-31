@@ -1,6 +1,7 @@
 package com.insadong.application.studystu.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.insadong.application.attend.repository.AttendRepository;
 import com.insadong.application.attend.service.AttendService;
+import com.insadong.application.common.entity.Attend;
 import com.insadong.application.common.entity.Student;
 import com.insadong.application.common.entity.Study;
 import com.insadong.application.common.entity.StudyInfo;
@@ -97,10 +99,16 @@ public class StudyStuService {
 
 	/* 3. 수강생 강의 삭제 */
 	@Transactional
-	public void deleteStudy(Long studyCode) {
-		
-		List<StudyStu> studyStus = studyStuRepository.findByStudyStuPKStuCode(studyCode);
-		studyStuRepository.deleteAll(studyStus);
+	public void deleteStudy(Long studyCode, Long stuCode) {
+	    
+	    List<Attend> attends = attendRepository.findByStudyCodeAndStudentCode(studyCode, stuCode);
+	    for (Attend attend : attends) {
+	        attendRepository.delete(attend);
+	    }
+	    
+	    StudyStuPK studyStuPK = new StudyStuPK(studyCode, stuCode);
+	    Optional<StudyStu> studyStu = studyStuRepository.findById(studyStuPK);
+	    studyStu.ifPresent(studyStuRepository::delete);
 	}
 	
 

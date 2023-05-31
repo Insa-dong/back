@@ -1,10 +1,10 @@
 package com.insadong.application.student.dto;
 
-import lombok.Data;
-
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.Data;
 
 @Data
 public class StudentDTO {
