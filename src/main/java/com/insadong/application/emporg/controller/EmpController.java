@@ -191,6 +191,16 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "휴직 리스트 조회 성공", responseDTOWithPaging));
 	}
 
+	/* 12. 휴직 상태 변경*/
+	@PutMapping("emp/empreststate")
+	public ResponseEntity<ResponseDTO> updateRestState(@RequestBody RestDTO restDTO){
+		empService.updateRestState(restDTO);
+
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "휴직처리 성공"));
+	}
+
 
 	/*구성원 삭제*/
 	@PutMapping("/emp/empdelete/{empCode}")
