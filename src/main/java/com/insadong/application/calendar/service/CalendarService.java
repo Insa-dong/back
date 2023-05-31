@@ -1,9 +1,9 @@
-package com.insadong.application.Tcalendar.service;
+package com.insadong.application.calendar.service;
 
-import com.insadong.application.Tcalendar.dto.CalendarDTO;
-import com.insadong.application.Tcalendar.dto.PetiteEmpDTO;
-import com.insadong.application.Tcalendar.entity.Calendar;
-import com.insadong.application.Tcalendar.repository.CalendarRepository;
+import com.insadong.application.calendar.dto.CalendarDTO;
+import com.insadong.application.calendar.dto.PetiteEmpDTO;
+import com.insadong.application.calendar.entity.Calendar;
+import com.insadong.application.calendar.repository.CalendarRepository;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

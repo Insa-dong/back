@@ -1,6 +1,6 @@
-package com.insadong.application.Tcalendar.repository;
+package com.insadong.application.calendar.repository;
 
-import com.insadong.application.Tcalendar.entity.Calendar;
+import com.insadong.application.calendar.entity.Calendar;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

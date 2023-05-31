@@ -1,4 +1,4 @@
-package com.insadong.application.Tcalendar.dto;
+package com.insadong.application.calendar.dto;
 
 import lombok.Data;
 
@@ -7,5 +7,5 @@ public class PetiteEmpDTO {
 
 	private Long empCode;
 	private String empName;
-	
+
 }

@@ -1,7 +1,7 @@
-package com.insadong.application.Tcalendar.controller;
+package com.insadong.application.calendar.controller;
 
-import com.insadong.application.Tcalendar.dto.CalendarDTO;
-import com.insadong.application.Tcalendar.service.CalendarService;
+import com.insadong.application.calendar.dto.CalendarDTO;
+import com.insadong.application.calendar.service.CalendarService;
 import com.insadong.application.common.ResponseDTO;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.paging.Pagenation;

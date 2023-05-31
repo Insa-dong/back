@@ -1,7 +1,7 @@
 package com.insadong.application.study.service;
 
-import com.insadong.application.Tcalendar.entity.Calendar;
-import com.insadong.application.Tcalendar.repository.CalendarRepository;
+import com.insadong.application.calendar.entity.Calendar;
+import com.insadong.application.calendar.repository.CalendarRepository;
 import com.insadong.application.employee.dto.EmployeeDTO;
 import com.insadong.application.study.dto.PetiteStudyDTO;
 import com.insadong.application.study.dto.PetiteStudyInfoDTO;

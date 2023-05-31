@@ -1,4 +1,4 @@
-package com.insadong.application.Tcalendar.dto;
+package com.insadong.application.calendar.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
