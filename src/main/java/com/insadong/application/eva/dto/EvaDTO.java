@@ -18,7 +18,8 @@ public class EvaDTO {
 	private String evaWriteContent;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date evaWriteDate;
-	private String evaUpdateTime;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date evaUpdateTime;
 	private String evaDeleteStatus;
 	
 

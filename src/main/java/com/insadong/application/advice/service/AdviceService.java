@@ -1,5 +1,7 @@
 package com.insadong.application.advice.service;
 
+import java.util.Date;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -94,26 +96,50 @@ public class AdviceService {
 		log.info("[adviceService] insertAdvice End ==============================");
 	}
 
+//	/* 3. 수강생 사용자 상담일지 수정 */
+//	@Transactional
+//	public void updateAdvice(AdviceDTO adviceDto) {
+//		log.info("[StudentService] updateAdvice start ============================== ");
+//		log.info("[StudentService] adviceDto : {}", adviceDto);
+//		
+//		Advice originAdvice = adviceRepository.findById(adviceDto.getAdviceLogCode())
+//				.orElseThrow(() -> new IllegalArgumentException("해당 상담일지가 없습니다. adviceLogCode = " + adviceDto.getAdviceLogCode()));
+//
+//		/* 수강생 정보 수정 */
+//		originAdvice.update(
+//				adviceDto.getWriter(),
+//			    adviceDto.getAdviceLogContent(),
+//			    adviceDto.getAdviceLogDate(),
+//			    adviceDto.getAdviceLogUpdate(),
+//			    adviceDto.getAdviceLogDelete()
+//		);
+//
+//		log.info("[StudentService] updateAdvice end ============================== ");
+//		
+//	}
+	
 	/* 3. 수강생 사용자 상담일지 수정 */
 	@Transactional
 	public void updateAdvice(AdviceDTO adviceDto) {
-		log.info("[StudentService] updateAdvice start ============================== ");
-		log.info("[StudentService] adviceDto : {}", adviceDto);
-		
-		Advice originAdvice = adviceRepository.findById(adviceDto.getAdviceLogCode())
-				.orElseThrow(() -> new IllegalArgumentException("해당 상담일지가 없습니다. adviceLogCode = " + adviceDto.getAdviceLogCode()));
+	    log.info("[StudentService] updateAdvice start ============================== ");
+	    log.info("[StudentService] adviceDto : {}", adviceDto);
+	    
+	    Advice originAdvice = adviceRepository.findById(adviceDto.getAdviceLogCode())
+	            .orElseThrow(() -> new IllegalArgumentException("해당 상담일지가 없습니다. adviceLogCode = " + adviceDto.getAdviceLogCode()));
 
-		/* 수강생 정보 수정 */
-		originAdvice.update(
-				adviceDto.getWriter(),
-			    adviceDto.getAdviceLogContent(),
-			    adviceDto.getAdviceLogDate(),
-			    adviceDto.getAdviceLogUpdate(),
-			    adviceDto.getAdviceLogDelete()
-		);
+	    /* 수강생 정보 수정 */
+	    // 현재 시간으로 adviceLogUpdate 값 설정
+	    adviceDto.setAdviceLogUpdate(new Date());
+	    
+	    originAdvice.update(
+	            adviceDto.getWriter(),
+	            adviceDto.getAdviceLogContent(),
+	            adviceDto.getAdviceLogDate(),
+	            adviceDto.getAdviceLogUpdate(),
+	            adviceDto.getAdviceLogDelete()
+	    );
 
-		log.info("[StudentService] updateAdvice end ============================== ");
-		
+	    log.info("[StudentService] updateAdvice end ============================== ");
 	}
 
 

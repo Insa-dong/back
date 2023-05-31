@@ -47,14 +47,14 @@ public class Eva {
 	private Date evaWriteDate;
 
 	@Column(name = "EVA_UPDATE_TIME")
-	private String evaUpdateTime;
+	private Date evaUpdateTime;
 
 	@Column(name = "EVA_DELETE_STATUS")
 	private String evaDeleteStatus;
 
 	/* Eva Entity 수정 용도의 메소드를 별도의 정의 */
 	public void update(String evaWriteContent, Date evaWriteDate,
-	                   String evaUpdateTime, String evaDeleteStatus) {
+			Date evaUpdateTime, String evaDeleteStatus) {
 
 		this.evaWriteContent = evaWriteContent;
 		this.evaWriteDate = evaWriteDate;
