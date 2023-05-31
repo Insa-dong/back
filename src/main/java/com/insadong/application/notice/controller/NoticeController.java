@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -167,13 +168,14 @@ public class NoticeController {
 	}
 	
 	/* 공지사항 수정 - 기존 파일 삭제 */
-	@DeleteMapping("/delete/{fileName}")
-	public ResponseEntity<ResponseDTO> deleteFile(@PathVariable String fileName) throws IOException {
+	@DeleteMapping("/delete/{fileNames}")
+	public ResponseEntity<ResponseDTO> deleteFile(@PathVariable String[] fileNames) throws IOException {
 		
-		log.info("[NoticeController] fileName: {}", fileName);
+		log.info("[NoticeController] fileNames: {}", fileNames);
 		
-		
-		noticeService.deleteFile(fileName);
+		for(String fileName : fileNames) {
+			noticeService.deleteFile(fileName);
+		}
 		
 		return ResponseEntity
 				.ok()
@@ -183,7 +185,7 @@ public class NoticeController {
 	/* 공지사항 삭제 */
 	@DeleteMapping("/notice/{noticeCode}")
 	public ResponseEntity<ResponseDTO> deleteNotice(@PathVariable Long noticeCode, 
-			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
+			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) throws IOException {
 		
 		log.info("[NoticeController] employeeDTO: {}", employeeDTO);
 
