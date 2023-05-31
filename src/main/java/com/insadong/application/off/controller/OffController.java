@@ -50,9 +50,7 @@ public class OffController {
 
     	
     	log.info("[OffController] applyOff start ------------------- ");
-    	log.info("[OffController] applyOff {} :  ", offDTO );
-    	
-    	
+    
         offService.applyOff(offDTO, loggedInUser);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 성공"));
     }
@@ -114,23 +112,6 @@ public class OffController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제 성공"));
     }
     
-    /* 6. 연차 신청 내역 조회 (팀장) 
-    @GetMapping("/mySignOff")
-    public ResponseEntity<ResponseDTO> mySignOffList (@AuthenticationPrincipal EmpDTOImplUS loggedInUser, 
-    													@RequestParam(name="page", defaultValue="1") int page) {
-    	
-    	Page<OffDTO> offDTOList = offService.mySignOffList(loggedInUser.getEmpCode(), page);
-		
-		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(offDTOList);
-		
-		
-		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
-	    responseDTOWithPaging.setPageInfo(pageInfo);
-	    responseDTOWithPaging.setData(offDTOList.getContent()); 
-	    
-	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
-    	
-    }    */
     
     /* 6. 연차 신청 내역 조회 + 검색 (팀장) */
     @GetMapping("/mySignOff")
@@ -164,35 +145,6 @@ public class OffController {
     } 
     
     
-    /*  6-1. 연차 신청 내역 검색 by 신청자, 승인상태 (팀장) 
-    @GetMapping("/offsearch")
-    public ResponseEntity<ResponseDTO> searchOffByRequesterAndStatus(
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "searchOption") String searchOption,
-            @RequestParam(name = "searchKeyword") String searchKeyword) {
-
-        log.info("[OffController] : searchOffByRequesterAndStatus start ==================================== ");
-        log.info("[OffController] : page : {}", page);
-        log.info("[OffController] : searchOption : {}", searchOption);
-        log.info("[OffController] : searchKeyword : {}", searchKeyword);
-
-        Page<OffDTO> offDTOList = offService.searchOffByRequesterAndStatus(page, searchOption, searchKeyword);
-
-        PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(offDTOList);
-
-        log.info("[OffController] : pageInfo : {}", pageInfo);
-
-        ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
-        responseDTOWithPaging.setPageInfo(pageInfo);
-        responseDTOWithPaging.setData(offDTOList.getContent());
-
-        log.info("[OffController] : searchOffByRequesterAndStatus end ==================================== ");
-
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
-    } */
-    
-    
-    
     
     /* 7. 연차 승인 처리 (팀장) */
     @PutMapping("/mySignOff/{signCode}")
@@ -201,7 +153,7 @@ public class OffController {
     	offService.signUpOff(signCode, offDTO);
     	
     	log.info("[OffController] signUpOff start ------------------- ");
-    	log.info("[OffController] signUpOff {} :  ", offDTO );
+    	
     	
     	return ResponseEntity
 				.ok()

@@ -72,6 +72,9 @@ public class EmpOffDTO implements UserDetails{
 
 		
 
+	    public String getJobCode() {
+	        return this.job.getJobCode();
+	    }
 
 
 		private Collection<? extends GrantedAuthority> authorities;

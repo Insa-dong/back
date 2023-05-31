@@ -105,7 +105,7 @@ public class OffService {
 		offDTOs.setSignPayer(payerDTO);
 		offDTOs.setRequestDate(requestDateConverted);
 		
-		log.info("[OffService] applyOff : {}", offDTOs);
+		//log.info("[OffService] applyOff : {}", offDTOs);
 		
 		offRepository.save(modelMapper.map(offDTOs, Off.class));
 
@@ -122,7 +122,7 @@ public class OffService {
 	/* 3,4. 내 연차 조회 */
 	public List<OffDTO> myOffList(Long empCode) {
 		List<Off> offList = offRepository.findBySignRequester_EmpCodeOrSignPayer_EmpCode(empCode, empCode, Sort.by("offStart"));
-		log.info("offList : {} ", offList);
+		//log.info("offList : {} ", offList);
 
 		List<OffDTO> offDTOList = offList.stream()
 	            .filter(off -> off.getSignRequester().getEmpCode().equals(empCode)) // 신청자가 자신인 경우만 필터링
@@ -158,18 +158,18 @@ public class OffService {
 
 	public Page<OffDTO> searchOffByRequesterAndStatus(int page, String searchOption, String searchKeyword) {
 		log.info("[OffService] searchOffByRequesterAndStatus start ==============================");
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("requestDate"));
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("requestDate").descending());
 		
 		
 		if (searchOption.equals("empName")) {
 			 Page<Off> offList = offRepository.findBySignRequester_EmpNameContains(pageable, searchKeyword);
 			Page<OffDTO> offDTOList = offList.map(off -> modelMapper.map(off, OffDTO.class));
-			log.info("[OffService] searchOffByRequesterAndStatus.getContent(): {}", offDTOList.getContent());
+			//log.info("[OffService] searchOffByRequesterAndStatus.getContent(): {}", offDTOList.getContent());
 			return offDTOList;
 		} else if (searchOption.equals("signStatus")) {
 			Page<Off> offList = offRepository.findBySignStatus(pageable, searchKeyword);
 			Page<OffDTO> offDTOList = offList.map(off -> modelMapper.map(off, OffDTO.class));
-			log.info("[OffService] searchOffByRequesterAndStatus.getContent(): {}", offDTOList.getContent());
+			//log.info("[OffService] searchOffByRequesterAndStatus.getContent(): {}", offDTOList.getContent());
 			return offDTOList;
 		} else {
 			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
@@ -194,7 +194,7 @@ public class OffService {
 	    offRepository.save(off);
 	    
 	    
-	    log.info("[OffService] off {} :  ", off );
+	    //log.info("[OffService] off {} :  ", off );
 	    log.info("[OffService] signUpOff end ------------------- ");
 		
 	}
