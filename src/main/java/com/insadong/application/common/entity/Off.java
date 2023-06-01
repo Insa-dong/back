@@ -60,18 +60,18 @@ public class Off {
 	private Employee signPayer;						// 결재자 emp_code 조인
 	
 	@Column(name="REQUEST_DATE")
-	private Date requestDate;						// 신청일
+	private LocalDate requestDate;						// 신청일
 	
 	@Column(name="RETURN_REASON")
 	private String returnReason;					// 반려 사유
 	
 	@Column(name="HANDLE_DATE")
-	private Date handleDate;						// 처리 일자
+	private LocalDate handleDate;						// 처리 일자
 
 
 	
 	/* 수정 메소드 */
-	public void updateOff(String signStatus, String returnReason, Date handleDate) {
+	public void updateOff(String signStatus, String returnReason, LocalDate handleDate) {
 		
 		this.signStatus = signStatus;
 		this.returnReason = returnReason;

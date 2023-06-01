@@ -3,6 +3,7 @@ package com.insadong.application.off.dto;
 import java.time.LocalDate;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.insadong.application.employee.dto.EmployeeDTO;
 
 import lombok.Data;
@@ -28,11 +29,11 @@ public class OffDTO {
 
 	private EmployeeDTO signPayer;					// 결재자 emp_code 조인
 	
-	private Date requestDate;						// 신청일
+	private LocalDate requestDate;						// 신청일
 
 	private String returnReason;					// 반려 사유
 
-	private Date handleDate;						// 처리 일자
+	private LocalDate handleDate;						// 처리 일자
 		
 
 }
