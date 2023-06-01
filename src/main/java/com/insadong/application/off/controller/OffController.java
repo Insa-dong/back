@@ -75,16 +75,7 @@ public class OffController {
     	
     }
     
-	/*3-1. 예정 연차 상세 조회*/	
-    @GetMapping("/my-comingUp-off/{signCode}")
-    public ResponseEntity<ResponseDTO> myComingUpOffDetail(@PathVariable Long signCode, @AuthenticationPrincipal EmpDTOImplUS emp) {
-    	
-    	OffDTO offDTO = offService.myOffDetail(signCode, emp.getEmpCode());
-    	
-	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예정 연차 상세 조회 성공", offDTO));
-    	
-    }
-    
+  
     
 	/*4. 연차 사용 기록 조회 : 전체 조회, 연도 조회 한번에 작성 */	
     @GetMapping("/my-past-off")
@@ -113,6 +104,23 @@ public class OffController {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", offDTOList));
     }
+    
+	/*4-1. 연차 상세 조회*/	
+    @GetMapping("/myOffDetail/{signCode}")
+    public ResponseEntity<ResponseDTO> myOffDetail(@PathVariable Long signCode, @AuthenticationPrincipal EmpDTOImplUS emp) {
+    	
+    	OffDTO offDetail = offService.myOffDetail(signCode, emp.getEmpCode());
+    	
+        // null check 로직을 추가하여 존재하지 않는 offId에 대한 예외처리가 가능합니다.
+        if(offDetail == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDTO(HttpStatus.NOT_FOUND, "조회 실패: 해당 ID의 연차 정보가 존재하지 않습니다."));
+        }
+    	
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예정 연차 상세 조회 성공", offDetail));
+    	
+    }
+    
     
     /* 5. 연차 신청 취소 - 삭제 */
     @DeleteMapping("/cancelOff/{signCode}")

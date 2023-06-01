@@ -36,7 +36,7 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 	List<Off> findBySignRequester_EmpCodeOrSignPayer_EmpCode(Long signRequester, Long signPayer, Sort by);
 	
 	/* 연차 상세 조회*/
-	OffDTO findBySignCodeAndSignRequester(Long signCode, Long empCode);
+	Off findBySignCodeAndSignRequester(Long signCode, Employee signRequester);
 	
  
 	/* 연차 신청 조회 */
@@ -47,6 +47,8 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 
 	/* 연차 승인 처리*/
 	Off findBySignPayer_EmpCode(Long empCode);
+
+	
 
 	
 

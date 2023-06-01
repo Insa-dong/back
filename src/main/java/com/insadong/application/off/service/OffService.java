@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -22,6 +22,7 @@ import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Off;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.off.dto.EmpOffDTO;
 import com.insadong.application.off.dto.OffDTO;
 import com.insadong.application.off.repository.EmpOffRepository;
@@ -33,16 +34,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class OffService {
 
-	public static final Long TOTAL_OFF_LEAVE = 15L;
 	private final OffRepository offRepository;
 	private final EmpOffRepository empOffRepository;
+	private final EmployeeRepository employeeRepository; 
 	private final EmpOffService empOffService;
 	private final ModelMapper modelMapper;
 
 	public OffService(OffRepository offRepository, EmpOffRepository empOffRepository, 
-			EmpOffService empOffService, ModelMapper modelMapper) {
+			EmployeeRepository employeeRepository, EmpOffService empOffService, ModelMapper modelMapper) {
 		this.offRepository = offRepository;
 		this.empOffRepository = empOffRepository;
+		this.employeeRepository = employeeRepository;
 		this.empOffService = empOffService;
 		this.modelMapper = modelMapper;
 	}
@@ -93,7 +95,7 @@ public class OffService {
 
 		// 신청일 설정
 		LocalDate requestDate = LocalDate.now();
-		Date requestDateConverted = Date.from(requestDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	
 
 		OffDTO offDTOs = new OffDTO();
 		offDTOs.setOffStart(offStart);
@@ -104,7 +106,7 @@ public class OffService {
 		offDTOs.setOffDay(offDay);
 		offDTOs.setSignRequester(empDTO);
 		offDTOs.setSignPayer(payerDTO);
-		offDTOs.setRequestDate(requestDateConverted);
+		offDTOs.setRequestDate(requestDate);
 		
 		//log.info("[OffService] applyOff : {}", offDTOs);
 		
@@ -136,9 +138,15 @@ public class OffService {
 	
 	/* 3-1,4-1. 내 연차 상세 조회 */
 	public OffDTO myOffDetail(Long signCode, Long empCode) {
-		OffDTO offDTO = offRepository.findBySignCodeAndSignRequester(signCode, empCode);
-		//log.info("offList : {} ", offList);
-
+		 
+		Employee signRequester = employeeRepository.findById(empCode)
+			        .orElseThrow(() -> new NoSuchElementException("해당 구성원을 찾을 수 없습니다. " + empCode));
+		 
+		Off off = offRepository.findBySignCodeAndSignRequester(signCode, signRequester);
+		
+		OffDTO offDTO = modelMapper.map(off, OffDTO.class);
+		
+		
 		return offDTO;
 
 	}
@@ -147,7 +155,7 @@ public class OffService {
 	/* 5. 연차 취소*/
 	public void deleteOff(Long signCode, EmpDTOImplUS loggedInUser) {
 		
-		Employee foundEmp = empOffRepository.findById(loggedInUser.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("해당 구성원을 찾을 수 없습니다."));
+		empOffRepository.findById(loggedInUser.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("해당 구성원을 찾을 수 없습니다."));
 
 	    offRepository.deleteById(signCode);
 	}
@@ -195,12 +203,14 @@ public class OffService {
 		
 		log.info("[OffService] signUpOff start ------------------- ");
     	
+		// 승인일 설정
+		LocalDate handleDate = LocalDate.now();
 		
 		Off off = offRepository.findById(signCode).orElseThrow(() -> new RuntimeException("연차 신청이 없습니다."));
 		
 	    off.setSignStatus(offDTO.getSignStatus());
 	    off.setReturnReason(offDTO.getReturnReason());
-	    off.setHandleDate(new Date());
+	    off.setHandleDate(handleDate);
 	    
 	    offRepository.save(off);
 	    
