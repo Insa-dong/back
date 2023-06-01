@@ -12,8 +12,8 @@ import java.util.Date;
 
 @Getter
 @Setter
-@ToString
 @Entity
+@ToString
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "TB_STUDY_INFO")

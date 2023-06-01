@@ -12,4 +12,10 @@ public interface StudyInfoRepository extends JpaRepository<StudyInfoEntity, Long
 	Page<StudyInfoEntity> findByStudyStudyDeleteYn(Pageable pageable, String n);
 
 	Page<StudyInfoEntity> findByTeacherEmpCode(Pageable pageable, Long empCode);
+
+	Page<StudyInfoEntity> findByStudyTrainingTrainingTitleContainingIgnoreCase(String search, Pageable pageable);
+
+	Page<StudyInfoEntity> findByTeacherEmpNameContaining(String search, Pageable pageable);
+
+	Page<StudyInfoEntity> findByStudyTitleContainingIgnoreCase(String search, Pageable pageable);
 }

@@ -112,4 +112,24 @@ public class StudyInfoService {
 
 		studyInfoRepository.deleteById(studyCode);
 	}
+
+	public Page<StudyInfoDTO> searchStudy(String search, int page, String category) {
+
+		Pageable pageable = PageRequest.of(page - 1, 7, Sort.by("studyInfoCode").descending());
+		Page<StudyInfoEntity> foundList = null;
+
+		switch (category) {
+			case "trainingTitle":
+				foundList = studyInfoRepository.findByStudyTrainingTrainingTitleContainingIgnoreCase(search, pageable);
+				break;
+			case "studyTeacher":
+				foundList = studyInfoRepository.findByTeacherEmpNameContaining(search, pageable);
+				break;
+			case "studyTitle":
+				foundList = studyInfoRepository.findByStudyTitleContainingIgnoreCase(search, pageable);
+				break;
+		}
+
+		return foundList.map(studyInfo -> modelMapper.map(studyInfo, StudyInfoDTO.class));
+	}
 }
