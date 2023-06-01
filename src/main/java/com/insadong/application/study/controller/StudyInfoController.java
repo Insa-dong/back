@@ -44,6 +44,26 @@ public class StudyInfoController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
+	@GetMapping("/studyInfoList/search")
+	public ResponseEntity<ResponseDTO> searchStudy(
+			@RequestParam(name = "search") String search,
+			@RequestParam(name = "page") int page,
+			@RequestParam(name = "category") String category) {
+
+		log.info("searchValue : {} ", search);
+		log.info("cate : {} ", category);
+
+		Page<StudyInfoDTO> data = studyInfoService.searchStudy(search, page, category);
+		PagingButtonInfo pagingButtonInfo = Pagenation.getPagingButtonInfo(data);
+
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pagingButtonInfo);
+		responseDTOWithPaging.setData(data.getContent());
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
+	}
+
 	@GetMapping("/PetiteStudyInfo/{studyInfoCode}")
 	public ResponseEntity<ResponseDTO> viewStudyInfo(@PathVariable Long studyInfoCode) {
 
