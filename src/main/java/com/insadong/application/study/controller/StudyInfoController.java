@@ -18,6 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -128,8 +129,8 @@ public class StudyInfoController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
-	@DeleteMapping("/studyInfo/{studyCode}")
-	public ResponseEntity<ResponseDTO> deleteStudyByStudyCode(@PathVariable long studyCode) {
+	@DeleteMapping("/studyInfo")
+	public ResponseEntity<ResponseDTO> deleteStudyByStudyCode(@RequestBody List<Long> studyCode) {
 
 		studyInfoService.deleteStudyByStudyCode(studyCode);
 
