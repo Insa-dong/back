@@ -1,9 +1,11 @@
 package com.insadong.application.employee.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.insadong.application.emporg.dto.EmpAuthDTO;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class EmployeeDTO {
@@ -26,4 +28,6 @@ public class EmployeeDTO {
 	
 	private String newPwd;
 	private String checkPwd;
+
+	private List<EmpAuthDTO> empAuthList;
 }

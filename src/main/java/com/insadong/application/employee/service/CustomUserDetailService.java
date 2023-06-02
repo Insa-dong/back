@@ -3,7 +3,7 @@ package com.insadong.application.employee.service;
 import com.insadong.application.common.entity.EmpAuth;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.employee.entity.EmployeeEntity;
-import com.insadong.application.employee.repository.empAuthRepository;
+import com.insadong.application.employee.repository.EmpAuthRepository;
 import com.insadong.application.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CustomUserDetailService implements UserDetailsService {
 
-	private final empAuthRepository employeeRepository;
+	private final EmpAuthRepository employeeRepository;
 	private final ModelMapper modelMapper;
 
-	public CustomUserDetailService(empAuthRepository employeeRepository, ModelMapper modelMapper) {
+	public CustomUserDetailService(EmpAuthRepository employeeRepository, ModelMapper modelMapper) {
 		this.employeeRepository = employeeRepository;
 		this.modelMapper = modelMapper;
 	}

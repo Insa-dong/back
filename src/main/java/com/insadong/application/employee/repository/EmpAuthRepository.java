@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface empAuthRepository extends JpaRepository<EmployeeEntity, Long> {
+public interface EmpAuthRepository extends JpaRepository<EmployeeEntity, Long> {
 
 
 	@EntityGraph(attributePaths = {"empAuthList", "empAuthList.auth"})
