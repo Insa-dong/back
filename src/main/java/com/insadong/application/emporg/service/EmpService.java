@@ -90,28 +90,7 @@ public class EmpService {
 		return empDTOList;
 	}
 
-	/* 13. 휴직 검색*/
-	public Page<RestDTO> searchRestList(int page, String searchOption, String searchKeyword) {
-		log.info("[EmpService] searchRestDate start ==============================");
-		Pageable pageable = PageRequest.of(page - 1, 10);
 
-		if (searchOption.equals("name")) {
-			List<Long> findEmpName = empRepository.findByEmpNameContains(searchKeyword);
-			log.info("[EmpService] findEmpName.getContent(): {}", findEmpName);
-			Page<Rest> restList = restRepository.findByEmployeeEmpCodeIn(pageable, findEmpName);
-			log.info("[EmpService] findEmpName.getContent(): {}", restList.getContent());
-			Page<RestDTO> restDTOList = restList.map(rest -> modelMapper.map(rest, RestDTO.class));
-			log.info("[EmpService] searchRestListName.getContent(): {}", restDTOList.getContent());
-			return restDTOList;
-		} else if (searchOption.equals("state")) {
-			Page<Rest> restList = restRepository.findByRestState(pageable, searchKeyword);
-			Page<RestDTO> restDTOList = restList.map(rest -> modelMapper.map(rest, RestDTO.class));
-			log.info("[EmpService] searchRestListState.getContent(): {}", restDTOList.getContent());
-			return restDTOList;
-		} else {
-			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
-		}
-	}
 
 
 
@@ -159,19 +138,6 @@ public class EmpService {
 		return resultMap;
 	}
 
-	/* 5. 구성원 등록 */
-//	@Transactional
-//	public void insertEmp(EmployeeDTO employeeDTO) {
-//		log.info("[EmpService] insertEmp : {}", employeeDTO);
-//		empRepository.save(modelMapper.map(employeeDTO, Employee.class));
-//	if(employeeDTO.getDept().getDeptCode() == "DE0001"){// 행정부서
-//		empAuthPK.setAuthCode("AUTH_CODE_1");
-//	}else if(employeeDTO.getJob().getJobCode() == "JB0005") {// 강사직책
-//		empAuthPK.setAuthCode("AUTH_CODE_2");
-//	}else if(employeeDTO.getDept().getDeptCode() == "DE0001") {//팀장직책
-//		empAuthPK.setAuthCode("AUTH_CODE_3");
-//	}
-//	}
 
 	@Transactional
 	public void insertEmp(EmployeeDTO employeeDTO) {
@@ -252,6 +218,31 @@ public class EmpService {
 		originEmp.setEndDate(new Date());
 	}
 
+
+
+
+	/* 10. 휴직 신청*/
+	@Transactional
+	public void insertEmpRest(RestDTO restDTO) {
+		restRepository.save(modelMapper.map(restDTO, Rest.class));
+	}
+
+	/* 11. 휴직 리스트 조회*/
+	public Page<RestDTO> selectRestList(int page){
+		log.info("[EmpService] selectRestList start ==============================");
+
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("restCode").descending());
+
+		Page<Rest> empList = restRepository.findAll(pageable);
+		Page<RestDTO> RestDTOList = empList.map(rest -> modelMapper.map(rest, RestDTO.class));
+
+		log.info("[EmpService] selectRestList.getContent(): {}", RestDTOList.getContent());
+
+		log.info("[EmpService] selectRestList end ===============================");
+
+		return RestDTOList;
+	}
+
 	/* 12. 휴직 상태 변경*/
 	@Transactional
 	public void updateRestState(RestDTO restDTO) {
@@ -273,34 +264,28 @@ public class EmpService {
 
 	}
 
+	/* 13. 휴직 검색*/
+	public Page<RestDTO> searchRestList(int page, String searchOption, String searchKeyword) {
+		log.info("[EmpService] searchRestDate start ==============================");
+		Pageable pageable = PageRequest.of(page - 1, 10);
 
-	/* 10. 휴직 신청*/
-	@Transactional
-	public void insertEmpRest(RestDTO restDTO) {
-		restRepository.save(modelMapper.map(restDTO, Rest.class));
+		if (searchOption.equals("name")) {
+			List<Long> findEmpName = empRepository.findByEmpNameContains(searchKeyword);
+			log.info("[EmpService] findEmpName.getContent(): {}", findEmpName);
+			Page<Rest> restList = restRepository.findByEmployeeEmpCodeIn(pageable, findEmpName);
+			log.info("[EmpService] findEmpName.getContent(): {}", restList.getContent());
+			Page<RestDTO> restDTOList = restList.map(rest -> modelMapper.map(rest, RestDTO.class));
+			log.info("[EmpService] searchRestListName.getContent(): {}", restDTOList.getContent());
+			return restDTOList;
+		} else if (searchOption.equals("state")) {
+			Page<Rest> restList = restRepository.findByRestState(pageable, searchKeyword);
+			Page<RestDTO> restDTOList = restList.map(rest -> modelMapper.map(rest, RestDTO.class));
+			log.info("[EmpService] searchRestListState.getContent(): {}", restDTOList.getContent());
+			return restDTOList;
+		} else {
+			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
+		}
 	}
-
-
-
-
-	/* 11. 휴직 리스트 조회*/
-	public Page<RestDTO> selectRestList(int page){
-		log.info("[EmpService] selectRestList start ==============================");
-
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("restCode").descending());
-
-		Page<Rest> empList = restRepository.findAll(pageable);
-		Page<RestDTO> RestDTOList = empList.map(rest -> modelMapper.map(rest, RestDTO.class));
-
-		log.info("[EmpService] selectRestList.getContent(): {}", RestDTOList.getContent());
-
-		log.info("[EmpService] selectRestList end ===============================");
-
-		return RestDTOList;
-	}
-
-
-
 
 
 
