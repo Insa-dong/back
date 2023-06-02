@@ -60,12 +60,12 @@ public class Employee {
 	@Column(name = "END_DATE")
 	private Date endDate;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "EMP_CODE")
 	private List<EmpAuth> empAuthList;
 
 	@OneToMany(mappedBy = "signRequester")
-    private List<Off> offs;
+	private List<Off> offs;
 
 	public void updateDept(Dept dept){
 		this.dept = dept;

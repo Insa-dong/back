@@ -3,7 +3,7 @@ package com.insadong.application.employee.service;
 import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.employee.dto.TokenDTO;
 import com.insadong.application.employee.entity.EmployeeEntity;
-import com.insadong.application.employee.repository.empAuthRepository;
+import com.insadong.application.employee.repository.EmpAuthRepository;
 import com.insadong.application.exception.IdsearchFailedException;
 import com.insadong.application.exception.LoginFailedException;
 import com.insadong.application.exception.UserNotFoundException;
@@ -17,13 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-	private final empAuthRepository employeeRepository;
+	private final EmpAuthRepository employeeRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final ModelMapper modelMapper;
 	private final TokenProvider tokenProvider;
 
-	public AuthService(empAuthRepository employeeRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper,
-	                   TokenProvider tokenProvider) {
+	public AuthService(EmpAuthRepository employeeRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper,
+					   TokenProvider tokenProvider) {
 		this.employeeRepository = employeeRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.modelMapper = modelMapper;

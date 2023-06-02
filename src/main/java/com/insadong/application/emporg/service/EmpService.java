@@ -2,6 +2,7 @@ package com.insadong.application.emporg.service;
 
 import com.insadong.application.common.entity.*;
 import com.insadong.application.employee.dto.EmployeeDTO;
+import com.insadong.application.employee.repository.EmpAuthRepository;
 import com.insadong.application.employee.repository.EmployeeRepository;
 import com.insadong.application.emporg.dto.EmpHRDTO;
 import com.insadong.application.emporg.dto.RestDTO;
@@ -34,9 +35,12 @@ public class EmpService {
 
 	private final RestRepository restRepository;
 
+	private final EmpAuthRepository empAuthRepository;
+
+
 
 	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository
-			, StudyInfoRepository studyInfoRepository, EmpHRRepository empHRRepository, RestRepository restRepository) {
+			, StudyInfoRepository studyInfoRepository, EmpHRRepository empHRRepository, RestRepository restRepository, EmpAuthRepository empAuthRepository) {
 		this.empRepository = empRepository;
 		this.modelMapper = modelMapper;
 		this.empDeptRepository = empDeptRepository;
@@ -45,6 +49,7 @@ public class EmpService {
 		this.studyInfoRepository = studyInfoRepository;
 		this.empHRRepository = empHRRepository;
 		this.restRepository = restRepository;
+		this.empAuthRepository = empAuthRepository;
 	}
 
 	/*1. 구성원 전체 조회*/
@@ -155,11 +160,27 @@ public class EmpService {
 	}
 
 	/* 5. 구성원 등록 */
+//	@Transactional
+//	public void insertEmp(EmployeeDTO employeeDTO) {
+//		log.info("[EmpService] insertEmp : {}", employeeDTO);
+//		empRepository.save(modelMapper.map(employeeDTO, Employee.class));
+//	if(employeeDTO.getDept().getDeptCode() == "DE0001"){// 행정부서
+//		empAuthPK.setAuthCode("AUTH_CODE_1");
+//	}else if(employeeDTO.getJob().getJobCode() == "JB0005") {// 강사직책
+//		empAuthPK.setAuthCode("AUTH_CODE_2");
+//	}else if(employeeDTO.getDept().getDeptCode() == "DE0001") {//팀장직책
+//		empAuthPK.setAuthCode("AUTH_CODE_3");
+//	}
+//	}
+
 	@Transactional
 	public void insertEmp(EmployeeDTO employeeDTO) {
 		log.info("[EmpService] insertEmp : {}", employeeDTO);
 		empRepository.save(modelMapper.map(employeeDTO, Employee.class));
+
+
 	}
+
 
 	/* 6. 구성원 상세 조회 */
 	public EmployeeDTO selectEmpDetail(Long empCode) {
