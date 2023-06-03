@@ -46,4 +46,13 @@ public class Study {
 	@Column(name = "STUDY_DATE")
 	private Date studyDate;
 
+	@OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+	private List<StudyInfo> studyInfo;
+
+	@OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+	private List<StudyStu> studyStu;
+
+	@OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+	private List<Attend> Attend;
+
 }
