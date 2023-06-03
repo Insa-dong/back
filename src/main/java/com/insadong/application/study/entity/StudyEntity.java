@@ -1,9 +1,10 @@
 package com.insadong.application.study.entity;
 
+import com.insadong.application.common.entity.StudyInfo;
+import com.insadong.application.common.entity.StudyStu;
 import com.insadong.application.common.entity.StudyTime;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -14,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@ToString
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "TB_STUDY")
@@ -56,5 +56,14 @@ public class StudyEntity {
 
 	@Column(name = "STUDY_DATE")
 	private Date studyDate;
+
+	@OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+	private List<StudyInfo> studyInfo;
+
+	@OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+	private List<StudyStu> studyStu;
+
+	@OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
+	private List<com.insadong.application.common.entity.Attend> Attend;
 
 }
