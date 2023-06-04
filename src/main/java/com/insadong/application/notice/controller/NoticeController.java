@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,9 @@ public class NoticeController {
 
 	private final NoticeService noticeService;
 	private final ResourceLoader resourceLoader;
+	
+	@Value("${image.image-dir}")
+	private String IMAGE_DIR;
 
 	public NoticeController(NoticeService noticeService, ResourceLoader resourceLoader) {
 		this.noticeService = noticeService;
@@ -121,7 +125,7 @@ public class NoticeController {
 	public void download(@PathVariable String fileName, HttpServletResponse response) throws Exception {
 		try {
 			
-			String path = "src/main/resources/static/productimgs/" + fileName;
+			String path = IMAGE_DIR + "/" + fileName;
 
 			File file = new File(path);
 			response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
@@ -138,7 +142,7 @@ public class NoticeController {
 			}
 
 		} catch (Exception e) {
-			throw new Exception("download error");
+			throw new Exception("다운로드 실패");
 		}
 	}
 
