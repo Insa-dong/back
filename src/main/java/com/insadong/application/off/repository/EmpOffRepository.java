@@ -26,8 +26,6 @@ public interface EmpOffRepository extends JpaRepository<Employee, Long>{
 	
 	/* 팀원 연차 현황 조회 */
 	
-	/*@Query("SELECT e FROM Employee e WHERE e.dept.deptCode = :deptCode")
-	List<Employee> findEmployeesByDeptCode(@Param("deptCode") String deptCode);*/
 
 	List<Employee> findByDept_DeptCode(String deptCode);
 

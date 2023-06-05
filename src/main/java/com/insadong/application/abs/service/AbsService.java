@@ -28,7 +28,6 @@ import com.insadong.application.off.repository.OffRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class AbsService {
 
@@ -45,18 +44,6 @@ public class AbsService {
 		this.modelMapper = modelMapper;
 	}
 
-	/* 1. 근태 목록 조회 - 모든 데이터 조회  
-	public Page<AbsDTO> selectAbsServiceListForAdmin(int page) { // 페이징 처리, 엔티티를 가공해서 비영속객체로
-
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("absDate").descending()); // 몇번째 페이지, 몇개씩, 정렬
-
-		Page<Abs> absList = absRepository.findAll(pageable);
-
-		Page<AbsDTO> absDtoList = absList.map(abs -> modelMapper.map(abs, AbsDTO.class));
-	
-
-		return absDtoList;
-	}*/
 	
 	/*1-1 근태 목록 조회 - 모든 데이터 조회 + 연차 여부 추가*/
 	public Page<AbsDTO> selectAbsServiceListForAdmin(int page) {
@@ -85,23 +72,6 @@ public class AbsService {
 	    return new PageImpl<>(absDtoList, pageable, absList.getTotalElements());
 	}
 
-
-
-	/*1-2 내 근태 목록 조회
-	public Page<AbsDTO> myAbsInfo(Long empCode, int page) {
-		
-		log.info("[AbsService] myAbsInfo start ============================== ");
-		log.info("[AbsService] absCode : {} start ============================== ");
-		
-		
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("absDate").descending());
-
-	    Page<Abs> absList = absRepository.findByEmpCode_EmpCode(empCode, pageable);
-
-	    Page<AbsDTO> absDtoList = absList.map(abs -> modelMapper.map(abs, AbsDTO.class));
-
-	    return absDtoList;
-	}*/
 	
 	/*1-2-1 내 근태 목록 조회 : 연차 여부 추가 */
 	public Page<AbsDTO> myAbsInfo(Long empCode, int page) {

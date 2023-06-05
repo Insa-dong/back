@@ -30,7 +30,6 @@ import com.insadong.application.off.repository.OffRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class OffService {
 
@@ -108,7 +107,6 @@ public class OffService {
 		offDTOs.setSignPayer(payerDTO);
 		offDTOs.setRequestDate(requestDate);
 		
-		//log.info("[OffService] applyOff : {}", offDTOs);
 		
 		offRepository.save(modelMapper.map(offDTOs, Off.class));
 
@@ -177,7 +175,7 @@ public class OffService {
 	/* 6-1. 연차 신청 내역 검색 by 신청자, 승인상태 (팀장)*/
 
 	public Page<OffDTO> searchOffByRequesterAndStatus(int page, String searchOption, String searchKeyword) {
-		log.info("[OffService] searchOffByRequesterAndStatus start ==============================");
+
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("requestDate").descending());
 		
 		
@@ -201,8 +199,7 @@ public class OffService {
 	/* 7.  연차 승인 처리 (팀장)*/
 	@Transactional
 	public void signUpOff(Long signCode, OffDTO offDTO) {
-		
-		log.info("[OffService] signUpOff start ------------------- ");
+
     	
 		// 승인일 설정
 		LocalDate handleDate = LocalDate.now();
@@ -214,10 +211,7 @@ public class OffService {
 	    off.setHandleDate(handleDate);
 	    
 	    offRepository.save(off);
-	    
-	    
-	    //log.info("[OffService] off {} :  ", off );
-	    log.info("[OffService] signUpOff end ------------------- ");
+
 		
 	}
 
