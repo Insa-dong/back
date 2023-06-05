@@ -8,10 +8,7 @@ import com.insadong.application.study.dto.PetiteStudyInfoDTO;
 import com.insadong.application.study.dto.StudyInfoDTO;
 import com.insadong.application.study.entity.EmpEntity;
 import com.insadong.application.study.entity.StudyInfoEntity;
-import com.insadong.application.study.repository.PetiteEmpRepository;
-import com.insadong.application.study.repository.PetiteTrainingRepository;
-import com.insadong.application.study.repository.StudyInfoRepository;
-import com.insadong.application.study.repository.StudyTimeRepository;
+import com.insadong.application.study.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -29,14 +26,16 @@ import java.util.List;
 @Service
 public class StudyInfoService {
 	private final StudyInfoRepository studyInfoRepository;
+	private final StudyRepository studyRepository;
 	private final StudyTimeRepository studyTimeRepository;
 	private final PetiteEmpRepository empRepository;
 	private final CalendarRepository calendarRepository;
 	private final PetiteTrainingRepository trainingRepository;
 	private final ModelMapper modelMapper;
 
-	public StudyInfoService(StudyInfoRepository studyInfoRepository, StudyTimeRepository studyTimeRepository, PetiteEmpRepository empRepository, CalendarRepository calendarRepository, PetiteTrainingRepository trainingRepository, ModelMapper modelMapper) {
+	public StudyInfoService(StudyInfoRepository studyInfoRepository, StudyRepository studyRepository, StudyTimeRepository studyTimeRepository, PetiteEmpRepository empRepository, CalendarRepository calendarRepository, PetiteTrainingRepository trainingRepository, ModelMapper modelMapper) {
 		this.studyInfoRepository = studyInfoRepository;
+		this.studyRepository = studyRepository;
 		this.studyTimeRepository = studyTimeRepository;
 		this.empRepository = empRepository;
 		this.calendarRepository = calendarRepository;
@@ -117,9 +116,9 @@ public class StudyInfoService {
 	}
 
 	@Transactional
-	public void deleteStudyByStudyCode(List<Long> studyCode) {
+	public void deleteStudyByStudyCode(List<Long> studyInfoCode) {
 
-		studyInfoRepository.deleteAll(studyInfoRepository.findAllById(studyCode));
+		studyInfoRepository.deleteAllById(studyInfoCode);
 	}
 
 	public Page<StudyInfoDTO> searchStudy(String search, int page, String category) {

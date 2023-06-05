@@ -131,9 +131,10 @@ public class StudyInfoController {
 	}
 
 	@DeleteMapping("/studyInfo")
-	public ResponseEntity<ResponseDTO> deleteStudyByStudyCode(@RequestBody List<Long> studyCode) {
+	public ResponseEntity<ResponseDTO> deleteStudyByStudyCode(@RequestBody List<Long> studyInfoCode) {
 
-		studyInfoService.deleteStudyByStudyCode(studyCode);
+		log.info("studyInfoCode : {} ", studyInfoCode);
+		studyInfoService.deleteStudyByStudyCode(studyInfoCode);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제 성공"));
 	}

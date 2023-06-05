@@ -95,8 +95,8 @@ public class TrainingService {
 
 	@Transactional
 	public void trainingDelete(List<Long> trainingCode) {
-
-		trainingRepository.deleteAll(trainingRepository.findAllById(trainingCode));
+		trainingRepository.deleteAllById(trainingCode);
+//		trainingRepository.deleteAll(trainingRepository.findAllById(trainingCode));
 	}
 
 	public Page<TrainingDTO> selectTrainingListByTrainingTitle(String trainingTitle, int page) {
