@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -95,11 +96,11 @@ public class StudyInfoController {
 	@PostMapping("/studyInsert")
 	public ResponseEntity<ResponseDTO> insertStudyInfo(@RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmpDTOImplUS emp) {
 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		PetiteStudyDTO study = studyInfo.getStudy();
 		study.setStudyDate(new Date());
 		studyInfo.setStudy(study);
 
-		log.info("studyInfo : {} ", studyInfo);
 		studyInfoService.insertStudy(studyInfo, emp.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 완료"));
@@ -130,9 +131,10 @@ public class StudyInfoController {
 	}
 
 	@DeleteMapping("/studyInfo")
-	public ResponseEntity<ResponseDTO> deleteStudyByStudyCode(@RequestBody List<Long> studyCode) {
+	public ResponseEntity<ResponseDTO> deleteStudyByStudyCode(@RequestBody List<Long> studyInfoCode) {
 
-		studyInfoService.deleteStudyByStudyCode(studyCode);
+		log.info("studyInfoCode : {} ", studyInfoCode);
+		studyInfoService.deleteStudyByStudyCode(studyInfoCode);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "삭제 성공"));
 	}

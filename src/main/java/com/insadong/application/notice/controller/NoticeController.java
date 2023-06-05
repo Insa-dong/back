@@ -40,14 +40,12 @@ import lombok.extern.slf4j.Slf4j;
 public class NoticeController {
 
 	private final NoticeService noticeService;
-	private final ResourceLoader resourceLoader;
 	
 	@Value("${image.image-dir}")
 	private String IMAGE_DIR;
 
-	public NoticeController(NoticeService noticeService, ResourceLoader resourceLoader) {
+	public NoticeController(NoticeService noticeService) {
 		this.noticeService = noticeService;
-		this.resourceLoader = resourceLoader;
 	}
 
 	/* 공지사항 전체목록 조회 */
@@ -105,8 +103,6 @@ public class NoticeController {
 		log.info("[NoticeController] noticeDTO: {}", noticeDTO);
 		log.info("[NoticeController] empDTO: {}", employeeDTO);
 
-//		noticeDTO.setNoticeWriter(employeeDTO);
-
 		noticeService.registNotice(noticeDTO, employeeDTO.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "공지사항 등록 성공"));
@@ -145,14 +141,6 @@ public class NoticeController {
 			throw new Exception("다운로드 실패");
 		}
 	}
-
-//	@GetMapping("/{fileName}")
-//	public ResponseEntity<ResponseDTO> download(@PathVariable("fileName") String fileName) {
-//		byte[] downloadFile = noticeService.downloadFile(fileName);
-//		return ResponseEntity
-//				.ok()
-//				.body(new ResponseDTO(HttpStatus.OK, "조회 성공", downloadFile));
-//	}
 	
 	/* 공지사항 수정 */
 	@PutMapping("/notice")

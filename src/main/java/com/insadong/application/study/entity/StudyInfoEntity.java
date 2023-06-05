@@ -25,12 +25,9 @@ public class StudyInfoEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDY_INFO_SEQ_GEN")
 	private Long studyInfoCode;
 
-	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "STUDY")
 	private StudyEntity study;
-
-	@OneToMany(mappedBy = "StudyInfo", cascade = CascadeType.REMOVE)
-	private List<Eva> eva;
 
 	@ManyToOne
 	@JoinColumn(name = "TEACHER")
@@ -50,5 +47,8 @@ public class StudyInfoEntity {
 
 	@Column(name = "STUDY_CONTENT")
 	private String studyContent;
+
+	@OneToMany(mappedBy = "StudyInfo", cascade = CascadeType.REMOVE)
+	private List<Eva> eva;
 
 }
