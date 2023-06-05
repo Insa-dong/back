@@ -231,7 +231,7 @@ public class EmpService {
 	public Page<RestDTO> selectRestList(int page){
 		log.info("[EmpService] selectRestList start ==============================");
 
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("restCode").descending());
+		Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("restCode").descending());
 
 		Page<Rest> empList = restRepository.findAll(pageable);
 		Page<RestDTO> RestDTOList = empList.map(rest -> modelMapper.map(rest, RestDTO.class));
