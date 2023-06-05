@@ -58,7 +58,7 @@ public class OffService {
 		LocalDate offEnd = offDTO.getOffEnd();
 		
 		// 신청자 설정
-		Employee foundEmp = empOffRepository.findById(loggedInUser.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("asd"));
+		Employee foundEmp = empOffRepository.findById(loggedInUser.getEmpCode()).orElseThrow(() -> new IllegalArgumentException("해당 직원을 찾을 수 없습니다."));
 		// 신청자 타입 변환 (Employee -> EmployeeDTO)
 		EmployeeDTO empDTO = modelMapper.map(foundEmp, EmployeeDTO.class);
 		// 신청자 EmpOffDTO 가져오기
@@ -66,7 +66,7 @@ public class OffService {
 		
 		
 		// 중복 여부 확인
-	    if (checkExistingOff(offStart, offEnd)) {
+	    if (checkExistingOff(foundEmp, offStart, offEnd)) {
 	        throw new IllegalArgumentException("이미 신청된 연차가 존재합니다.");
 	    }
 
@@ -115,11 +115,12 @@ public class OffService {
 	}
 	
 	/*2. 연차 중복 조회 */
-	public boolean checkExistingOff(LocalDate offStart, LocalDate offEnd) {
+	public boolean checkExistingOff(Employee emp, LocalDate offStart, LocalDate offEnd) {
 		
 	    List<String> signStatusList = Arrays.asList("승인", "대기");
 	    
-	    return offRepository.existsByOffStartLessThanEqualAndOffEndGreaterThanEqualAndSignStatusIn(offStart, offEnd, signStatusList);
+	    return offRepository
+	    		.existsBySignRequesterAndOffStartLessThanEqualAndOffEndGreaterThanEqualAndSignStatusIn(emp, offStart, offEnd, signStatusList);
 	}
 	
 	/* 3,4. 내 연차 조회 */
