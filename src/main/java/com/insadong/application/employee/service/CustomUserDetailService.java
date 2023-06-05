@@ -33,9 +33,6 @@ public class CustomUserDetailService implements UserDetailsService {
 	//@Transactional  // 다시 제외하고 EmployeeRepository에 @EntityGraph empAuthList.auth 추가함
 	public UserDetails loadUserByUsername(String empId) throws UsernameNotFoundException {
 
-		log.info("[CustomUserDetailService] loadUserByUsername start ======================");
-		log.info("[CustomUserDetailService] empId : {}", empId);
-
 		return employeeRepository.findByEmpId(empId).map(user -> addAuthorities(user))
 				.orElseThrow(() -> new UserNotFoundException(empId + "를 찾을 수 없습니다."));
 	}

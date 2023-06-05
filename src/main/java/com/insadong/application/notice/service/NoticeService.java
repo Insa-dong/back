@@ -59,25 +59,17 @@ public class NoticeService {
 	/* 공지사항 전체목록 조회 */
 	public Page<NoticeDTO> selectNoticeList(int page) {
 
-		log.info("[NoticeService] selectNoticeList start ============================== ");
-
 		Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("noticeCode").descending());
 
 		Page<Notice> noticeList = noticeRepository.findAll(pageable);
 
 		Page<NoticeDTO> noticeDTOList = noticeList.map(notice -> modelMapper.map(notice, NoticeDTO.class));
 
-		log.info("[NoticeService] selectNoticeList.getContent() : {}", noticeDTOList.getContent());
-
-		log.info("[NoticeService] selectEmpList end ============================== ");
-
 		return noticeDTOList;
 	}
 
 	/* 공지사항 검색조건 조회 */
 	public Page<NoticeDTO> searchNoticeByOption(int page, String searchOption, String searchKeyword) {
-
-		log.info("[NoticeService] searchNoticeByOption start ==============================");
 
 		Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("noticeCode").descending());
 
@@ -89,8 +81,6 @@ public class NoticeService {
 				throw new IllegalArgumentException("검색조건과 일치하는 공지사항이 존재하지 않습니다.");
 			}
 
-			log.info("[NoticeService] searchNoticeByOption.getContent() : {}", noticeDTOList.getContent());
-
 			return noticeDTOList;
 
 		} else if (searchOption.equals("content")) {
@@ -100,8 +90,6 @@ public class NoticeService {
 			if (noticeDTOList.isEmpty()) {
 				throw new IllegalArgumentException("검색조건과 일치하는 공지사항이 존재하지 않습니다.");
 			}
-
-			log.info("[NoticeService] searchNoticeByOption.getContent() : {}", noticeDTOList.getContent());
 
 			return noticeDTOList;
 
@@ -123,8 +111,6 @@ public class NoticeService {
 			if (noticeDTOList.isEmpty()) {
 				throw new IllegalArgumentException("검색조건과 일치하는 공지사항이 존재하지 않습니다.");
 			}
-
-			log.info("[NoticeService] searchNoticeByOption.getContent() : {}", noticeDTOList.getContent());
 
 			return noticeDTOList;
 
@@ -185,9 +171,6 @@ public class NoticeService {
 	/* 공지사항 상세 조회 */
 	public NoticeDTO selectNoticeList(Long noticeCode) {
 
-		log.info("[NoticeService] selectNoticeList start ============================== ");
-		log.info("[NoticeService] noticeCode : {}", noticeCode);
-
 		Notice notice = noticeRepository.findById(noticeCode)
 				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다. noticeCode=" + noticeCode));
 
@@ -202,8 +185,6 @@ public class NoticeService {
 
 		Notice notice = noticeRepository.findById(noticeDTO.getNoticeCode())
 				.orElseThrow(() -> new IllegalArgumentException("해당 코드의 공지사항이 없습니다."));
-
-		log.info("[NoticeService] noticeDTO : {}", noticeDTO);
 
 		/* 로그인 한 사용자와 게시글 작성자가 일치할 경우 */
 		if (notice.getNoticeWriter().getEmpCode().equals(empCode)) {
