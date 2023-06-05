@@ -64,6 +64,7 @@ public class SecurityConfig {
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.antMatchers("/training", "/training/**", "/study", "/study/registration", "/studySearch", "/studyInfo/**").hasRole("ADMIN")
 				.antMatchers("/cal").hasRole("MEMBER")
+				.antMatchers("/empTeacher", "/empTeacher/**").hasRole("TEACHER")
 				.antMatchers("/auth/**").permitAll()
 				.and()
 				.cors()
