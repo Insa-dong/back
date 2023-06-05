@@ -61,6 +61,8 @@ public class StudyInfoService {
 		EmpEntity empEntity = empRepository.findById(empCode).orElseThrow(() -> new IllegalArgumentException("조회 실패"));
 		study.setStudyWriter(modelMapper.map(empEntity, EmployeeDTO.class));
 
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
 		StudyInfoEntity foundStudyInfo = studyInfoRepository.findById(studyInfoCode).orElseThrow(() -> new IllegalArgumentException("조회 실패~"));
 		studyTimeRepository.deleteByStudyCode(foundStudyInfo.getStudy().getStudyCode());
 
@@ -93,7 +95,6 @@ public class StudyInfoService {
 		StudyInfoEntity saveEntity = modelMapper.map(studyInfo, StudyInfoEntity.class);
 
 		studyInfoRepository.save(saveEntity);
-
 
 		Long calEmpCode = studyInfo.getTeacher().getEmpCode();
 		Date calStartDate = studyInfo.getStudyInfoStartDate();

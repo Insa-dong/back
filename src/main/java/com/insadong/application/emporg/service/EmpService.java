@@ -38,7 +38,6 @@ public class EmpService {
 	private final EmpAuthRepository empAuthRepository;
 
 
-
 	public EmpService(EmpRepository empRepository, ModelMapper modelMapper, EmpDeptRepository empDeptRepository, EmpJobRepository empJobRepository, EmployeeRepository employeeRepository
 			, StudyInfoRepository studyInfoRepository, EmpHRRepository empHRRepository, RestRepository restRepository, EmpAuthRepository empAuthRepository) {
 		this.empRepository = empRepository;
@@ -91,9 +90,6 @@ public class EmpService {
 	}
 
 
-
-
-
 	/*3. 구성원 검색*/
 	public Page<EmployeeDTO> searchEmpByNameAndDeptAndJob(int page, String searchOption, String searchKeyword) {
 		log.info("[EmpService] searchEmpByNameAndDeptAndJob start ==============================");
@@ -122,7 +118,6 @@ public class EmpService {
 			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
 		}
 	}
-
 
 
 	/*4. 부서, 직책 조회*/
@@ -172,7 +167,7 @@ public class EmpService {
 
 	/* 8. 구성원 부서이동*/
 	@Transactional
-	public void updateEmpDept(EmployeeDTO employeeDTO){
+	public void updateEmpDept(EmployeeDTO employeeDTO) {
 		log.info("[EmpService] updateEmpDept start ============================== ");
 		log.info("[EmpService] employeeDTO : {}", employeeDTO);
 
@@ -190,7 +185,7 @@ public class EmpService {
 
 	/* 8. 구성원 직책변동*/
 	@Transactional
-	public void updateEmpJob(EmployeeDTO employeeDTO){
+	public void updateEmpJob(EmployeeDTO employeeDTO) {
 		log.info("[EmpService] updateEmpJob start ============================== ");
 		log.info("[EmpService] employeeDTO : {}", employeeDTO);
 
@@ -217,8 +212,6 @@ public class EmpService {
 	}
 
 
-
-
 	/* 10. 휴직 신청*/
 	@Transactional
 	public void insertEmpRest(RestDTO restDTO) {
@@ -226,7 +219,7 @@ public class EmpService {
 	}
 
 	/* 11. 휴직 리스트 조회*/
-	public Page<RestDTO> selectRestList(int page){
+	public Page<RestDTO> selectRestList(int page) {
 		log.info("[EmpService] selectRestList start ==============================");
 
 		Pageable pageable = PageRequest.of(page - 1, 8, Sort.by("restCode").descending());
@@ -284,10 +277,6 @@ public class EmpService {
 			throw new IllegalArgumentException("유효하지 않은 검색 옵션입니다.");
 		}
 	}
-
-
-
-
 
 
 	public List<com.insadong.application.study.dto.EmpDTO> viewTeacherList() {
