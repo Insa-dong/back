@@ -1,19 +1,19 @@
 package com.insadong.application.study.entity;
 
+import com.insadong.application.common.entity.Eva;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
 @Setter
 @Entity
-@ToString
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "TB_STUDY_INFO")
@@ -28,6 +28,9 @@ public class StudyInfoEntity {
 	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "STUDY")
 	private StudyEntity study;
+
+	@OneToMany(mappedBy = "StudyInfo", cascade = CascadeType.REMOVE)
+	private List<Eva> eva;
 
 	@ManyToOne
 	@JoinColumn(name = "TEACHER")

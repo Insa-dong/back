@@ -6,10 +6,8 @@ import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Setter
 @Getter
@@ -26,5 +24,8 @@ public class TrainingEntity {
 
 	@Column(name = "TRAINING_TITLE")
 	private String trainingTitle;
+
+	@OneToMany(mappedBy = "training", cascade = CascadeType.REMOVE)
+	private List<StudyEntity> Study;
 
 }
