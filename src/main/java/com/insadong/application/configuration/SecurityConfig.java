@@ -62,6 +62,7 @@ public class SecurityConfig {
 				.and()
 				.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/trainingList").hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, "/empTeacher").hasRole("TEACHER")
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.antMatchers("/auth/**").permitAll()
 //				.antMatchers("").hasRole("")
