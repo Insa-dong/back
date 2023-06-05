@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.insadong.application.common.entity.Employee;
 import com.insadong.application.common.entity.Off;
+import com.insadong.application.employee.dto.EmpDTOImplUS;
 import com.insadong.application.off.dto.OffDTO;
 
 
@@ -27,6 +28,8 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 	/* 연차 중복 신청 방지 */
 	boolean existsByOffStartLessThanEqualAndOffEndGreaterThanEqualAndSignStatusIn(LocalDate offStart, LocalDate offEnd,
 			List<String> signStatusList);
+	boolean existsBySignRequesterAndOffStartLessThanEqualAndOffEndGreaterThanEqualAndSignStatusIn(
+			Employee emp, LocalDate offStart, LocalDate offEnd, List<String> signStatusList);
 
 
 	/* 연차 현황 조회 */
@@ -47,6 +50,8 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 
 	/* 연차 승인 처리*/
 	Off findBySignPayer_EmpCode(Long empCode);
+
+
 
 	
 
