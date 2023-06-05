@@ -7,7 +7,6 @@ import com.insadong.application.paging.PagingButtonInfo;
 import com.insadong.application.paging.ResponseDTOWithPaging;
 import com.insadong.application.study.dto.PetiteStudyDTO;
 import com.insadong.application.study.dto.PetiteStudyInfoDTO;
-import com.insadong.application.study.dto.PetiteTrainingDTO;
 import com.insadong.application.study.dto.StudyInfoDTO;
 import com.insadong.application.study.service.StudyInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -80,13 +79,6 @@ public class StudyInfoController {
 
 		PetiteStudyDTO study = studyInfo.getStudy();
 		study.setStudyModifyDate(new Date());
-		PetiteTrainingDTO training = study.getTraining();
-		training.setTrainingUpdate(new Date());
-
-
-		log.info("studyInfo : {} ", studyInfo);
-		log.info("emp : {} ", emp);
-		log.info("study : {} ", study);
 
 		studyInfoService.modifyStudyInfo(studyInfo, studyInfoCode, emp.getEmpCode());
 

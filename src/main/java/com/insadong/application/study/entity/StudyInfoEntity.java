@@ -25,7 +25,7 @@ public class StudyInfoEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDY_INFO_SEQ_GEN")
 	private Long studyInfoCode;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "STUDY")
 	private StudyEntity study;
 
