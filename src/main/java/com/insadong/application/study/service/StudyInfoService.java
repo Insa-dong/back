@@ -63,7 +63,7 @@ public class StudyInfoService {
 
 
 		StudyInfoEntity map = modelMapper.map(studyInfo, StudyInfoEntity.class);
-		log.info("map : {} ", map.toString());
+//		log.info("map : {} ", map.toString());
 		studyInfoRepository.save(map);
 	}
 

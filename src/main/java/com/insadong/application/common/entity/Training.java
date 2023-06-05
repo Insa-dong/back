@@ -1,14 +1,28 @@
 package com.insadong.application.common.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @SuppressWarnings("SpellCheckingInspection")
 @Setter
@@ -55,6 +69,7 @@ public class Training {
 	@Column(name = "TRAINING_DELETE_YN")
 	private String trainingDeleteYn;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "training", cascade = CascadeType.REMOVE)
 	private List<Study> Study;
 

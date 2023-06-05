@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -46,12 +49,15 @@ public class Study {
 	@Column(name = "STUDY_DATE")
 	private Date studyDate;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
 	private List<StudyInfo> studyInfo;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
 	private List<StudyStu> studyStu;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "study", cascade = CascadeType.REMOVE)
 	private List<Attend> Attend;
 
