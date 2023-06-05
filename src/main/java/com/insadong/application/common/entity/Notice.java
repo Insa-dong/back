@@ -35,23 +35,23 @@ public class Notice {
 	@Id
 	@Column(name="NOTICE_CODE")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="NOTICE_SEQ_GENERATOR")
-	private Long noticeCode;				// 공지 코드
+	private Long noticeCode;
 	
 	@Column(name="NOTICE_TITLE")
-	private String noticeTitle;				// 제목
+	private String noticeTitle;
 	
 	@Column(name="NOTICE_CONTENT")
-	private String noticeContent;			// 내용
+	private String noticeContent;
 	
 	@Column(name="NOTICE_WRITE_DATE")
-	private Date noticeWriteDate;		 	// 작성일
+	private Date noticeWriteDate;
 	
 	@ManyToOne
 	@JoinColumn(name="NOTICE_WRITER")
-	private Employee noticeWriter;			// 작성자 emp code 조인
+	private Employee noticeWriter;
 	
 	@Column(name="NOTICE_MODIFY_DATE")
-	private Date noticeModifyDate;			// 수정일
+	private Date noticeModifyDate;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="NOTICE_CODE")

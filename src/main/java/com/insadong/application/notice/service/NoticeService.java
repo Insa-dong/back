@@ -196,12 +196,6 @@ public class NoticeService {
 		return noticeDTO;
 	}
 
-//	public byte[] downloadFile(String fileName) {
-//		File file = fileRepository.findBySaveFileName(fileName)
-//				.orElseThrow();
-//		return null;
-//	}
-
 	/* 공지사항 수정 */
 	@Transactional
 	public void updateNotice(NoticeDTO noticeDTO, Long empCode) throws IOException {
@@ -219,15 +213,6 @@ public class NoticeService {
 			 * 조건을 줘도 조건식에 걸리지 않음 배열의 첫번째 요소가 비었는지를 확인해주면 조건식에 걸림
 			 */
 			if (noticeDTO.getNoticeFile() != null) {
-
-				/* 기존 파일 삭제 */
-//				List<File> beforefiles = fileRepository.findByNoticeCode(noticeDTO.getNoticeCode());
-//				for (File beforefile : beforefiles) {
-//					FileUploadUtils.deleteFile(IMAGE_DIR, beforefile.getSaveFileName());
-//
-//					fileRepository.delete(beforefile);
-//
-//				}
 
 				for (MultipartFile file : noticeDTO.getNoticeFile()) {
 
