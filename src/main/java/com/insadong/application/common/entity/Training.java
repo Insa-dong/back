@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("SpellCheckingInspection")
 @Setter
@@ -53,6 +54,9 @@ public class Training {
 
 	@Column(name = "TRAINING_DELETE_YN")
 	private String trainingDeleteYn;
+
+	@OneToMany(mappedBy = "training", cascade = CascadeType.REMOVE)
+	private List<Study> Study;
 
 
 	public void update(String trainingTitle, String trainingQual, String trainingKnow, String trainingTime, Employee trainingWriter, Date trainingDate, Employee trainingModifier, String trainingDeleteYn) {

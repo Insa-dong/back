@@ -26,5 +26,4 @@ public class StudyInfoDTO {
 
 	private String studyContent;
 
-
 }

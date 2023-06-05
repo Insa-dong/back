@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -108,9 +109,9 @@ public class StudyInfoService {
 	}
 
 	@Transactional
-	public void deleteStudyByStudyCode(long studyCode) {
+	public void deleteStudyByStudyCode(List<Long> studyCode) {
 
-		studyInfoRepository.deleteById(studyCode);
+		studyInfoRepository.deleteAll(studyInfoRepository.findAllById(studyCode));
 	}
 
 	public Page<StudyInfoDTO> searchStudy(String search, int page, String category) {

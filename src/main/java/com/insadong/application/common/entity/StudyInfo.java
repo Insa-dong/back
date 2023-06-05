@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +17,9 @@ public class StudyInfo {
 	@Column(name = "STUDY_INFO_CODE")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDY_INFO_SEQ_GEN")
 	private Long studyInfoCode;
+
+	@OneToMany(mappedBy = "StudyInfo", cascade = CascadeType.REMOVE)
+	private List<Eva> eva;
 
 	@ManyToOne
 	@JoinColumn(name = "STUDY")
