@@ -26,13 +26,13 @@ public class StudyEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDY_SEQ_GEN")
 	private Long studyCode;
 
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
-	@JoinColumn(name = "STUDY_CODE")
-	private List<StudyTime> studyTimes;
-
 	@ManyToOne
 	@JoinColumn(name = "TRAINING_CODE")
 	private TrainingEntity training;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "STUDY_CODE")
+	private List<StudyTime> studyTimes;
 
 	@Column(name = "STUDY_MAX_PEOPLE")
 	private Long studyMaxPeople;
