@@ -40,8 +40,6 @@ public class MypageController {
 	public ResponseEntity<ResponseDTO> modifyPwd(@RequestBody EmployeeDTO empDTO,
 			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
 
-		log.info("[MyPageController] empDTO : {}", empDTO);
-
 		mypageService.modifyPwd(empDTO, employeeDTO.getEmpCode());
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "비밀번호 변경 성공"));
@@ -51,8 +49,6 @@ public class MypageController {
 	@PutMapping("/privacymodify")
 	public ResponseEntity<ResponseDTO> modifyPrivacy(@RequestBody EmployeeDTO empDTO,
 			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) {
-
-		log.info("[MyPageController] empDTO : {}", empDTO);
 
 		mypageService.modifyPrivacy(empDTO, employeeDTO.getEmpCode());
 

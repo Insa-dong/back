@@ -29,8 +29,6 @@ import lombok.Setter;
 @Table(name="TB_NOTICE")
 @SequenceGenerator(name="NOTICE_SEQ_GENERATOR", sequenceName="SEQ_NOTICE_CODE", initialValue=1, allocationSize =1)
 public class Notice {
-
-	/* 공지사항 */
 	
 	@Id
 	@Column(name="NOTICE_CODE")
