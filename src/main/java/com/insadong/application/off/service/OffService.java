@@ -66,7 +66,7 @@ public class OffService {
 		
 		// 중복 여부 확인
 	    if (checkExistingOff(foundEmp, offStart, offEnd)) {
-	        throw new IllegalArgumentException("이미 신청된 연차가 존재합니다.");
+	        throw new IllegalArgumentException("이미 신청한 연차가 존재합니다.");
 	    }
 
 		// 연차 일수 계산
@@ -84,10 +84,6 @@ public class OffService {
 		// 결재자 = 신청자 부서 팀장
 		Employee payer = empOffRepository.findTeamLeaderByDept(foundEmp.getDept());
 		
-		// 결재자가 신청자와 동일하다면, 신청자를 결재자로 설정합니다.
-	    if(payer.getEmpCode().equals(foundEmp.getEmpCode())) {
-	        payer = foundEmp;
-	    }
 		
 		// 결재자 타입 변환 (Employee -> EmployeeDTO)
 		EmployeeDTO payerDTO = modelMapper.map(payer, EmployeeDTO.class);
