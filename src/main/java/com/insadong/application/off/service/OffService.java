@@ -30,7 +30,6 @@ import com.insadong.application.off.repository.OffRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class OffService {
 
@@ -67,7 +66,7 @@ public class OffService {
 		
 		// 중복 여부 확인
 	    if (checkExistingOff(foundEmp, offStart, offEnd)) {
-	        throw new IllegalArgumentException("이미 신청된 연차가 존재합니다.");
+	        throw new IllegalArgumentException("이미 신청한 연차가 존재합니다.");
 	    }
 
 		// 연차 일수 계산
@@ -85,10 +84,6 @@ public class OffService {
 		// 결재자 = 신청자 부서 팀장
 		Employee payer = empOffRepository.findTeamLeaderByDept(foundEmp.getDept());
 		
-		// 결재자가 신청자와 동일하다면, 신청자를 결재자로 설정합니다.
-	    if(payer.getEmpCode().equals(foundEmp.getEmpCode())) {
-	        payer = foundEmp;
-	    }
 		
 		// 결재자 타입 변환 (Employee -> EmployeeDTO)
 		EmployeeDTO payerDTO = modelMapper.map(payer, EmployeeDTO.class);
@@ -108,7 +103,6 @@ public class OffService {
 		offDTOs.setSignPayer(payerDTO);
 		offDTOs.setRequestDate(requestDate);
 		
-		//log.info("[OffService] applyOff : {}", offDTOs);
 		
 		offRepository.save(modelMapper.map(offDTOs, Off.class));
 
@@ -177,7 +171,7 @@ public class OffService {
 	/* 6-1. 연차 신청 내역 검색 by 신청자, 승인상태 (팀장)*/
 
 	public Page<OffDTO> searchOffByRequesterAndStatus(int page, String searchOption, String searchKeyword) {
-		log.info("[OffService] searchOffByRequesterAndStatus start ==============================");
+
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("requestDate").descending());
 		
 		
@@ -201,8 +195,7 @@ public class OffService {
 	/* 7.  연차 승인 처리 (팀장)*/
 	@Transactional
 	public void signUpOff(Long signCode, OffDTO offDTO) {
-		
-		log.info("[OffService] signUpOff start ------------------- ");
+
     	
 		// 승인일 설정
 		LocalDate handleDate = LocalDate.now();
@@ -214,10 +207,7 @@ public class OffService {
 	    off.setHandleDate(handleDate);
 	    
 	    offRepository.save(off);
-	    
-	    
-	    //log.info("[OffService] off {} :  ", off );
-	    log.info("[OffService] signUpOff end ------------------- ");
+
 		
 	}
 

@@ -51,8 +51,6 @@ public class AuthController {
 		/* 2. 가져온 정보를 이용하여 이메일 발송 */
 		if (getemployeeDTO != null) {
 
-			log.info("[AuthController] getemployeeDTO : {}", getemployeeDTO);
-
 			MailDTO dto = sendEmailService.createMailAndChangePassword(getemployeeDTO.getEmpId(),
 					getemployeeDTO.getEmpEmail(), getemployeeDTO.getEmpName());
 

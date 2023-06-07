@@ -33,9 +33,6 @@ public class AuthService {
 	/* 로그인 */
 	public TokenDTO login(EmpDTOImplUS employeeDTO) {
 
-		log.info("[AuthService] login start ======================================");
-		log.info("[AuthService] employeeDTO : {}", employeeDTO);
-
 		// 1. 아이디로 DB에서 해당 유저가 있는지 조회
 		EmployeeEntity employee = employeeRepository.findByEmpId(employeeDTO.getEmpId())
 				.orElseThrow(() -> new LoginFailedException("잘못 된 아이디 또는 비밀번호입니다."));
@@ -47,10 +44,6 @@ public class AuthService {
 
 		// 3. 토큰 발급
 		TokenDTO tokenDTO = tokenProvider.generateTokenDTO(modelMapper.map(employee, EmpDTOImplUS.class));
-
-		log.info("[AuthService] tokenDTO : {}", tokenDTO);
-
-		log.info("[AuthService] login end ======================================");
 
 		return tokenDTO;
 	}

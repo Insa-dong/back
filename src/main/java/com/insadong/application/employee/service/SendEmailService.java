@@ -29,8 +29,6 @@ public class SendEmailService {
 	@Transactional
 	public MailDTO createMailAndChangePassword(String empId, String empEmail, String empName) {
 		
-		log.info("[SendEmailService] empName : {}", empName);
-		
 		String str = getTempPassword();
 		MailDTO dto = new MailDTO();
 		dto.setAddress(empEmail);

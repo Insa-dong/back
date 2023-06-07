@@ -51,20 +51,14 @@ public class NoticeController {
 	/* 공지사항 전체목록 조회 */
 	@GetMapping("/noticelist")
 	public ResponseEntity<ResponseDTO> selectNoticeList(@RequestParam(name = "page", defaultValue = "1") int page) {
-		log.info("[NoticeControll	er] : selectNoticeList start ==================================== ");
-		log.info("[NoticeController] : page : {}", page);
 
 		Page<NoticeDTO> noticeDTOList = noticeService.selectNoticeList(page);
 
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(noticeDTOList);
 
-		log.info("[NoticeController] : pageInfo : {}", pageInfo);
-
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 		responseDTOWithPaging.setPageInfo(pageInfo);
 		responseDTOWithPaging.setData(noticeDTOList.getContent());
-
-		log.info("[NoticeController] : selectNoticeList end ==================================== ");
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
@@ -75,22 +69,13 @@ public class NoticeController {
 			@RequestParam(name = "searchOption") String searchOption,
 			@RequestParam(name = "searchKeyword") String searchKeyword) {
 
-		log.info("[NoticeController] : searchNoticeByOption start ==================================== ");
-		log.info("[NoticeController] : page : {}", page);
-		log.info("[NoticeController] : searchOption : {}", searchOption);
-		log.info("[NoticeController] : searchKeyword : {}", searchKeyword);
-
 		Page<NoticeDTO> noticeDTOList = noticeService.searchNoticeByOption(page, searchOption, searchKeyword);
 
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(noticeDTOList);
 
-		log.info("[NoticeController] : pageInfo : {}", pageInfo);
-
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 		responseDTOWithPaging.setPageInfo(pageInfo);
 		responseDTOWithPaging.setData(noticeDTOList.getContent());
-
-		log.info("[NoticeController] : searchNoticeByOption end ==================================== ");
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
@@ -99,9 +84,6 @@ public class NoticeController {
 	@PostMapping("/noticeregist")
 	public ResponseEntity<ResponseDTO> registNotice(@ModelAttribute NoticeDTO noticeDTO,
 			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) throws IOException {
-
-		log.info("[NoticeController] noticeDTO: {}", noticeDTO);
-		log.info("[NoticeController] empDTO: {}", employeeDTO);
 
 		noticeService.registNotice(noticeDTO, employeeDTO.getEmpCode());
 
@@ -147,10 +129,6 @@ public class NoticeController {
 	public ResponseEntity<ResponseDTO> updateNotice(@ModelAttribute NoticeDTO noticeDTO, 
 			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) throws IOException {
 		
-		log.info("[NoticeController] noticeDTO: {}", noticeDTO);
-		log.info("emp : {} " , employeeDTO);
-		
-		
 		noticeService.updateNotice(noticeDTO, employeeDTO.getEmpCode());
 		
 		return ResponseEntity
@@ -162,8 +140,6 @@ public class NoticeController {
 	/* 공지사항 수정 - 기존 파일 삭제 */
 	@DeleteMapping("/delete/{fileNames}")
 	public ResponseEntity<ResponseDTO> deleteFile(@PathVariable String[] fileNames) throws IOException {
-		
-		log.info("[NoticeController] fileNames: {}", fileNames);
 		
 		for(String fileName : fileNames) {
 			noticeService.deleteFile(fileName);
@@ -178,8 +154,6 @@ public class NoticeController {
 	@DeleteMapping("/notice/{noticeCode}")
 	public ResponseEntity<ResponseDTO> deleteNotice(@PathVariable Long noticeCode, 
 			@AuthenticationPrincipal EmpDTOImplUS employeeDTO) throws IOException {
-		
-		log.info("[NoticeController] employeeDTO: {}", employeeDTO);
 
 		noticeService.deleteNotice(noticeCode, employeeDTO.getEmpCode());
 

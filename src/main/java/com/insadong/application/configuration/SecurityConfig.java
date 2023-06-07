@@ -62,9 +62,28 @@ public class SecurityConfig {
 				.and()
 				.authorizeRequests()
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.antMatchers(
+						"/insa/v1/myScheduleList",
+						"/insa/v1/myPagingScheduleList",
+						"/insa/v1/myScheduleUpdate",
+						"/insa/v1/mySchedule/**"
+				).hasRole("MEMBER")
+				.antMatchers(
+						"/insa/v1/student",
+						"/insa/v1/studyInfoList/**",
+						"/insa/v1/PetiteStudyInfo/**",
+						"/insa/v1/studyInfo/**",
+						"/insa/v1/studyInsert",
+						"/insa/v1/studyInfo",
+						"/insa/v1/trainingTitleList",
+						"/insa/v1/trainingList/**",
+						"/insa/v1/training/**",
+						"/abs/abs-admin/**",
+						"/off/adminOff/**"
+				).hasRole("ADMIN")
 				.antMatchers("/insa/v1/empTeacher", "/insa/v1/empTeacher/**").hasRole("TEACHER")
-				.antMatchers("/insa/v1/student").hasRole("ADMIN")
-      	.antMatchers("/auth/**").permitAll()
+				.antMatchers("/off/mySignOff/**", "/off/teamOff/**").hasRole("LEADER")
+				.antMatchers("/auth/**").permitAll()
 				.and()
 				.cors()
 				.and()
