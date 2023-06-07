@@ -32,6 +32,7 @@ public class CalendarController {
 		log.info("EMP : {} ", empDTO);
 
 		List<CalendarDTO> data = calService.viewMyScheduleList(empDTO.getEmpCode());
+		log.info("data : {} ", data);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
 	}
