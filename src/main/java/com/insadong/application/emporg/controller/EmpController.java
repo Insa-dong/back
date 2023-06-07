@@ -62,23 +62,7 @@ public class EmpController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
-	/* 13. 휴직 검색*/
-	@GetMapping("/emp/emprestsearch")
-	public ResponseEntity<ResponseDTO> searchRestList (
-			@RequestParam(name = "page", defaultValue = "1") int page,
-			@RequestParam(name = "searchOption") String searchOption,
-			@RequestParam(name = "searchKeyword") String searchKeyword){
 
-		Page<RestDTO> restDTOList = empService.searchRestList(page, searchOption, searchKeyword);
-
-		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(restDTOList);
-
-		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
-		responseDTOWithPaging.setPageInfo(pageInfo);
-		responseDTOWithPaging.setData(restDTOList.getContent());
-
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
-	}
 
 	/*3. 구성원 검색*/
 	@GetMapping("/empsearch")
@@ -196,6 +180,24 @@ public class EmpController {
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDTO(HttpStatus.OK, "휴직처리 성공"));
+	}
+
+	/* 13. 휴직 검색*/
+	@GetMapping("/emp/emprestsearch")
+	public ResponseEntity<ResponseDTO> searchRestList (
+			@RequestParam(name = "page", defaultValue = "1") int page,
+			@RequestParam(name = "searchOption") String searchOption,
+			@RequestParam(name = "searchKeyword") String searchKeyword){
+
+		Page<RestDTO> restDTOList = empService.searchRestList(page, searchOption, searchKeyword);
+
+		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(restDTOList);
+
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageInfo(pageInfo);
+		responseDTOWithPaging.setData(restDTOList.getContent());
+
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
 	@GetMapping("/emp/teacher")
