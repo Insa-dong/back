@@ -32,7 +32,7 @@ import com.insadong.application.paging.ResponseDTOWithPaging;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 @RestController
 @RequestMapping("/off")
 public class OffController {
@@ -48,8 +48,6 @@ public class OffController {
     @PostMapping("/apply")
     public ResponseEntity<ResponseDTO> applyOff(@RequestBody OffDTO offDTO, @AuthenticationPrincipal EmpDTOImplUS loggedInUser) {
 
-    	
-    	log.info("[OffController] applyOff start ------------------- ");
     
         offService.applyOff(offDTO, loggedInUser);
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 성공"));
@@ -139,10 +137,6 @@ public class OffController {
             @RequestParam(name="searchOption", required = false) String searchOption, 
             @RequestParam(name="searchKeyword", required = false) String searchKeyword) {
         
-    	log.info("[OffController] : mySignOffList start ==================================== ");
-		log.info("[OffController] : page : {}", page);
-		log.info("[OffController] : searchOption : {}", searchOption);
-		log.info("[OffController] : searchKeyword : {}", searchKeyword);
         
 		Page<OffDTO> offDTOList;
 
@@ -169,9 +163,6 @@ public class OffController {
     public ResponseEntity<ResponseDTO> signUpOff(@PathVariable Long signCode, @RequestBody OffDTO offDTO) {
     	
     	offService.signUpOff(signCode, offDTO);
-    	
-    	log.info("[OffController] signUpOff start ------------------- ");
-    	
     	
     	return ResponseEntity
 				.ok()

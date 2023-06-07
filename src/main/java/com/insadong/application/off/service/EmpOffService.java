@@ -21,7 +21,6 @@ import com.insadong.application.off.repository.OffRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class EmpOffService {
 
@@ -36,16 +35,11 @@ public class EmpOffService {
 
 	/* 1. 내 연차 현황 */
 	public EmpOffDTO showMyOff(Long empCode) {
-		log.info("[EmpOffService] showMyOff start -----------------------------");
 
 		// 직원 정보 조회
 		Employee emp = employeeRepository.findById(empCode).orElseThrow(() -> new RuntimeException("직원 조회 실패"));
 
 		EmpOffDTO empOffDTO = calculateOff(emp);
-
-		//log.info("[EmpOffService] empOffDTO{}: ", empOffDTO);
-
-		log.info("[EmpOffService] showMyOff end -----------------------------");
 
 		return empOffDTO;
 
@@ -54,7 +48,6 @@ public class EmpOffService {
 	/* 2. 팀원 연차 조회(팀장) */
 	public Page<EmpOffDTO> getTeamOff(Long empCode, int page, String searchOption, String searchKeyword) {
 
-		log.info("[EmpOffService] getTeamOff start -----------------------------");
 
 		Pageable pageable = PageRequest.of(page - 1, 10,
 				Sort.by(Sort.Order.asc("job.jobCode"), Sort.Order.asc("empName"))); // 직급별, 이름순으로 정렬
@@ -91,7 +84,6 @@ public class EmpOffService {
 			}
 		}
 
-		log.info("[EmpOffService] getTeamOff end -----------------------------");
 
 		int start = (int) pageable.getOffset();
 		int end = Math.min((start + pageable.getPageSize()), teamOffList.size());
@@ -108,7 +100,6 @@ public class EmpOffService {
 
 	/* 3. 구성원 연차 현황 조회 */
 	public Page<EmpOffDTO> getEmpOff(int page, String searchOption, String searchKeyword) {
-		log.info("[EmpOffService] getEmpOff start -----------------------------");
 
 		Pageable pageable = PageRequest.of(page - 1, 10,
 				Sort.by(Sort.Order.asc("dept.deptCode"), Sort.Order.asc("job.jobCode"), Sort.Order.asc("empName")));
@@ -158,10 +149,7 @@ public class EmpOffService {
 			    .thenComparing(EmpOffDTO::getEmpName);
 
 		empOffList = empOffList.stream().sorted(comparator).collect(Collectors.toList());
-		
-		log.info("[EmpOffService] empOffList {}: ", empOffList.size());
-
-		log.info("[EmpOffService] getEmpOff end -----------------------------");
+	
 
 		// 검색 및 페이징된 팀원 연차 정보를 반환 -> teamOffList 는 content에 저장됨
 		return new PageImpl<>(empOffList.subList(start, end), pageable, empOffList.size());
