@@ -51,8 +51,6 @@ public class CalendarService {
 		List<Long> codeList = calList.stream().map(Calendar::getCalCode).collect(Collectors.toList());
 
 		List<Calendar> foundList = calendarRepository.findAllById(codeList);
-		log.info("codeList : {} ", codeList);
-		log.info("foundList : {} ", foundList);
 		calendarRepository.saveAll(calList);
 	}
 
@@ -66,8 +64,6 @@ public class CalendarService {
 
 	@Transactional
 	public void registerMySchedule(CalendarDTO calendar, EmpDTOImplUS writer) {
-
-		log.info("calendar : {} ", calendar);
 
 		PetiteEmpDTO employee = new PetiteEmpDTO();
 		employee.setEmpCode(writer.getEmpCode());

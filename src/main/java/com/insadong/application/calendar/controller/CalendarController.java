@@ -29,16 +29,16 @@ public class CalendarController {
 
 	@GetMapping("/myScheduleList")
 	public ResponseEntity<ResponseDTO> viewMyCal(@AuthenticationPrincipal EmpDTOImplUS empDTO) {
+		log.info("EMP : {} ", empDTO);
 
 		List<CalendarDTO> data = calService.viewMyScheduleList(empDTO.getEmpCode());
+		log.info("data : {} ", data);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
 	}
 
 	@GetMapping("/myPagingScheduleList")
 	public ResponseEntity<ResponseDTO> viewMyPagingCal(@AuthenticationPrincipal EmpDTOImplUS empDTO, @RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "sort", defaultValue = "calCode") String sort) {
-
-		log.info("sort : {} ", sort);
 
 		Page<CalendarDTO> data = calService.viewMyPagingScheduleList(empDTO.getEmpCode(), page, sort);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(data);
@@ -53,8 +53,6 @@ public class CalendarController {
 
 	@PutMapping("/myScheduleUpdate")
 	public ResponseEntity<ResponseDTO> updateMyCal(@RequestBody List<CalendarDTO> calendar) {
-		log.info("update 시작");
-		log.info("cal : {} ", calendar);
 		calService.updateMyCal(calendar);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
@@ -62,8 +60,6 @@ public class CalendarController {
 
 	@PutMapping("/myScheduleInfoUpdate")
 	public ResponseEntity<ResponseDTO> updateMyCalInfo(@RequestBody CalendarDTO calendar) {
-		log.info("update 시작");
-		log.info("cal : {} ", calendar);
 		calService.updateMyCalInfo(calendar);
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "수정 성공"));
@@ -72,16 +68,12 @@ public class CalendarController {
 	@PostMapping("/mySchedule")
 	public ResponseEntity<ResponseDTO> registerMySchedule(@RequestBody CalendarDTO calendar, @AuthenticationPrincipal EmpDTOImplUS writer) {
 
-		log.info("writer : {} ", writer);
-
 		calService.registerMySchedule(calendar, writer);
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "등록 성공"));
 	}
 
 	@DeleteMapping("/mySchedule")
 	public ResponseEntity<ResponseDTO> deleteMySchedule(@RequestBody List<Long> codeList) {
-
-		log.info("codeList : {} ", codeList);
 
 		calService.deleteMySchedule(codeList);
 
