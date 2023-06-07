@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -31,21 +31,17 @@ public class EmpController {
 	/*1. 구성원 전체 조회*/
 	@GetMapping("/emp")
 	public ResponseEntity<ResponseDTO> selectEmpList(@RequestParam(name = "page", defaultValue = "1") int page) {
-		log.info("[EmpController] : selectEmpList start ====================================");
-		log.info("[EmpController] : page : {}", page);
 
-		List<String> empStates = Arrays.asList("재직중", "휴직중");
+		List<String> empStates = new ArrayList<>();
+		empStates.add("재직중");
+		empStates.add("휴직중");
+
 		Page<EmployeeDTO> empDTOList = empService.selectEmpList(page, empStates);
-
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empDTOList);
-
-		log.info("[EmpController] : pageInfo : {}", pageInfo);
 
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 		responseDTOWithPaging.setPageInfo(pageInfo);
 		responseDTOWithPaging.setData(empDTOList.getContent());
-
-		log.info("[EmpController] : selectEmpList end ====================================");
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
@@ -56,18 +52,12 @@ public class EmpController {
 	public ResponseEntity<ResponseDTO> selectEmpListByDept(
 			@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable String deptCode) {
 
-		log.info("[EmpController] : selectEmpListByDept start ==================================== ");
-		log.info("[EmpController] : page : {}", page);
-
 		Page<EmployeeDTO> empDTOList = empService.selectEmpListByDept(page, deptCode);
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empDTOList);
-		log.info("[EmpController] : pageInfo : {}", pageInfo);
 
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 		responseDTOWithPaging.setPageInfo(pageInfo);
 		responseDTOWithPaging.setData(empDTOList.getContent());
-
-		log.info("[EmpController] : selectEmpListByDept end ==================================== ");
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
@@ -79,22 +69,14 @@ public class EmpController {
 			@RequestParam(name = "searchOption") String searchOption,
 			@RequestParam(name = "searchKeyword") String searchKeyword){
 
-		log.info("[EmpController] : searchRestList start ==================================== ");
-		log.info("[EmpController] : page : {}", page);
-		log.info("[EmpController] : searchOption : {}", searchOption);
-		log.info("[EmpController] : searchKeyword : {}", searchKeyword);
-
 		Page<RestDTO> restDTOList = empService.searchRestList(page, searchOption, searchKeyword);
 
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(restDTOList);
-
-		log.info("[EmpController] : pageInfo : {}", pageInfo);
 
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 		responseDTOWithPaging.setPageInfo(pageInfo);
 		responseDTOWithPaging.setData(restDTOList.getContent());
 
-		log.info("[EmpController] : searchEmpByNameAndDeptAndJob end ==================================== ");
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 
@@ -105,22 +87,13 @@ public class EmpController {
 			@RequestParam(name = "searchOption") String searchOption,
 			@RequestParam(name = "searchKeyword") String searchKeyword) {
 
-		log.info("[EmpController] : searchEmpByNameAndDeptAndJob start ==================================== ");
-		log.info("[EmpController] : page : {}", page);
-		log.info("[EmpController] : searchOption : {}", searchOption);
-		log.info("[EmpController] : searchKeyword : {}", searchKeyword);
-
 		Page<EmployeeDTO> empDTOList = empService.searchEmpByNameAndDeptAndJob(page, searchOption, searchKeyword);
 
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empDTOList);
 
-		log.info("[EmpController] : pageInfo : {}", pageInfo);
-
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 		responseDTOWithPaging.setPageInfo(pageInfo);
 		responseDTOWithPaging.setData(empDTOList.getContent());
-
-		log.info("[EmpController] : searchEmpByNameAndDeptAndJob end ==================================== ");
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
@@ -128,7 +101,6 @@ public class EmpController {
 	/*4. 구성원 부서 직책 조회*/
 	@GetMapping("/emp/deptjoblist")
 	public ResponseEntity<ResponseDTO> selectEmpDeptJobList() {
-		log.info("[EmpController] : selectEmpDeptJobList start ==================================== ");
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", empService.selectEmpDeptJobList()));
 	}
 
@@ -136,7 +108,6 @@ public class EmpController {
 	/*5. 구성원 등록*/
 	@PostMapping("/emp/empregist")
 	public ResponseEntity<ResponseDTO> insertEmp(@RequestBody EmployeeDTO employeeDTO) {
-		log.info("[EmpController] employeeDTO : {}", employeeDTO);
 		empService.insertEmp(employeeDTO);
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "구성원 등록 성공"));
 	}
@@ -152,22 +123,13 @@ public class EmpController {
 	@GetMapping("/emp/emprecord/{empCode}")
 	public ResponseEntity<ResponseDTO> selectEmpRecord(@RequestParam(name = "page", defaultValue = "1") int page,
 													   @PathVariable Long empCode) {
-		log.info("[EmpController] : selectEmpRecord start ==================================== ");
-		log.info("[EmpController] : page : {}", page);
-
 		Page<EmpHRDTO> empHRDTOList = empService.selectEmpRecord(page, empCode);
 
-		log.info("empHRDTOList {}", empHRDTOList);
-
 		PagingButtonInfo pageInfo = Pagenation.getPagingButtonInfo(empHRDTOList);
-
-		log.info("[EmpController] : pageInfo : {}", pageInfo);
 
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 		responseDTOWithPaging.setPageInfo(pageInfo);
 		responseDTOWithPaging.setData(empHRDTOList.getContent());
-
-		log.info("[EmpController] : selectEmpRecord end ==================================== ");
 
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
