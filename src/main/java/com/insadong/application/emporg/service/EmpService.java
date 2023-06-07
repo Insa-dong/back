@@ -72,7 +72,9 @@ public class EmpService {
 		Dept findDept = empDeptRepository.findById(deptCode)
 				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 없습니다. deptCode =" + deptCode));
 
-		List<String> empStates = Arrays.asList("재직중", "휴직중");
+		List<String> empStates = new ArrayList<>();
+		empStates.add("재직중");
+		empStates.add("휴직중");
 		Page<Employee> empList = empRepository.findByDeptAndEmpStateIn(pageable, findDept, empStates);
 		Page<EmployeeDTO> empDTOList = empList.map(emp -> modelMapper.map(emp, EmployeeDTO.class));
 
@@ -84,7 +86,9 @@ public class EmpService {
 	public Page<EmployeeDTO> searchEmpByNameAndDeptAndJob(int page, String searchOption, String searchKeyword) {
 
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("empCode").descending());
-		List<String> empStates = Arrays.asList("재직중", "휴직중");
+		List<String> empStates = new ArrayList<>();
+		empStates.add("재직중");
+		empStates.add("휴직중");
 
 		if (searchOption.equals("name")) {
 			Page<Employee> empList = empRepository.findByEmpNameContainsAndEmpStateIn(pageable, searchKeyword, empStates);
