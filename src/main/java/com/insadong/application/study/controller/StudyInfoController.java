@@ -36,7 +36,6 @@ public class StudyInfoController {
 		Page<StudyInfoDTO> data = studyInfoService.viewStudyInfoList(page);
 		PagingButtonInfo pagingButtonInfo = Pagenation.getPagingButtonInfo(data);
 
-
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
 		responseDTOWithPaging.setPageInfo(pagingButtonInfo);
 		responseDTOWithPaging.setData(data.getContent());
@@ -49,9 +48,6 @@ public class StudyInfoController {
 			@RequestParam(name = "search") String search,
 			@RequestParam(name = "page") int page,
 			@RequestParam(name = "category") String category) {
-
-		log.info("searchValue : {} ", search);
-		log.info("cate : {} ", category);
 
 		Page<StudyInfoDTO> data = studyInfoService.searchStudy(search, page, category);
 		PagingButtonInfo pagingButtonInfo = Pagenation.getPagingButtonInfo(data);
@@ -68,7 +64,6 @@ public class StudyInfoController {
 	public ResponseEntity<ResponseDTO> viewStudyInfo(@PathVariable Long studyInfoCode) {
 
 		PetiteStudyInfoDTO data = studyInfoService.viewPetiteStudyInfo(studyInfoCode);
-		log.info("abc : {}", data);
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", data));
 	}
 
@@ -87,7 +82,6 @@ public class StudyInfoController {
 	@PostMapping("/studyInsert")
 	public ResponseEntity<ResponseDTO> insertStudyInfo(@RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmpDTOImplUS emp) {
 
-		log.info("studyInfo : {} ", studyInfo);
 		PetiteStudyDTO study = studyInfo.getStudy();
 		study.setStudyDate(new Date());
 		studyInfo.setStudy(study);

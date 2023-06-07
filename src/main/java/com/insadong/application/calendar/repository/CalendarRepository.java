@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.Date;
 import java.util.List;
 
 public interface CalendarRepository extends JpaRepository<Calendar, Long> {
@@ -16,7 +15,5 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long> {
 	List<Calendar> findByEmployee(Long empCode);
 
 	Page<Calendar> findByEmployeeEmpCode(Long empCode, Pageable pageable);
-
-	Page<Calendar> findByEmployeeEmpCodeAndCalEndDateIsBefore(Long empCode, Date date, Pageable pageable);
 
 }
