@@ -51,4 +51,13 @@ public class StudyInfoEntity {
 	@OneToMany(mappedBy = "StudyInfo", cascade = CascadeType.REMOVE)
 	private List<Eva> eva;
 
+	public void update(StudyEntity study, EmpEntity teacher, Date studyInfoStartDate, Date studyInfoEndDate, String studyRoom, String studyTitle, String studyContent) {
+		this.study = study;
+		this.teacher = teacher;
+		this.studyInfoStartDate = studyInfoStartDate;
+		this.studyInfoEndDate = studyInfoEndDate;
+		this.studyRoom = studyRoom;
+		this.studyTitle = studyTitle;
+		this.studyContent = studyContent;
+	}
 }

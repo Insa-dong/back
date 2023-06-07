@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -88,7 +87,7 @@ public class StudyInfoController {
 	@PostMapping("/studyInsert")
 	public ResponseEntity<ResponseDTO> insertStudyInfo(@RequestBody PetiteStudyInfoDTO studyInfo, @AuthenticationPrincipal EmpDTOImplUS emp) {
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		log.info("studyInfo : {} ", studyInfo);
 		PetiteStudyDTO study = studyInfo.getStudy();
 		study.setStudyDate(new Date());
 		studyInfo.setStudy(study);
